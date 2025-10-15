@@ -1,0 +1,435 @@
+/* ================= Global Styles ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #333;
+  background-color: #fff;
+  scroll-behavior: smooth;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* full viewport height */
+}
+
+.content {
+  flex: 1;
+  padding-top: 80px; /* adjust to navbar height */
+}
+
+/* ================= Navbar ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2%;
+  z-index: 1000;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #26a6a0; /* subtle brand color */
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  margin-right: 10px; /* space between logo and text */
+  transition: transform 0.3s ease;
+}
+
+.logo a:hover img {
+  transform: scale(1.05); /* slight zoom effect on hover */
+}
+
+.logo span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #26a6a0;
+}
+
+.close-menu {
+  background: #26a6a0;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  display: none;
+}
+
+.close-menu:hover {
+  background: #1f8883;
+}
+
+.join-btn {
+  background: #26a6a0;
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.join-btn:hover {
+  background: #1f8883;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #26a6a0;
+  border-radius: 2px;
+}
+
+/* ================= Hero Section ================= */
+.hero {
+  height: 100vh;
+  background: linear-gradient(to right, #26a6a0, #c7d5d4), url('images/hero.jpg') center/cover no-repeat;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10%;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero .btn {
+  background: #ffcc00;
+  color: #333;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ================= Sections ================= */
+section {
+  padding: 6rem 10%;
+}
+
+h2 {
+  text-align: center;
+  color: #26a6a0;
+  margin-bottom: 2rem;
+}
+
+.program-grid,
+.news-grid,
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.program-card,
+.news-item {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.gallery-grid img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* ================= Footer ================= */
+.footer {
+  background: #f0f4f8;
+  padding: 2rem 10%;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  /* ensures responsive stacking */
+  gap: 2rem;
+}
+
+.footer-left,
+.footer-right {
+  flex: 1;
+  min-width: 250px;
+}
+.footer-left p {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  margin: 5px 0; 
+}
+
+.footer-left i {
+  font-size: 1.2rem;
+  color: #26a6a0; 
+}
+
+
+.footer-left h2 {
+  color: #26a6a0;
+  margin-bottom: 1rem;
+}
+
+.footer-left p,
+.footer-left a {
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.footer-left a:hover {
+  color: #1f8883;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 1rem 0 0;
+  color: #555;
+  font-size: 0.9rem;
+  border-top: 1px solid #ddd;
+  margin-top: 1rem;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  z-index: 2000;
+  /* On top of everything */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* black with opacity */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+/* Close Button */
+.modal .close {
+  color: #333;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal .close:hover {
+  color: #1f8883;
+}
+
+/* Form Styling */
+.join-form label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.join-form input,
+.join-form select,
+.join-form textarea,
+.join-form button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.join-form button {
+  background-color: #26a6a0;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.join-form button:hover {
+  background-color: #1f8883;
+}
+
+
+/* ================= Responsive Styles ================= */
+@media screen and (max-width: 1024px) {
+  section {
+    padding: 5rem 7%;
+  }
+
+  .navbar {
+    justify-content: space-between;
+  }
+
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* changed from right to left */
+    height: 100vh;
+    width: 250px;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+    transform: translateX(-100%);
+    /* hide offscreen to the left */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    transform: translateX(0);
+  }
+
+  /* Close button top-right inside sidebar */
+  .close-menu {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    background: none;
+    color: #26a6a0;
+    border: none;
+    cursor: pointer;
+  }
+
+  .close-menu:hover {
+    color: #c7d5d4;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  section {
+    padding: 5rem 5%;
+  }
+
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-right iframe {
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero .btn {
+    padding: 0.5rem 1rem;
+  }
+
+  section {
+    padding: 4rem 4%;
+  }
+
+  .program-card,
+  .news-item {
+    padding: 0.8rem;
+  }
+
+  .close-menu {
+    display: block;
+    ;
+  }
+
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-right iframe {
+    height: 200px;
+  }
+}
