@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Home | Institute for Leadership and Public Policy (ILPP)')
+{{-- @section('title', 'Home | Institute for Leadership and Public Policy (ILPP)') --}}
 
 @section('content')
     <!-- Hero Section -->

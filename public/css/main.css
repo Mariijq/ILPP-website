@@ -1,0 +1,24 @@
+/* ================= Global Styles ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #333;
+  background-color: #fff;
+  scroll-behavior: smooth;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding-top: 80px; /* adjust to navbar height */
+}

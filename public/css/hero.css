@@ -1,0 +1,30 @@
+/* ================= Hero Section ================= */
+.hero {
+  height: 100vh;
+  background: linear-gradient(to right, #26a6a0, #c7d5d4), url('images/hero.jpg') center/cover no-repeat;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10%;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero .btn {
+  background: #ffcc00;
+  color: #333;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}

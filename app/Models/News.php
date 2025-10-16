@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class News extends Model
+{
+        use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'subtitle',
+        'date',
+        'short_description',
+        'detailed_description',
+        'image',
+    ];
+
+}

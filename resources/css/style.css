@@ -16,7 +16,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /* full viewport height */
 }
 
 .content {
@@ -42,7 +41,7 @@ body {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #26a6a0; /* subtle brand color */
+  color: #26a6a0;
   font-weight: 600;
   font-size: 1.1rem;
 }
@@ -50,12 +49,12 @@ body {
 .logo img {
   height: 50px;
   width: auto;
-  margin-right: 10px; /* space between logo and text */
+  margin-right: 10px;
   transition: transform 0.3s ease;
 }
 
 .logo a:hover img {
-  transform: scale(1.05); /* slight zoom effect on hover */
+  transform: scale(1.05);
 }
 
 .logo span {
@@ -200,7 +199,6 @@ h2 {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  /* ensures responsive stacking */
   gap: 2rem;
 }
 
@@ -212,15 +210,14 @@ h2 {
 .footer-left p {
   display: flex;
   align-items: center;
-  gap: 10px; 
-  margin: 5px 0; 
+  gap: 10px;
+  margin: 5px 0;
 }
 
 .footer-left i {
   font-size: 1.2rem;
-  color: #26a6a0; 
+  color: #26a6a0;
 }
-
 
 .footer-left h2 {
   color: #26a6a0;
@@ -247,26 +244,21 @@ h2 {
   margin-top: 1rem;
 }
 
-
-/* The Modal (background) */
+/* ================= Modal ================= */
 .modal {
   display: none;
-  /* Hidden by default */
   position: fixed;
   z-index: 2000;
-  /* On top of everything */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  /* black with opacity */
   justify-content: center;
   align-items: center;
 }
 
-/* Modal Content */
 .modal-content {
   background-color: #fff;
   margin: auto;
@@ -277,7 +269,6 @@ h2 {
   position: relative;
 }
 
-/* Close Button */
 .modal .close {
   color: #333;
   position: absolute;
@@ -292,7 +283,6 @@ h2 {
   color: #1f8883;
 }
 
-/* Form Styling */
 .join-form label {
   display: block;
   margin: 10px 0 5px;
@@ -320,33 +310,60 @@ h2 {
   background-color: #1f8883;
 }
 
+/* ================= Navbar Dropdown ================= */
+.nav-links .dropdown {
+  position: relative;
+}
 
-/* ================= Responsive Styles ================= */
-@media screen and (max-width: 1024px) {
-  section {
-    padding: 5rem 7%;
+.nav-links .dropbtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.nav-links .dropdown-content {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+/* Desktop dropdown */
+@media screen and (min-width: 768px) {
+  .nav-links .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
 
-  .navbar {
-    justify-content: space-between;
+  .nav-links .dropdown:hover .dropdown-content {
+    display: block;
   }
 
-
-  .hero h1 {
-    font-size: 2.2rem;
+  .nav-links .dropdown-content li a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
   }
 
-  .hero p {
-    font-size: 1.1rem;
+  .nav-links .dropdown-content li a:hover {
+    background-color: #f2f2f2;
   }
 }
 
-@media screen and (max-width: 768px) {
+/* Mobile dropdown inside hamburger */
+@media screen and (max-width: 767px) {
   .nav-links {
     position: fixed;
     top: 0;
     left: 0;
-    /* changed from right to left */
     height: 100vh;
     width: 250px;
     background: #ffffff;
@@ -355,7 +372,6 @@ h2 {
     padding: 2rem 1rem;
     gap: 1.5rem;
     transform: translateX(-100%);
-    /* hide offscreen to the left */
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
   }
@@ -364,7 +380,6 @@ h2 {
     transform: translateX(0);
   }
 
-  /* Close button top-right inside sidebar */
   .close-menu {
     display: block;
     position: absolute;
@@ -385,16 +400,86 @@ h2 {
     display: flex;
   }
 
+  .nav-links .dropdown-content {
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .nav-links .dropdown-content.active {
+    display: block;
+  }
+}
+
+/* ================= Responsive Adjustments ================= */
+@media screen and (max-width: 1024px) {
   section {
-    padding: 5rem 5%;
+    padding: 5rem 7%;
   }
 
-  .footer-container {
-    flex-direction: column;
+  .hero h1 {
+    font-size: 2.2rem;
   }
 
-  .footer-right iframe {
-    height: 200px;
+  .hero p {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  .navbar {
+    padding: 0.8rem 3%;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .logo span {
+    font-size: 1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+  }
+
+  .hero .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  section {
+    padding: 5rem 8%;
+  }
+
+  .program-card,
+  .news-item {
+    padding: 0.9rem;
+  }
+
+  .footer {
+    padding: 1.5rem 8%;
+  }
+
+  .footer-left h2 {
+    font-size: 1.2rem;
+  }
+
+  .footer-left p,
+  .footer-left a {
+    font-size: 0.95rem;
+  }
+
+  .gallery-grid img {
+    border-radius: 8px;
   }
 }
 
@@ -418,18 +503,5 @@ h2 {
   .program-card,
   .news-item {
     padding: 0.8rem;
-  }
-
-  .close-menu {
-    display: block;
-    ;
-  }
-
-  .footer-container {
-    flex-direction: column;
-  }
-
-  .footer-right iframe {
-    height: 200px;
   }
 }

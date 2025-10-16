@@ -1,0 +1,123 @@
+/* ================= Navbar ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2%;
+  z-index: 1000;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #26a6a0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.logo a:hover img {
+  transform: scale(1.05);
+}
+
+.logo span {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #26a6a0;
+}
+
+.join-btn {
+  background: #26a6a0;
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.join-btn:hover {
+  background: #1f8883;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #26a6a0;
+  border-radius: 2px;
+}
+
+/* Close Button */
+.close-menu {
+  color: #26a6a0;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  display: none;
+}
+
+.close-menu:hover {
+  background: #1f8883;
+  color: #ffffff;
+}
+
+/* Navbar Dropdown */
+.nav-links .dropdown {
+  position: relative;
+}
+
+.nav-links .dropbtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.nav-links .dropdown-content {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 5px;
+  z-index: 1000;
+}
+

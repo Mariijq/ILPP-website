@@ -1,0 +1,32 @@
+/* ================= Sections ================= */
+section {
+  padding: 6rem 10%;
+}
+
+h2 {
+  text-align: center;
+  color: #26a6a0;
+  margin-bottom: 2rem;
+}
+
+.program-grid,
+.news-grid,
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.program-card,
+.news-item {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.gallery-grid img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
