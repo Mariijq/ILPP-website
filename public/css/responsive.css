@@ -11,7 +11,7 @@
     left: 0;
     background: #fff;
     min-width: 200px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .nav-links .dropdown:hover .dropdown-content {
@@ -42,12 +42,17 @@
     left: 0;
     background: #fff;
     min-width: 180px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
   .nav-links .dropdown:hover .dropdown-content {
     display: block;
   }
+
+  .mobile-sidebar {
+    display: none;
+  }
+
 }
 
 /* ================= Mobile (<768px) ================= */
@@ -93,25 +98,60 @@
     flex-direction: column;
     gap: 0.8rem;
   }
+
+  .desktop-only {
+    display: none;
+  }
+
 }
 
 /* ================= Responsive Adjustments for Sections ================= */
 @media screen and (max-width: 1360px) {
-  .navbar { padding: 0.8rem 3%; }
-  .logo img { height: 40px; }
-  .logo span { font-size: 1rem; }
-  .nav-links a { font-size: 0.95rem; }
+  .navbar {
+    padding: 0.8rem 3%;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .logo span {
+    font-size: 1rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
 }
 
 @media screen and (max-width: 1024px) {
-  section { padding: 5rem 7%; }
-  .hero h1 { font-size: 2.2rem; }
-  .hero p { font-size: 1.1rem; }
+  section {
+    padding: 5rem 7%;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
 }
 
 @media screen and (max-width: 480px) {
-  section { padding: 4rem 4%; }
-  .hero h1 { font-size: 1.8rem; }
-  .hero p { font-size: 1rem; }
-  .hero .btn { padding: 0.5rem 1rem; }
+  section {
+    padding: 4rem 4%;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero .btn {
+    padding: 0.5rem 1rem;
+  }
 }

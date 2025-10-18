@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class GalleryImage extends Model
 {
-        use HasFactory;
-
     protected $fillable = [
         'image',
         'title',       // optional

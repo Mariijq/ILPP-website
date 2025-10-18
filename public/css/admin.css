@@ -1,0 +1,287 @@
+/* ===================== SIDEBAR ===================== */
+.backend-sidebar {
+    width: 250px;
+    background: #ffffff;
+    color: #26a6a0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.backend-sidebar .brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.backend-sidebar .brand img {
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+.backend-sidebar .brand h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.backend-sidebar .menu a {
+    display: block;
+    color: #26a6a0;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.backend-sidebar .menu a:hover,
+.backend-sidebar .menu a.active {
+    background: #26a6a0;
+    color: #fff;
+}
+
+/* Logout button */
+.logout-form {
+    margin-top: auto;
+    text-align: center;
+}
+
+.logout-btn {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background: #d43f56;
+}
+
+/* ===================== MAIN CONTENT ===================== */
+.backend-main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 40px;
+}
+
+.backend-header h1 {
+    font-size: 28px;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+}
+
+.backend-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ===================== DASHBOARD CARDS ===================== */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.password-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.password-form h3 {
+    margin-bottom: 20px;
+    color: #26a6a0;
+}
+
+.password-form button {
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.password-form button:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+
+/* ===================== ADMIN LOGIN ===================== */
+body.backend-login {
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    width: 400px;
+    max-width: 90%;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.login-card h3 {
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #26a6a0;
+    text-align: center;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 12px 15px;
+}
+
+.btn-login {
+    background-color: #26a6a0;
+    border: none;
+    padding: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: 0.3s;
+    color: #ffffff;
+}
+
+.btn-login:hover {
+    background-color: #495057;
+    color: #ffffff;
+}
+
+.alert {
+    font-size: 0.9rem;
+}
+
+.login-card .login-logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 100px;
+    height: auto;
+}
+
+.login-card .login-logo:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+
+}
+
+/* Collapsible menu buttons */
+.btn-toggle {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #26a6a0;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-toggle:hover {
+    background-color: #f1f1f1;
+    color: #26a6a0;
+}
+
+.btn-toggle:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-toggle.collapsed::after {
+    content: '▼';
+    float: right;
+    transform: rotate(-90deg);
+}
+
+.btn-toggle::after {
+    content: '▼';
+    float: right;
+    transition: transform 0.3s;
+}
+
+.collapse.show .btn-toggle::after {
+    transform: rotate(0deg);
+}
+
+/* Submenu inside collapse */
+.btn-toggle+.collapse ul {
+    list-style: none;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.btn-toggle+.collapse ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #26a6a0;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-toggle+.collapse ul li a:hover {
+    background: #26a6a0;
+    color: #fff;
+}
+
+/* ================= Show News Page ================= */
+.show label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.show p {
+    margin: 0 0 15px 0;
+    color: #555;
+}
+
+.show div {
+    margin-bottom: 15px;
+}
+
+.show-img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+    .gallery-img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+/* ================= About Us Page ================= */
+.about-us-form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.about-us-form textarea.form-control {
+    resize: vertical;
+}
