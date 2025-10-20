@@ -9,7 +9,7 @@ h2 {
   margin-bottom: 2rem;
 }
 
-.program-grid,
+/* .program-grid,
 .news-grid,
 .gallery-grid {
   display: grid;
@@ -29,4 +29,18 @@ h2 {
   width: 100%;
   border-radius: 10px;
   object-fit: cover;
+} */
+
+@media screen and (max-width: 1024px) {
+  section {
+    padding: 5rem 7%;
+  }
+
+}
+
+@media screen and (max-width: 480px) {
+  section {
+    padding: 4rem 4%;
+  }
+
 }

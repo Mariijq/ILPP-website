@@ -50,8 +50,8 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-success">
-                        {{ isset($news) ? 'Update' : 'Create' }}
+                    <button type="submit" class="btn btn-custom">
+                        {{ isset($news) ? 'Update' : 'Save' }}
                     </button>
                     <a href="{{ route('news.index') }}" class="btn btn-secondary">Cancel</a>
             </form>

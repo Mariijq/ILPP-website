@@ -122,6 +122,8 @@ body.backend-login {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+
 }
 
 .login-card {
@@ -188,14 +190,14 @@ body.backend-login {
     color: #26a6a0;
     border-radius: 8px;
     margin-bottom: 8px;
-    font-weight: 500;
+    font-weight: normal;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
 }
 
 .btn-toggle:hover {
-    background-color: #f1f1f1;
-    color: #26a6a0;
+    background-color: #26a6a0;
+    color: #f1f1f1;
 }
 
 .btn-toggle:focus {
@@ -284,4 +286,67 @@ body.backend-login {
 
 .about-us-form textarea.form-control {
     resize: vertical;
+}
+
+/* ================ Index Blades ================ */
+.btn-custom{
+    background-color: #26a6a0;
+    border-color: #26a6a0;
+    color: #fff;
+}
+
+.btn-custom:hover{
+    background-color: #008080;
+    color: #fff;
+}
+
+/* ====== Shared Backend Styles ====== */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+.form-label {
+    color: #333;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+}
+
+.form-control:focus {
+    border-color: #6a1b9a;
+    box-shadow: 0 0 0 0.2rem rgba(106, 27, 154, 0.15);
+}
+
+/* Custom purple button style */
+.btn-custom {
+    background-color: #26a6a0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #008080;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+}
+
+.btn-secondary:hover {
+    background-color: #c7c7c7;
+    color: #000;
 }

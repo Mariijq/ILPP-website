@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
+use App\Http\Controllers\Controller;
 
 use App\DataTables\PublicationsDataTable;
 use Illuminate\Http\Request;
 
-class PublicationController extends Controller
+class PublicationBackendController extends Controller
 {
     /**
      * Display a listing of the resource.

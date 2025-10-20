@@ -44,8 +44,8 @@
                     @endif
                 </div>
 
-                <button type="submit" class="btn btn-success">
-                    {{ isset($publications) ? 'Update' : 'Create' }}
+                <button type="submit" class="btn btn-custom">
+                    {{ isset($publications) ? 'Update' : 'Save' }}
                 </button>
                 <a href="{{ route('publications.index') }}" class="btn btn-secondary">Cancel</a>
             </form>

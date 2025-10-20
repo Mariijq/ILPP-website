@@ -8,5 +8,6 @@ class History extends Model
 {
     protected $fillable = [
         'description',
+        'title',
     ];
 }

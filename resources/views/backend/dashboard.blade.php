@@ -40,7 +40,7 @@
                 <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Password</button>
+            <button type="submit" class="btn btn-custom">Update Password</button>
         </form>
     </div>
 </div>

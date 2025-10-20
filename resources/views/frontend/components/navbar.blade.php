@@ -1,10 +1,8 @@
 <header>
     <nav class="navbar">
-        <!-- Hamburger Menu -->
+
         <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+            <i class="bi bi-list"></i>
         </div>
 
         <!-- Logo -->
@@ -33,49 +31,46 @@
             <li><a href="{{ route('publications') }}">PUBLICATIONS</a></li>
             <li><a href="{{ route('gallery') }}">GALLERY</a></li>
             <li><a href="{{ route('contact') }}">CONTACT US</a></li>
-            <button id="openForm" class="join-btn">Join Us</button>
         </ul>
     </nav>
 
     <!-- Mobile Sidebar -->
-    <ul class="nav-links mobile-sidebar">
-        <li>
-            <button class="close-menu"><i class="bi bi-x-lg"></i></button>
-        </li>
-
-        <li class="mb-1">
-            <button class="btn btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#news-collapse"
-                aria-expanded="false">
-                NEWS
-            </button>
-            <div class="collapse" id="news-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ route('news') }}" class="link-dark rounded">News</a></li>
-                </ul>
+    <div class="frontend-wrapper d-flex">
+        <!-- Sidebar -->
+        <aside class="frontend-sidebar">
+            <div class="brand">
+                <img src="{{ asset('images/Logo.png') }}" alt="Logo">
+                <h2>Institute for Leadership and Public Policy</h2>
             </div>
-        </li>
 
-        <li class="mb-1">
-            <button class="btn btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#who-collapse"
-                aria-expanded="false">
-                WHO WE ARE
-            </button>
-            <div class="collapse" id="who-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ route('about') }}" class="link-dark rounded">About ILPP</a></li>
-                    <li><a href="{{ route('history') }}" class="link-dark rounded">History</a></li>
-                    <li><a href="{{ route('what-we-do') }}" class="link-dark rounded">What we do</a></li>
-                    <li><a href="{{ route('team') }}" class="link-dark rounded">Our Team</a></li>
-                    <li><a href="{{ route('partners') }}" class="link-dark rounded">Our Partners</a></li>
-                    <li><a href="{{ route('internal-docs') }}" class="link-dark rounded">Internal Documents</a></li>
-                </ul>
-            </div>
-        </li>
+            <nav class="menu">
 
-        <!-- Repeat for Projects, Publications, Gallery, Contact -->
-        <li class="mt-3">
-            <button id="openForm" class="join-btn w-100">Join Us</button>
-        </li>
-    </ul>
+                <a href="{{ route('news') }}"><i class="bi bi-newspaper"> </i>NEWS</a>
+                <!-- Collapsible Section -->
+                <button class=" btn-toggle w-100 text-start collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#who-collapse" aria-expanded="false">
+                    <i class="bi bi-people"> </i>
+                    WHO WE ARE
+                </button>
+                <div class="collapse" id="who-collapse">
+                    <ul class="list-unstyled ps-3">
+                        <li><a href="{{ route('about') }}">About ILPP</a></li>
+                        <li><a href="{{ route('history') }}">History</a></li>
+                        <li><a href="{{ route('what-we-do') }}">What We Do</a></li>
+                        <li> <a href="{{ route('team') }}">Team Members</a></li>
+                        <li><a href="{{ route('partners') }}">Partners</a></li>
+                        <li><a href="{{ route('internal-docs') }}">Internal Docs</a></li>
+                    </ul>
+                </div>
+
+                <a href="{{ route('projects') }}"><i class="bi bi-archive"> </i>PROJECTS</a>
+                <a href="{{ route('publications') }}"><i class="bi bi-journal"> </i>PUBLICATIONS</a>
+                <a href="{{ route('gallery') }}"><i class="bi bi-images"> </i>GALLERY</a>
+
+
+            </nav>
+        </aside>
+    </div>
+    <div class="sidebar-overlay"></div>
 
 </header>

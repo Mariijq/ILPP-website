@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('what_we_dos', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('leadership');
-            $table->string('research');
-            $table->string('public_policy');
+            $table->text('leadership');
+            $table->text('research');
+            $table->text('public_policy');
             $table->timestamps();
         });
     }

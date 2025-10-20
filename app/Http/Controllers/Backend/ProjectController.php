@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Models\Project;
 use App\DataTables\ProjectsDataTable;
+use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(ProjectsDataTable $dataTable)
     {
         return $dataTable->render('backend.projects.index');
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
+        // Create form
         return view('backend.projects.create');
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,49 +31,33 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Handle image upload
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('projects_images', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = $request->file('image')->store('projects_images', 'public');
         }
 
-        // Create projects
         Project::create($validated);
 
-        return redirect()->route('projects.index')->with('success', 'projects created successfully.');
-
+        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $projects = Project::findOrFail($id);
 
         return view('backend.projects.show', compact('projects'));
-
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $projects = Project::findOrFail($id);
+        $project = Project::findOrFail($id);
 
-        return view('backend.projects.edit', compact('projects'));
-
+        return view('backend.projects.create', compact('project'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $projects = Project::findOrFail($id);
+        $project = Project::findOrFail($id);
 
-        // Validate input
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'date' => 'required|date',
@@ -90,32 +66,29 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Handle image upload
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($projects->image && Storage::disk('public')->exists($projects->image)) {
-                Storage::disk('public')->delete($projects->image);
+            // Delete old image
+            if ($project->image && Storage::disk('public')->exists($project->image)) {
+                Storage::disk('public')->delete($project->image);
             }
-            $path = $request->file('image')->store('projects_images', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = $request->file('image')->store('projects_images', 'public');
         }
 
-        // Update projects
-        $projects->update($validated);
+        $project->update($validated);
 
-        return redirect()->route('projects.index')->with('success', 'projects updated successfully.');
-
+        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $projects = Project::findOrFail($id);
-        $projects->delete();
+        $project = Project::findOrFail($id);
 
-        return redirect()->route('projects.index')->with('success', 'projects deleted successfully.');
+        if ($project->image && Storage::disk('public')->exists($project->image)) {
+            Storage::disk('public')->delete($project->image);
+        }
 
+        $project->delete();
+
+        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
     }
 }

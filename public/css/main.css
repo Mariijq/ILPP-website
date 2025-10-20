@@ -22,3 +22,95 @@ body {
   flex: 1;
   padding-top: 80px; /* adjust to navbar height */
 }
+
+/* ========== NEWS ========== */
+/* html {
+  background: #f5f7f8;
+  font-family: system-ui;
+  -webkit-font-smoothing: antialiased;
+  padding: 20px 0;
+} */
+
+header .news{
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.band {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+}
+.band .item {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 30em) {
+  .band {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 60em) {
+  .band {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card-news {
+  background: white;
+  text-decoration: none;
+  color: #444;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+  top: 0;
+  transition: all .1s ease-in;
+}
+
+.card-news:hover {
+  top: -2px;
+  box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+}
+
+.card-news article {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-news h1 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.card-news p {
+  flex: 1;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.card-news span {
+  font-size: 12px;
+  font-weight: bold;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.card-news .thumb {
+  padding-bottom: 60%;
+  background-size: cover;
+  background-position: center center;
+  border-radius: 5px 5px 0 0;
+}

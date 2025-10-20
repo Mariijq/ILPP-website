@@ -12,7 +12,7 @@
             <div class="mb-3">
                 <input type="file" name="images[]" multiple class="form-control">
             </div>
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-custom">
                 <i class="bi bi-upload"></i> Upload
             </button>
         </form>
