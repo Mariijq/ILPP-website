@@ -40,4 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.remove('active');
         }
     });
+
+    // Open search bar
+    const searchContainer = document.querySelector('.search-container');
+    const searchToggle = document.querySelector('.search-toggle');
+
+    searchToggle.addEventListener('click', () => {
+        searchContainer.classList.toggle('active');
+    });
+
+
+    // To close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchContainer.contains(e.target)) {
+            searchContainer.classList.remove('active');
+        }
+    })
+
 });

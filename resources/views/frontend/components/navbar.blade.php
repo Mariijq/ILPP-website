@@ -1,12 +1,8 @@
 <header>
     <nav class="navbar">
 
-        <div class="hamburger">
-            <i class="bi bi-list"></i>
-        </div>
-
         <!-- Logo -->
-        <div class="logo">
+        <div class="navbar-section logo-section">
             <a href="{{ route('home') }}">
                 <img src="{{ asset('images/Logo.png') }}" alt="ILPP Logo">
                 <span>Institute for Leadership and Public Policy</span>
@@ -14,24 +10,45 @@
         </div>
 
         <!-- Desktop Navigation Links -->
-        <ul class="nav-links desktop-only">
-            <li><a href="{{ route('news') }}">NEWS</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropbtn">WHO WE ARE <i class="bi bi-caret-down-fill"></i></a>
-                <ul class="dropdown-content">
-                    <li><a href="{{ route('about') }}">About ILPP</a></li>
-                    <li><a href="{{ route('history') }}">History</a></li>
-                    <li><a href="{{ route('what-we-do') }}">What we do</a></li>
-                    <li><a href="{{ route('team') }}">Our Team</a></li>
-                    <li><a href="{{ route('partners') }}">Our Partners</a></li>
-                    <li><a href="{{ route('internal-docs') }}">Internal Documents</a></li>
-                </ul>
-            </li>
-            <li><a href="{{ route('projects') }}">PROJECTS</a></li>
-            <li><a href="{{ route('publications') }}">PUBLICATIONS</a></li>
-            <li><a href="{{ route('gallery') }}">GALLERY</a></li>
-            <li><a href="{{ route('contact') }}">CONTACT US</a></li>
-        </ul>
+        <div class="navbar-section navlinks-section desktop-only">
+            <ul class="nav-links ">
+                <li><a href="{{ route('news') }}">NEWS</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">WHO WE ARE <i class="bi bi-caret-down-fill"></i></a>
+                    <ul class="dropdown-content">
+                        <li><a href="{{ route('about') }}">About ILPP</a></li>
+                        <li><a href="{{ route('history') }}">History</a></li>
+                        <li><a href="{{ route('what-we-do') }}">What we do</a></li>
+                        <li><a href="{{ route('team') }}">Our Team</a></li>
+                        <li><a href="{{ route('partners') }}">Our Partners</a></li>
+                        <li><a href="{{ route('internal-docs') }}">Internal Documents</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ route('projects') }}">PROJECTS</a></li>
+                <li><a href="{{ route('publications') }}">PUBLICATIONS</a></li>
+                <li><a href="{{ route('gallery') }}">GALLERY</a></li>
+                <li><a href="{{ route('contact') }}">CONTACT US</a></li>
+            </ul>
+        </div>
+        <!-- Right: Search + Language -->
+        <div class="navbar-section right-section">
+            <form class="search-form" action="#" method="GET">
+            <input type="text" name="q" placeholder="Search..." />
+            <button type="submit"><i class="bi bi-search"></i></button>
+            </form>
+            <div class="language-switcher">
+                <select onchange="window.location.href=this.value">
+                    <option value="/lang/en">EN</option>
+                    <option value="/lang/al">AL</option>
+                    <option value="/lang/mk">MK</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Mobile Hamburger -->
+        <div class="hamburger mobile-only">
+            <i class="bi bi-list"></i>
+        </div>
     </nav>
 
     <!-- Mobile Sidebar -->
@@ -42,6 +59,21 @@
                 <img src="{{ asset('images/Logo.png') }}" alt="Logo">
                 <h2>Institute for Leadership and Public Policy</h2>
             </div>
+            <!-- Search + Language on top for mobile -->
+            <div class="mobile-sidebar-top mb-3">
+                {{-- <form class="search-form" action="{{ route('search') }}" method="GET"> --}}
+                    <input type="text" name="q" placeholder="Search..." />
+                </form>
+
+                <div class="language-switcher mt-2">
+                    <select onchange="window.location.href=this.value">
+                        <option value="/lang/en">EN</option>
+                        <option value="/lang/al">AL</option>
+                        <option value="/lang/mk">MK</option>
+                    </select>
+                </div>
+            </div>
+
 
             <nav class="menu">
 

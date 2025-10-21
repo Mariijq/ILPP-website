@@ -11,18 +11,24 @@
   align-items: center;
   padding: 1rem 2%;
   z-index: 1000;
+  flex-wrap: wrap;
 }
 
-.logo a {
+.navbar-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-section a {
   display: flex;
   align-items: center;
   text-decoration: none;
   color: #26a6a0;
   font-weight: 600;
-  font-size: 1.1rem;
 }
 
-.logo img {
+.logo-section img {
   height: 50px;
   width: auto;
   margin-right: 10px;
@@ -36,38 +42,84 @@
 
 .logo span {
   font-size: 1.1rem;
-  line-height: 1.2;
+}
+.navlinks-section {
+  margin-left: auto; /* 👈 pushes the whole section to the end of the navbar */
+  margin-right: 20px;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
+.navlinks-section ul {
+  display:flex;
   gap: 1.5rem;
-  align-items: center;
-  margin-top: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
 }
 
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  align-items: center;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
+.navlinks-section a {
   color: #26a6a0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.navlinks-section a:hover,
+.navlinks-section a.active {
+  color: #26a6a0;
+}
+
+/*Right Section */
+.right-section {
+  gap: 1rem;
+}
+.search-container{
+  position: relative;
+}
+
+.search-toggle{
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #26a6a0;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+
+.search-form {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.search-form input {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-form button {
+  background: #26a6a0;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.language-switcher select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 
 /* Dropdown container */
-.nav-links .dropdown {
+.navlinks-section .dropdown {
   position: relative;
   /* parent for absolute positioning */
 }
 
 /* Dropdown menu */
-.nav-links .dropdown-content {
+.navlinks-section .dropdown-content {
   display: none;
   position: absolute;
   /* key: remove from flow */
@@ -86,12 +138,12 @@
 }
 
 /* Show on hover */
-.nav-links .dropdown:hover .dropdown-content {
+.navlinks-section .dropdown:hover .dropdown-content {
   display: block;
 }
 
 /* Style the links inside dropdown */
-.nav-links .dropdown-content li a {
+.navlinks-section .dropdown-content li a {
   display: block;
   padding: 0.5rem 1rem;
   color: #333;
@@ -99,7 +151,7 @@
 
 }
 
-.nav-links .dropdown-content li a:hover {
+.navlinks-section .dropdown-content li a:hover {
   background-color: #26a6a0;
   color: #fff;
 }
@@ -120,23 +172,6 @@
   width: 25px;
   background: #26a6a0;
   border-radius: 2px;
-}
-
-/* Close Button */
-.close-menu {
-  color: #26a6a0;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  display: none;
-}
-
-.close-menu:hover {
-  background: #1f8883;
-  color: #ffffff;
 }
 
 /* ===================== SIDEBAR ===================== */
@@ -209,6 +244,62 @@
   pointer-events: all;
 }
 
+/* Mobile Sidebar Top */
+.mobile-sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.mobile-sidebar-top .search-form {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.mobile-sidebar-top .search-form input {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.mobile-sidebar-top .search-form button {
+  background: #26a6a0;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.mobile-sidebar-top .language-switcher select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Sidebar overlay + active */
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Mobile: hide desktop right section */
+@media (max-width: 991px) {
+  .right-section {
+    display: none;
+  }
+  .navlinks-section{
+    display: none;
+  }
+  .hamburger{
+    display: flex;
+  }
+}
+
+
 /* Collapsible menu buttons */
 .btn-toggle {
   display: block;
@@ -276,7 +367,7 @@
 /* ================= Mobile Responsiveness ================= */
 /* Small phones (up to 480px) */
 @media (max-width: 480px) {
-  .logo img {
+  .logo-section img {
     height: 30px;
   }
 
@@ -289,12 +380,14 @@
     padding: 0.3rem 0.6rem;
     font-size: 12px;
   }
-    .hamburger {
-    display: flex; /* show hamburger */
+
+  .hamburger {
+    display: flex;
+    /* show hamburger */
   }
 
   /* Hide desktop nav links */
-  .nav-links.desktop-only {
+  .navlinks-section.desktop-only {
     display: none;
   }
 
@@ -302,11 +395,11 @@
 
 /* Larger phones (481px - 767px) */
 @media (min-width: 481px) and (max-width: 767px) {
-  .logo img {
+  .logo-section img {
     height: 50px;
   }
 
-  .nav-links {
+  .navlinks-section {
     gap: 1rem;
     font-size: 13px;
   }
@@ -315,15 +408,18 @@
     padding: 0.4rem 0.8rem;
     font-size: 13px;
   }
-    .hamburger {
-    display: flex; /* show hamburger */
+
+  .hamburger {
+    display: flex;
+    /* show hamburger */
   }
 
   /* Hide desktop nav links */
-  .nav-links.desktop-only {
+  .navlinks-section.desktop-only {
     display: none;
   }
-    .logo span{
+
+  .logo-section span {
     display: none;
   }
 
@@ -331,11 +427,11 @@
 
 /* Tablets / iPads (768px - 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
-  .logo img {
+  .logo-section img {
     height: 40px;
   }
 
-  .nav-links {
+  .navlinks-section {
     gap: 1.2rem;
     font-size: 14px;
   }
@@ -344,12 +440,14 @@
     padding: 0.5rem 1rem;
     font-size: 14px;
   }
-    .hamburger {
-    display: flex; /* show hamburger */
+
+  .hamburger {
+    display: flex;
+    /* show hamburger */
   }
 
   /* Hide desktop nav links */
-  .nav-links.desktop-only {
+  .navlinks-section.desktop-only {
     display: none;
   }
 
@@ -358,17 +456,14 @@
 
 /* Desktop (992px and above) */
 @media (min-width: 992px) {
-  .logo img {
+  .logo-section img {
     height: 50px;
   }
 
-  .nav-links {
+  .navlinks-section {
     gap: 1.5rem;
     font-size: 15px;
   }
 
-  .join-btn {
-    padding: 0.5rem 1rem;
-    font-size: 15px;
-  }
+
 }
