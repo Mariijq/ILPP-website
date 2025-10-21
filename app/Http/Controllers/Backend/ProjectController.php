@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Toastr;
 use App\DataTables\ProjectsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
@@ -31,13 +32,21 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('projects_images', 'public');
+        try {
+            if ($request->hasFile('image')) {
+                $validated['image'] = $request->file('image')->store('projects_images', 'public');
+            }
+
+            Project::create($validated);
+            Toastr::success('Project added successfully!', ['title'=>'Success']);
+
+            return redirect()->route('projects.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        Project::create($validated);
-
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
 
     public function show(string $id)
@@ -65,30 +74,47 @@ class ProjectController extends Controller
             'detailed_description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
-
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($project->image && Storage::disk('public')->exists($project->image)) {
-                Storage::disk('public')->delete($project->image);
+        try {
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if ($project->image && Storage::disk('public')->exists($project->image)) {
+                    Storage::disk('public')->delete($project->image);
+                }
+                $validated['image'] = $request->file('image')->store('projects_images', 'public');
             }
-            $validated['image'] = $request->file('image')->store('projects_images', 'public');
+            $project->update($validated);
+
+            Toastr::success('Project updated successfully!', ['title'=>'Success']);
+
+            return redirect()->route('projects.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
 
-        $project->update($validated);
-
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
 
     public function destroy($id)
     {
         $project = Project::findOrFail($id);
 
-        if ($project->image && Storage::disk('public')->exists($project->image)) {
-            Storage::disk('public')->delete($project->image);
+        try {
+            if ($project->image && Storage::disk('public')->exists($project->image)) {
+                Storage::disk('public')->delete($project->image);
+            }
+
+            $project->delete();
+
+            Toastr::success('Project deleted successfully!', ['title'=>'Success']);
+
+            return redirect()->route('projects.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
+            return back();
         }
-
-        $project->delete();
-
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
     }
 }

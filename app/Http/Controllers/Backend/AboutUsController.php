@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 
+use Toastr;
 use Illuminate\Http\Request;
 use App\Models\AboutUs;
 
@@ -29,6 +30,7 @@ class AboutUsController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success', 'About Us updated successfully.');
+        Toastr::success('About Us updates successfully!', ['title'=>'Success']);
+        return redirect()->back();
     }
 }

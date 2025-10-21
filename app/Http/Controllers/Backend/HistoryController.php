@@ -28,7 +28,7 @@ class HistoryController extends Controller
 
         // Always update record with ID 1 (or first record)
         History::updateOrCreate(['id' => 1], $data);
-
-        return redirect()->back()->with('success', 'History updated successfully.');
+        Toastr::success('History updated successfully!', ['title'=>'Success']);
+        return redirect()->back();
     }
 }

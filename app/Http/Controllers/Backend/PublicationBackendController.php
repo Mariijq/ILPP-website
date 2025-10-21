@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use Toastr;
 use App\DataTables\PublicationsDataTable;
+use App\Http\Controllers\Controller;
+use App\Models\Publication;
 use Illuminate\Http\Request;
 
 class PublicationBackendController extends Controller
@@ -36,27 +38,34 @@ class PublicationBackendController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:5120',
 
         ]);
+        try {
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('publications_images', 'public');
+                $validated['image'] = $path;
+            }
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('publications_images', 'public');
-            $validated['image'] = $path;
+            // Handle file upload
+            if ($request->hasFile('file')) {
+                $path = $request->file('file')->store('publications_files', 'public');
+                $validated['file'] = $path;
+            }
+
+            // Create publications
+            Publication::create($validated);
+            Toastr::success('Publication added successfully!', ['title'=>'Success']);
+
+            return redirect()->route('publications.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('publications_files', 'public');
-            $validated['file'] = $path;
-        }
-
-        // Create publications
-        Publication::create($validated);
-
-        return redirect()->route('publications.index')->with('success', 'publications created successfully.');
 
     }
 
@@ -99,24 +108,35 @@ class PublicationBackendController extends Controller
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:5120',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($publications->image && Storage::disk('public')->exists($publications->image)) {
-                Storage::disk('public')->delete($publications->image);
+        try {
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($publications->image && Storage::disk('public')->exists($publications->image)) {
+                    Storage::disk('public')->delete($publications->image);
+                }
+                $path = $request->file('image')->store('publications_images', 'public');
+                $validated['image'] = $path;
             }
-            $path = $request->file('image')->store('publications_images', 'public');
-            $validated['image'] = $path;
-        }
 
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            if ($publications->file && Storage::disk('public')->exists($publications->file)) {
-                Storage::disk('public')->delete($publications->file);
+            // Handle file upload
+            if ($request->hasFile('file')) {
+                if ($publications->file && Storage::disk('public')->exists($publications->file)) {
+                    Storage::disk('public')->delete($publications->file);
+                }
+                $path = $request->file('file')->store('publications_files', 'public');
+                $validated['file'] = $path;
             }
-            $path = $request->file('file')->store('publications_files', 'public');
-            $validated['file'] = $path;
+            $publication->update($validated);
+
+            Toastr::success('Publication updated successfully!', ['title'=>'Success']);
+
+            return redirect()->route('publications.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
+        // Handle image upload
 
     }
 
@@ -125,10 +145,27 @@ class PublicationBackendController extends Controller
      */
     public function destroy(string $id)
     {
-        $publications = Publication::findOrFail($id);
-        $publications->delete();
+        $publication = Publication::findOrFail($id);
 
-        return redirect()->route('publications.index')->with('success', 'publications deleted successfully.');
+        try {
+            if ($publication->image && Storage::disk('public')->exists($publication->image)) {
+                Storage::disk('public')->delete($publication->image);
+            }
 
+            if ($publication->file && Storage::disk('public')->exists($publication->file)) {
+                Storage::disk('public')->delete($publication->file);
+            }
+
+            $publication->delete();
+
+            Toastr::success('Publication deleted successfully!', ['title'=>'Success']);
+
+            return redirect()->route('publications.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back();
+        }
     }
 }

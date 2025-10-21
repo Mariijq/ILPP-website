@@ -1,12 +1,11 @@
 @extends('backend.layout')
 
-@section('title', 'View News')
+@section('title', 'Publications')
 
 @section('content')
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h3>View publications</h3>
-        <a href="{{ route('publications.index') }}" class="btn btn-secondary btn-sm">Back to List</a>
+    <div class="card-header d-flex ">
+        <a href="{{ route('publications.index') }}" class="btn btn-secondary ms-auto">Back to List</a>
     </div>
 
     <div class="card-body show">

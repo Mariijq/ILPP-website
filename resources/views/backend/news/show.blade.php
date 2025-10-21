@@ -1,12 +1,11 @@
 @extends('backend.layout')
 
-@section('title', 'View News')
+@section('title', 'News Details')
 
 @section('content')
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h3>View News</h3>
-        <a href="{{ route('news.index') }}" class="btn btn-secondary btn-sm">Back to List</a>
+    <div class="card-header d-flex">
+        <a href="{{ route('news.index') }}" class="btn btn-secondary ms-auto">Back to List</a>
     </div>
 
     <div class="card-body show">
@@ -39,7 +38,7 @@
             <label class="fw-bold">Image:</label>
             <div>
                 @if($news->image && file_exists(storage_path('app/public/'.$news->image)))
-                    <img src="{{ asset('storage/'.$news->image) }}" class="show-img">
+                    <img src="{{ asset('storage/'.$news->image) }}" class="show-img" style="width:150px;height:150px;object-fit:cover;border-radius:6px;">
                 @else
                     <span class="text-muted">No Image</span>
                 @endif

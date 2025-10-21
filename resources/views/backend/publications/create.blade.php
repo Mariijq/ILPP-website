@@ -1,15 +1,16 @@
 @extends('backend.layout')
 
 @section('content')
-        <h4 class="mb-4">{{ isset($publications) ? 'Edit Publication' : 'Add Publication' }}</h4>
+    <h4 class="mb-4">{{ isset($publications) ? 'Edit Publication' : 'Add Publication' }}</h4>
 
     <div class="publication-form">
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <form action="{{ isset($publications) ? route('publications.update', $publications->id) : route('publications.store') }}" 
-              method="POST" enctype="multipart/form-data">
+        <form
+            action="{{ isset($publications) ? route('publications.update', $publications->id) : route('publications.store') }}"
+            method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($publications))
                 @method('PUT')
@@ -24,7 +25,8 @@
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
                 <input type="date" name="date" id="date" class="form-control"
-                    value="{{ old('date', isset($publications) && $publications->date ? $publications->date->format('Y-m-d') : '') }}" required>
+                    value="{{ old('date', isset($publications) && $publications->date ? $publications->date->format('Y-m-d') : '') }}"
+                    required>
             </div>
 
             <div class="mb-3">
@@ -43,10 +45,25 @@
 
                 @if (isset($publications) && $publications->image)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $publications->image) }}" alt="Publication Image" width="100" height="100" style="object-fit: cover;">
+                        <img src="{{ asset('storage/' . $publications->image) }}" alt="Publication Image" width="100"
+                            height="100" style="object-fit: cover;">
                     </div>
                 @endif
             </div>
+            <div class="mb-3">
+                <label for="file" class="form-label fw-semibold">File</label>
+                <input type="file" name="file" id="file" class="form-control">
+
+                @if (isset($publications) && $publications->file)
+                    <div class="mt-3">
+                        <a href="{{ asset('storage/' . $publications->file) }}" target="_blank"
+                            class="btn btn-outline-primary btn-sm">
+                            View Current File
+                        </a>
+                    </div>
+                @endif
+            </div>
+
 
             <div class="d-flex justify-content-end">
                 <a href="{{ route('publications.index') }}" class="btn btn-secondary me-2">Cancel</a>

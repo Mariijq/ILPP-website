@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Toastr;
 use App\DataTables\PartnerDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Partner;
@@ -37,13 +38,22 @@ class PartnersController extends Controller
             'website' => 'nullable|url|max:255',
             'order' => 'nullable|integer',
         ]);
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('partners', 'public');
+
+        try {
+            if ($request->hasFile('logo')) {
+                $data['logo'] = $request->file('logo')->store('partners', 'public');
+            }
+
+            Partner::create($data);
+            Toastr::success('Partner added successfully', ['title'=>'Success']);
+
+            return redirect()->route('partners.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        Partner::create($data);
-
-        return redirect()->route('partners.index')->with('success', 'Partner created successfully.');
 
     }
 
@@ -52,7 +62,9 @@ class PartnersController extends Controller
      */
     public function show(string $id)
     {
-        return view('backend.partners.show', compact('partner'));
+        $partners = Partner::findOrFail($id);
+
+        return view('backend.partners.show', compact('partners'));
 
     }
 
@@ -61,8 +73,9 @@ class PartnersController extends Controller
      */
     public function edit(string $id)
     {
-        return view('backend.partners.create', compact('partner'));
+        $partners = Partner::findOrFail($id);
 
+        return view('backend.partners.create', compact('partners'));
     }
 
     /**
@@ -78,17 +91,25 @@ class PartnersController extends Controller
             'logo' => 'nullable|image|max:2048',
         ]);
 
-        if ($request->hasFile('logo')) {
-            // Delete old logo if exists
-            if ($partner->logo && Storage::disk('public')->exists($partner->logo)) {
-                Storage::disk('public')->delete($partner->logo);
+        try {
+            if ($request->hasFile('logo')) {
+                // Delete old logo if exists
+                if ($partners->logo && Storage::disk('public')->exists($partners->logo)) {
+                    Storage::disk('public')->delete($partners->logo);
+                }
+                $data['logo'] = $request->file('logo')->store('partners', 'public');
             }
-            $data['logo'] = $request->file('logo')->store('partners', 'public');
+
+            $partners->update($data);
+            Toastr::success('Partner updated successfully', ['title'=>'Success']);
+
+            return redirect()->route('partners.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        $partner->update($data);
-
-        return redirect()->route('partners.index')->with('success', 'Partner updated successfully.');
 
     }
 
@@ -97,13 +118,22 @@ class PartnersController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($partner->logo && Storage::disk('public')->exists($partner->logo)) {
-            Storage::disk('public')->delete($partner->logo);
+        try {
+
+            if ($partners->logo && Storage::disk('public')->exists($partner->logo)) {
+                Storage::disk('public')->delete($partners->logo);
+            }
+
+            $partners->delete();
+            Toastr::success('Partner deleted successfully!', ['title'=>'Success']);
+
+            return redirect()->route('partners.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        $partner->delete();
-
-        return redirect()->route('partners.index')->with('success', 'Partner deleted successfully.');
 
     }
 }

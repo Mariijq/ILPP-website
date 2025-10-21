@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Toastr;
+use App\DataTables\TeamMemberDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMember;
-use App\DataTables\TeamMemberDataTable;
 use Illuminate\Http\Request;
 
 class TeamMemberController extends Controller
@@ -24,7 +25,6 @@ class TeamMemberController extends Controller
     {
         return view('backend.team-members.create');
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -37,13 +37,21 @@ class TeamMemberController extends Controller
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
         ]);
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image'->store('team-members', 'public'));
+        try {
+
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image'->store('team-members', 'public'));
+            }
+
+            TeamMember::create($data);
+            Toastr::success('Team Member add successfully!', ['title'=>'Success']);
+
+            return redirect->route('team-members.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        TeamMember::create($data);
-
-        return redirect->route('team-members.index')->with('success', 'Team Member added successfully.');
     }
 
     /**
@@ -60,7 +68,6 @@ class TeamMemberController extends Controller
     public function edit(string $id)
     {
         return view('backend.team-members.create', compact('teamMember'));
-
     }
 
     /**
@@ -76,18 +83,24 @@ class TeamMemberController extends Controller
             'order' => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($teamMember->image) {
-                Storage::disk('public')->delete($teamMember->image);
+        try {
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($teamMember->image) {
+                    Storage::disk('public')->delete($teamMember->image);
+                }
+                $data['image'] = $request->file('image')->store('team-members', 'public');
             }
-            $data['image'] = $request->file('image')->store('team-members', 'public');
+
+            $teamMember->update($data);
+            Toastr::success('Team member updated successfully', ['title'=>'Succes']);
+
+            return redirect()->route('team-members.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back()->withInput();
         }
-
-        $teamMember->update($data);
-
-        return redirect()->route('team-members.index')->with('success', 'Team member updated successfully.');
-
     }
 
     /**
@@ -95,12 +108,19 @@ class TeamMemberController extends Controller
      */
     public function destroy(string $id)
     {
-        if ($teamMember->image) {
-            Storage::disk('public')->delete($teamMember->image);
+        try {
+            if ($teamMember->image) {
+                Storage::disk('public')->delete($teamMember->image);
+            }
+
+            $teamMember->delete();
+            Toastr::success('Team member deleted successfully', ['title'=>'Success']);
+
+            return redirect()->route('team-members.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            return back();
         }
-
-        $teamMember->delete();
-
-        return redirect()->route('team-members.index')->with('success', 'Team member deleted successfully.');
     }
 }

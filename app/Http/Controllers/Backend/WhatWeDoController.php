@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\WhatWeDo;
@@ -32,6 +33,7 @@ class WhatWeDoController extends Controller
 
         WhatWeDo::updateOrCreate(['id' => 1], $data);
 
-        return redirect()->back()->with('success', 'What We Do content updated successfully.');
+        Toastr::success('Content updated successfully!', ['title'=>'Success']);
+        return redirect()->back();
     }
 }

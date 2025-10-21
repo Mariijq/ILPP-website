@@ -1,11 +1,10 @@
 @extends('backend.layout')
 
-@section('title', 'Settings')
-
 @section('content')
 <div class="dashboard">
+            <h3>Change Password</h3>
+
     <div class="backend-content">
-        <h3>Change Password</h3>
 
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

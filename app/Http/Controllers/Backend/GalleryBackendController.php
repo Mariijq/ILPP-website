@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 
@@ -14,6 +14,7 @@ class GalleryBackendController extends Controller
     public function index()
     {
         $images = GalleryImage::latest()->get();
+
         return view('backend.gallery.index', compact('images'));
 
     }
@@ -31,18 +32,25 @@ class GalleryBackendController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-        'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-    ]);
+        $request->validate([
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+        ]);
 
-    if($request->hasFile('images')){
-        foreach($request->file('images') as $file){
-            $path = $file->store('gallery_images', 'public');
-            GalleryImage::create(['path' => $path]);
+        try {
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $file) {
+                    $path = $file->store('gallery_images', 'public');
+                    GalleryImage::create(['path' => $path]);
+                }
+            }
+            Toastr::success('Image uploaded successfully!', ['title'=>'success']);
+
+            return redirect()->route('gallery.index');
+        } catch (\Exception $e) {
+            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back();
         }
-    }
-
-    return redirect()->route('gallery.index')->with('success', 'Images uploaded successfully.');
 
     }
 
@@ -75,16 +83,22 @@ class GalleryBackendController extends Controller
      */
     public function destroy(string $id)
     {
-                $image = GalleryImage::findOrFail($id);
+        $image = GalleryImage::findOrFail($id);
 
-        // Delete image file from storage
-        if ($image->path && Storage::disk('public')->exists($image->path)) {
-            Storage::disk('public')->delete($image->path);
+        try {
+            // Delete image file from storage
+            if ($image->path && Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+
+            $image->delete();
+            Toastr::success('Image deleted successfully!', ['title'=>'Success']);
+
+            return redirect()->route('gallery.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+
+            return back();
         }
-
-        $image->delete();
-
-        return redirect()->route('gallery.index')->with('success', 'Image deleted successfully.');
     }
-
 }

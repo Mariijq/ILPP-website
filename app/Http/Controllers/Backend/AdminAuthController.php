@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use Toastr;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AdminAuthController extends Controller
@@ -23,36 +24,43 @@ class AdminAuthController extends Controller
 
         if ($request->email === env('ADMIN_EMAIL') && $request->password === env('ADMIN_PASSWORD')) {
             $request->session()->put('backend_logged_in', true);
+            Toastr::success('Logged in successfully!', ['title'=>'Success']);
+
             return redirect()->route('backend.dashboard');
         }
+        Toastr::error('Invalid credentials', ['title'=>'Error']);
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back();
     }
 
     // Logout
     public function logout(Request $request)
     {
         $request->session()->forget('backend_logged_in');
+        Toastr::info('You have been logged out.', 'Info');
+
         return redirect()->route('backend.login');
     }
 
     public function updatePassword(Request $request)
-{
-    $request->validate([
-        'current_password' => 'required',
-        'new_password' => 'required|min:6|confirmed',
-    ]);
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
 
-    $backend = auth()->user(); // or however you get the backend user
+        $backend = auth()->user(); // or however you get the backend user
 
-    if (!Hash::check($request->current_password, $backend->password)) {
-        return back()->with('error', 'Current password is incorrect.');
+        if (! Hash::check($request->current_password, $backend->password)) {
+            Toastr::error('Current password is incorrect.', ['title'=>'Error']);
+
+            return back();
+        }
+
+        $backend->password = Hash::make($request->new_password);
+        $backend->save();
+        Toastr::success('Password updated successfully!', ['title'=>'Success']);
+
+        return back();
     }
-
-    $backend->password = Hash::make($request->new_password);
-    $backend->save();
-
-    return back()->with('success', 'Password updated successfully.');
-}
-
 }

@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 use App\Models\Partner;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -15,26 +14,36 @@ class PartnerDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param  QueryBuilder<Partner>  $query  Results from query() method.
+     * @param  \Illuminate\Database\Eloquent\Builder<Partner>  $query
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
+    public function dataTable($query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))
+        return datatables()
+            ->eloquent($query)
             ->addColumn('logo', function ($partner) {
-                return $partner->logo
-                    ? '<img src="'.asset('storage/'.$partner->logo).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">'
-                    : '<span class="text-muted">No Logo</span>';
+                if ($partner->logo && file_exists(storage_path('app/public/'.$partner->logo))) {
+                    return '<img src="'.asset('storage/'.$partner->logo).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
+                }
+                return '<span class="text-muted">No Logo</span>';
             })
             ->addColumn('action', function ($partner) {
-                $editUrl = route('partners.create', $partner->id);
+                $viewUrl = route('partners.show', $partner->id);
+                $editUrl = route('partners.edit', $partner->id);
                 $deleteUrl = route('partners.destroy', $partner->id);
 
                 return '
-                <a href="'.$editUrl.'" class="btn btn-primary btn-sm">Edit</a>
-                <form method="POST" action="'.$deleteUrl.'" style="display:inline-block;">'.csrf_field().method_field('DELETE').'
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure?\');">Delete</button>
-                </form>
-            ';
+                <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="'.$deleteUrl.'" style="display:inline-block;" onsubmit="return confirm(\'Are you sure you want to delete this partner?\');">
+                    '.csrf_field().method_field('DELETE').'
+                    <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>';
             })
             ->rawColumns(['logo', 'action'])
             ->setRowId('id');
@@ -42,12 +51,10 @@ class PartnerDataTable extends DataTable
 
     /**
      * Get the query source of dataTable.
-     *
-     * @return QueryBuilder<Partner>
      */
-    public function query(Partner $model): QueryBuilder
+    public function query(Partner $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->select(['id', 'name', 'logo', 'website', 'order', 'created_at', 'updated_at']);
     }
 
     /**
@@ -59,7 +66,7 @@ class PartnerDataTable extends DataTable
             ->setTableId('partner-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(1)
+            ->orderBy(0)
             ->selectStyleSingle()
             ->buttons([
                 Button::make('excel'),
@@ -72,18 +79,22 @@ class PartnerDataTable extends DataTable
     /**
      * Get the dataTable columns definition.
      */
-    public function getColumns(): array
+    protected function getColumns(): array
     {
         return [
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->width(60)
-                ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
+            Column::make('name'),
+            Column::make('logo'),
+            Column::make('website'),
+            Column::make('order'),
             Column::make('created_at'),
             Column::make('updated_at'),
+            Column::computed('action')
+                ->title('Actions')
+                ->exportable(false)
+                ->printable(false)
+                ->width(200)
+                ->addClass('text-center'),
         ];
     }
 

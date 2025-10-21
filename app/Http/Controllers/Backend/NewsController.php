@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use Toastr;
+use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\DataTables\NewsDataTable;
 use Illuminate\Http\Request;
@@ -24,7 +25,6 @@ class NewsController extends Controller
     public function create()
     {
         return view('backend.news.create');
-
     }
 
     /**
@@ -41,17 +41,21 @@ class NewsController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('news_images', 'public');
-            $validated['image'] = $path;
+        try {
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('news_images', 'public');
+                $validated['image'] = $path;
+            }
+
+            News::create($validated);
+
+            Toastr::success('News added successfully!', ['title'=>'Success']);
+            return redirect()->route('news.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'success']);
+            return back()->withInput();
         }
-
-        // Create news
-        News::create($validated);
-
-        return redirect()->route('news.index')->with('success', 'News created successfully.');
-
     }
 
     /**
@@ -60,9 +64,7 @@ class NewsController extends Controller
     public function show(string $id)
     {
         $news = News::findOrFail($id);
-
         return view('backend.news.show', compact('news'));
-
     }
 
     /**
@@ -71,9 +73,7 @@ class NewsController extends Controller
     public function edit(string $id)
     {
         $news = News::findOrFail($id);
-
         return view('backend.news.edit', compact('news'));
-
     }
 
     /**
@@ -83,7 +83,6 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        // Validate input
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
@@ -93,21 +92,24 @@ class NewsController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($news->image && Storage::disk('public')->exists($news->image)) {
-                Storage::disk('public')->delete($news->image);
+        try {
+            if ($request->hasFile('image')) {
+                if ($news->image && Storage::disk('public')->exists($news->image)) {
+                    Storage::disk('public')->delete($news->image);
+                }
+                $path = $request->file('image')->store('news_images', 'public');
+                $validated['image'] = $path;
             }
-            $path = $request->file('image')->store('news_images', 'public');
-            $validated['image'] = $path;
+
+            $news->update($validated);
+
+            Toastr::success('News updated successfully!', ['title'=>'Success']);
+            return redirect()->route('news.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            return back()->withInput();
         }
-
-        // Update news
-        $news->update($validated);
-
-        return redirect()->route('news.index')->with('success', 'News updated successfully.');
-
     }
 
     /**
@@ -116,9 +118,20 @@ class NewsController extends Controller
     public function destroy(string $id)
     {
         $news = News::findOrFail($id);
-        $news->delete();
 
-        return redirect()->route('news.index')->with('success', 'News deleted successfully.');
+        try {
+            if ($news->image && Storage::disk('public')->exists($news->image)) {
+                Storage::disk('public')->delete($news->image);
+            }
 
+            $news->delete();
+
+            Toastr::success('News deleted successfully!', ['title'=>'Success']);
+            return redirect()->route('news.index');
+
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            return back();
+        }
     }
 }
