@@ -43,14 +43,16 @@
 .logo span {
   font-size: 1.1rem;
 }
+
 .navlinks-section {
-  margin-left: auto; /* 👈 pushes the whole section to the end of the navbar */
+  margin-left: auto;
+  /* 👈 pushes the whole section to the end of the navbar */
   margin-right: 20px;
 }
 
 .navlinks-section ul {
-  display:flex;
-  gap: 1.5rem;
+  display: flex;
+  gap: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -70,13 +72,11 @@
 
 /*Right Section */
 .right-section {
-  gap: 1rem;
-}
-.search-container{
-  position: relative;
+  gap: 0.5rem;
+  margin-right: auto;
 }
 
-.search-toggle{
+.search-toggle {
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -85,23 +85,68 @@
   padding: 0.3rem;
 }
 
-.search-form {
+/* ================= Search Overlay ================= */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
-  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.search-form input {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.search-overlay.active {
+  opacity: 1;
+  pointer-events: all;
 }
 
-.search-form button {
+.search-box {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.search-box form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid #26a6a0;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-box input {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.search-box button[type="submit"] {
   background: #26a6a0;
   color: #fff;
   border: none;
-  padding: 0.3rem 0.5rem;
-  border-radius: 5px;
+  padding: 0.8rem 1rem;
+  border-radius: 0 50px 50px 0;
+  cursor: pointer;
+}
+
+.close-search {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #26a6a0;
   cursor: pointer;
 }
 
@@ -109,8 +154,8 @@
   padding: 0.3rem 0.5rem;
   border-radius: 5px;
   border: 1px solid #ccc;
+  color: #26a6a0;
 }
-
 
 /* Dropdown container */
 .navlinks-section .dropdown {
@@ -218,6 +263,7 @@
   text-decoration: none;
   padding: 12px 15px;
   border-radius: 8px;
+  border-bottom: 1px solid #26a6a0;
   margin-bottom: 8px;
   transition: background 0.3s, color 0.3s;
 }
@@ -247,8 +293,8 @@
 /* Mobile Sidebar Top */
 .mobile-sidebar-top {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-direction: row;
+  gap: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #ddd;
 }
@@ -291,14 +337,22 @@
   .right-section {
     display: none;
   }
-  .navlinks-section{
+
+  .navlinks-section {
     display: none;
   }
-  .hamburger{
+
+  .hamburger {
     display: flex;
+    order: 0;
+
+  }
+
+  .logo-section {
+    order: 1;
+    margin-left: auto;
   }
 }
-
 
 /* Collapsible menu buttons */
 .btn-toggle {
@@ -308,6 +362,7 @@
   text-align: left;
   background: none;
   border: none;
+  border-bottom: 1px solid #26a6a0;
   color: #26a6a0;
   border-radius: 8px;
   margin-bottom: 8px;
@@ -357,6 +412,8 @@
   border-radius: 8px;
   margin-bottom: 4px;
   transition: background 0.3s, color 0.3s;
+  border: none;
+
 }
 
 .btn-toggle+.collapse ul li a:hover {
@@ -450,8 +507,6 @@
   .navlinks-section.desktop-only {
     display: none;
   }
-
-
 }
 
 /* Desktop (992px and above) */

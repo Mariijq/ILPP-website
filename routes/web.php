@@ -1,30 +1,26 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\AboutUsController;
 use App\Http\Controllers\Backend\AdminAuthController;
+use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\ContactInfoController;
+use App\Http\Controllers\Backend\DocumentController;
+use App\Http\Controllers\Backend\GalleryBackendController;
+use App\Http\Controllers\Backend\HistoryController;
 use App\Http\Controllers\Backend\NewsController;
+use App\Http\Controllers\Backend\PartnersController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\PublicationBackendController;
 use App\Http\Controllers\Backend\TeamMemberController;
-use App\Http\Controllers\Backend\GalleryBackendController;
-use App\Http\Controllers\Backend\AboutUsController;
-use App\Http\Controllers\Backend\HistoryController;
-use App\Http\Controllers\Backend\PartnersController;
-use App\Http\Controllers\Backend\DocumentController;
 use App\Http\Controllers\Backend\WhatWeDoController;
-
-use App\Http\Controllers\Frontend\WhoWeAreController;
-use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\GalleryController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProjectsController;
 use App\Http\Controllers\Frontend\PublicationsController;
-use App\Http\Controllers\Frontend\GalleryController;
-
-
+use App\Http\Controllers\Frontend\WhoWeAreController;
 use App\Http\Middleware\AdminAuth;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Route;
 
 // ==================== CLIENT (PUBLIC SITE) ====================//
 
@@ -32,7 +28,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/news', [App\Http\Controllers\Frontend\NewsController::class, 'index'])->name('news');
 
-Route::get('/news/{id}', [App\Http\Controllers\Frontend\NewsController ::class, 'show'])->name('news-details');
+Route::get('/news/{id}', [App\Http\Controllers\Frontend\NewsController::class, 'show'])->name('news-details');
 
 Route::prefix('who-we-are')->group(function () {
     Route::get('about', [WhoWeAreController::class, 'about'])->name('about');
@@ -48,7 +44,6 @@ Route::get('/publications', [PublicationsController::class, 'index'])->name('pub
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-
 // ==================== ADMIN (LOG IN) ====================//
 
 Route::get('backend/login', [AdminAuthController::class, 'showLoginForm'])->name('backend.login');
@@ -56,15 +51,14 @@ Route::post('backend/login', [AdminAuthController::class, 'login'])->name('backe
 Route::post('backend/logout', [AdminAuthController::class, 'logout'])->name('backend.logout');
 Route::put('backend/password', [AdminAuthController::class, 'updatePassword'])->name('backend.password.update')->middleware(AdminAuth::class);
 
-
 // ==================== ADMIN (PRIVATE SITE) ====================//
 
 Route::prefix('backend')->middleware([AdminAuth::class])->group(function () {
 
-        // Dashboard
+    // Dashboard
     Route::get('/', [AdminController::class, 'index'])->name('backend.dashboard');
 
-        // News Management
+    // News Management
     Route::resource('news', NewsController::class);
 
     // Projects Management
@@ -94,8 +88,7 @@ Route::prefix('backend')->middleware([AdminAuth::class])->group(function () {
     Route::get('what-we-do', [WhatWeDoController::class, 'edit'])->name('what-we-do.index');
     Route::post('what-we-do', [WhatWeDoController::class, 'updateOrCreate'])->name('what-we-do.update');
     Route::get('partners', [PartnersController::class, 'index'])->name('partners.index');
+    Route::get('contact-info', [ContactInfoController::class, 'index'])->name('contact-info.index'); // show form
+    Route::post('contact-info', [ContactInfoController::class, 'update'])->name('contact-info.update'); // save form
 
 });
-
-
-

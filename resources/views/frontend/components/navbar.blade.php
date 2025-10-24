@@ -12,9 +12,9 @@
         <!-- Desktop Navigation Links -->
         <div class="navbar-section navlinks-section desktop-only">
             <ul class="nav-links ">
-                <li><a href="{{ route('news') }}">NEWS</a></li>
+                <li><a href="{{ route('news') }}">News</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">WHO WE ARE <i class="bi bi-caret-down-fill"></i></a>
+                    <a href="#" class="dropbtn">Who We Are<i class="bi bi-caret-down-fill"></i></a>
                     <ul class="dropdown-content">
                         <li><a href="{{ route('about') }}">About ILPP</a></li>
                         <li><a href="{{ route('history') }}">History</a></li>
@@ -24,18 +24,20 @@
                         <li><a href="{{ route('internal-docs') }}">Internal Documents</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ route('projects') }}">PROJECTS</a></li>
-                <li><a href="{{ route('publications') }}">PUBLICATIONS</a></li>
-                <li><a href="{{ route('gallery') }}">GALLERY</a></li>
-                <li><a href="{{ route('contact') }}">CONTACT US</a></li>
+                <li><a href="{{ route('projects') }}">Projects</a></li>
+                <li><a href="{{ route('publications') }}">Publications</a></li>
+                <li><a href="{{ route('gallery') }}">Gallery</a></li>
+                <li><a href="{{ route('contact') }}">Contact Us</a></li>
             </ul>
         </div>
-        <!-- Right: Search + Language -->
+        <!-- Right: Search Button + Language -->
         <div class="navbar-section right-section">
-            <form class="search-form" action="#" method="GET">
-            <input type="text" name="q" placeholder="Search..." />
-            <button type="submit"><i class="bi bi-search"></i></button>
-            </form>
+            <!-- Search Button -->
+            <button class="search-toggle" id="searchToggleBtn">
+                <i class="bi bi-search"></i>
+            </button>
+
+            <!-- Language Switcher -->
             <div class="language-switcher">
                 <select onchange="window.location.href=this.value">
                     <option value="/lang/en">EN</option>
@@ -44,6 +46,18 @@
                 </select>
             </div>
         </div>
+
+        <!-- Search Overlay -->
+        <div class="search-overlay">
+            <div class="search-box">
+                <button class="close-search">&times;</button>
+                <form action="#" method="GET">
+                    <input type="text" name="q" placeholder="Search..." required>
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+
 
         <!-- Mobile Hamburger -->
         <div class="hamburger mobile-only">
@@ -61,9 +75,10 @@
             </div>
             <!-- Search + Language on top for mobile -->
             <div class="mobile-sidebar-top mb-3">
-                {{-- <form class="search-form" action="{{ route('search') }}" method="GET"> --}}
-                    <input type="text" name="q" placeholder="Search..." />
-                </form>
+                <button class="search-toggle" id="mobileSearchToggleBtn">
+                    <i class="bi bi-search"></i>
+                </button>
+
 
                 <div class="language-switcher mt-2">
                     <select onchange="window.location.href=this.value">
@@ -73,6 +88,7 @@
                     </select>
                 </div>
             </div>
+
 
 
             <nav class="menu">

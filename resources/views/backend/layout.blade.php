@@ -49,6 +49,9 @@
                 <a href="{{ route('projects.index') }}">Projects</a>
                 <a href="{{ route('publications.index') }}">Publications</a>
                 <a href="{{ route('gallery.index') }}">Gallery</a>
+                <a href="{{ route('contact-info.index') }}">Contact Info</a>
+
+
 
             </nav>
 

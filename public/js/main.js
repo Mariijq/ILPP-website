@@ -42,19 +42,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Open search bar
-    const searchContainer = document.querySelector('.search-container');
-    const searchToggle = document.querySelector('.search-toggle');
+    const desktopSearchBtn = document.getElementById("searchToggleBtn");
+    const mobileSearchBtn = document.getElementById("mobileSearchToggleBtn");
+    const searchOverlay = document.querySelector(".search-overlay");
+    const closeSearchBtn = document.querySelector(".close-search");
 
-    searchToggle.addEventListener('click', () => {
-        searchContainer.classList.toggle('active');
+    function openSearch() {
+        searchOverlay.classList.add("active");
+    }
+
+    function closeSearch() {
+        searchOverlay.classList.remove("active");
+    }
+
+    // Desktop button
+    if (desktopSearchBtn) desktopSearchBtn.addEventListener("click", openSearch);
+
+    // Mobile button
+    if (mobileSearchBtn) mobileSearchBtn.addEventListener("click", openSearch);
+
+    // Close button
+    if (closeSearchBtn) closeSearchBtn.addEventListener("click", closeSearch);
+
+    // Close on overlay click
+    searchOverlay.addEventListener("click", (e) => {
+        if (e.target === searchOverlay) closeSearch();
     });
-
-
-    // To close when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!searchContainer.contains(e.target)) {
-            searchContainer.classList.remove('active');
-        }
-    })
-
 });
