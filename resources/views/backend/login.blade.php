@@ -12,10 +12,6 @@
         <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="login-logo">
         <h3>Institute for Leadership and Public Policy</h3>
 
-        @if($errors->any())
-            <div class="alert alert-danger">{{ $errors->first() }}</div>
-        @endif
-
         <form action="{{ route('backend.login.submit') }}" method="POST">
             @csrf
             <div class="mb-3">

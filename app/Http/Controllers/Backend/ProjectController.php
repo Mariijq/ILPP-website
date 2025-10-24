@@ -29,6 +29,7 @@ class ProjectController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
+            'status' => 'required|in:ongoing,finished', 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
@@ -72,6 +73,7 @@ class ProjectController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
+            'status' => 'required|in:ongoing,finished', 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
         try {

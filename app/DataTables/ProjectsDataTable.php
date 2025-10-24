@@ -20,11 +20,12 @@ class ProjectsDataTable extends DataTable
             ->addColumn('date', fn ($project) => $project->date ? Carbon::parse($project->date)->format('d M Y') : '')
             ->addColumn('short_description', fn ($project) => \Illuminate\Support\Str::limit($project->short_description, 50))
             ->addColumn('image', function ($project) {
-                if ($project->image && file_exists(storage_path('app/public/' . $project->image))) {
-                    return '<img src="' . asset('storage/' . $project->image) . '" 
+                if ($project->image && file_exists(storage_path('app/public/'.$project->image))) {
+                    return '<img src="'.asset('storage/'.$project->image).'" 
                             class="projects-img" 
                             style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
+
                 return '<span class="text-muted">No Image</span>';
             })
             ->addColumn('action', function ($project) {
@@ -48,7 +49,13 @@ class ProjectsDataTable extends DataTable
                         </button>
                     </form>';
             })
-            ->rawColumns(['action', 'image'])
+            ->addColumn('status', function ($project) {
+                $badgeClass = $project->status === 'Finished' ? 'bg-secondary' : 'bg-success';
+
+                return '<span class="badge '.$badgeClass.'">'.$project->status.'</span>';
+            })
+
+            ->rawColumns(['action', 'image', 'status'])
             ->setRowId('id');
     }
 
@@ -81,6 +88,7 @@ class ProjectsDataTable extends DataTable
             Column::make('date'),
             Column::make('short_description'),
             Column::make('image'),
+            Column::make('status'),
             Column::make('created_at'),
             Column::computed('action')
                 ->title('Actions')
@@ -93,6 +101,6 @@ class ProjectsDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Projects_' . date('YmdHis');
+        return 'Projects_'.date('YmdHis');
     }
 }

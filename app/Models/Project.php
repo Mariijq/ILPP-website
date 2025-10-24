@@ -12,6 +12,7 @@ class Project extends Model
         'short_description',
         'detailed_description',
         'image',
+        'status'
     ];
 
     protected $dates = [

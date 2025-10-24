@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Toastr;
 use App\Http\Controllers\Controller;
 use App\Models\ContactInfo;
 use Illuminate\Http\Request;
@@ -56,23 +57,29 @@ class ContactInfoController extends Controller
      */
     public function update(Request $request)
     {
-    $contact = ContactInfo::first() ?? new ContactInfo();
+        $contact = ContactInfo::first() ?? new ContactInfo;
 
-    $request->validate([
-        'address' => 'nullable|string',
-        'email' => 'nullable|email',
-        'phone' => 'nullable|string',
-        'facebook' => 'nullable|url',
-        'instagram' => 'nullable|url',
-        'linkedin' => 'nullable|url',
-        'map_embed' => 'nullable|string',
-    ]);
+        $request->validate([
+            'address' => 'nullable|string',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+            'map_embed' => 'nullable|string',
+        ]);
+        try {
+            $contact->fill($request->all());
+            $contact->save();
 
-    $contact->fill($request->all());
-    $contact->save();
+            Toastr::success('Contact Info updated successfully', ['title' => 'Success']);
 
-    return redirect()->route('contact-info.index')->with('success', 'Contact info saved successfully!');
+            return redirect()->route('contact-info.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Rrror']);
+        }
     }
+
     /**
      * Remove the specified resource from storage.
      */

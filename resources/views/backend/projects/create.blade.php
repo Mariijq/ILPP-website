@@ -37,6 +37,16 @@
                 <label for="detailed_description" class="form-label">Detailed Description</label>
                 <textarea name="detailed_description" id="detailed_description" class="form-control" rows="6">{{ old('detailed_description', $project->detailed_description ?? '') }}</textarea>
             </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select name="status" id="status" class="form-select" required>
+                    <option value="ongoing" {{ old('status', $project->status ?? '') == 'ongoing' ? 'selected' : '' }}>
+                        Ongoing</option>
+                    <option value="finished" {{ old('status', $project->status ?? '') == 'finished' ? 'selected' : '' }}>
+                        Finished</option>
+                </select>
+            </div>
+
 
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
