@@ -1,0 +1,93 @@
+/* ================= TESTIMONIALS OVERRIDE ================= */
+.testimonials {
+  padding: 60px 0;
+  background: var(--accent-bg);
+}
+
+#customers-testimonials {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+#customers-testimonials .owl-stage-outer {
+  overflow: hidden !important;
+  /* force no overflow */
+}
+
+#customers-testimonials .owl-stage {
+  display: flex;
+  align-items: center;
+}
+
+#customers-testimonials .item {
+  box-sizing: border-box;
+  text-align: center;
+  padding: 20px;
+  opacity: 0.3;
+  transform: scale(0.8);
+  transition: all 0.3s ease-in-out;
+  width: 100% !important;
+  margin: 0;
+
+}
+
+#customers-testimonials .owl-item.active.center .item {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#customers-testimonials .shadow-effect {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid #ececec;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+#customers-testimonials .shadow-effect img {
+  max-width: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+}
+
+#customers-testimonials .shadow-effect p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 15px;
+  font-weight: 300;
+}
+
+#customers-testimonials .testimonial-name {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 8px 25px;
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Owl dots */
+#customers-testimonials .owl-dots {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#customers-testimonials .owl-dot span {
+  width: 15px;
+  height: 15px;
+  margin: 0 3px;
+  display: inline-block;
+  background: var(--primary-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  transform: scale(0.5);
+}
+
+#customers-testimonials .owl-dot.active span,
+#customers-testimonials .owl-dot:hover span {
+  transform: scale(1);
+}

@@ -15,6 +15,11 @@
         </div>
 
         <div class="mb-3">
+            <label class="fw-bold">Subtitle:</label>
+            <p>{{ $projects->subtitle ?? '-' }}</p>
+        </div>
+
+        <div class="mb-3">
             <label class="fw-bold">Date:</label>
             <p>{{ $projects->date ? \Carbon\Carbon::parse($projects->date)->format('d M Y') : '-' }}</p>
         </div>

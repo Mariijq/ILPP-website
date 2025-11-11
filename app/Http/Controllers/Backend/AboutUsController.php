@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
-use Toastr;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\AboutUs;
+use Illuminate\Http\Request;
+use Toastr;
 
 class AboutUsController extends Controller
 {
@@ -21,16 +21,18 @@ class AboutUsController extends Controller
     {
         $data = $request->validate([
             'vision' => 'nullable|string',
-            'mission' => 'nullable|string',
+            'mision' => 'nullable|string',
             'goals' => 'nullable|string',
         ]);
+        
+        $data['vision'] = $data['vision'] ?? '';
+        $data['mision'] = $data['mision'] ?? '';
+        $data['goals'] = $data['goals'] ?? '';
 
-        AboutUs::updateOrCreate(
-            ['id' => 1], // ensure single record
-            $data
-        );
+        AboutUs::updateOrCreate(['id' => 1], $data);
 
-        Toastr::success('About Us updates successfully!', ['title'=>'Success']);
+        Toastr::success('About Us updates successfully!', ['title' => 'Success']);
+
         return redirect()->back();
     }
 }

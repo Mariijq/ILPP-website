@@ -38,7 +38,7 @@ class NewsController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         try {
@@ -89,7 +89,7 @@ class NewsController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         try {

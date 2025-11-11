@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('.frontend-sidebar');
-
-    // Close button inside sidebar (optional)
+    const navbar = document.querySelector('.navbar');
     const closeBtn = document.querySelector('.close-menu');
 
-    // Overlay
+    // Sidebar overlay
     let overlay = document.querySelector('.sidebar-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -13,58 +12,68 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(overlay);
     }
 
-    // Open sidebar
+    // Search overlay
+    const searchOverlay = document.querySelector(".search-overlay");
+    if (searchOverlay) searchOverlay.style.zIndex = 4000; // above sidebar overlay
+
+    // ---------------- Sidebar Toggle ----------------
     hamburger.addEventListener('click', () => {
         sidebar.classList.add('active');
         overlay.classList.add('active');
+        navbar.classList.add('sidebar-open');
     });
 
-    // Close sidebar via close button
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            navbar.classList.remove('sidebar-open');
         });
     }
 
-    // Close sidebar by clicking outside
     overlay.addEventListener('click', () => {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
+        navbar.classList.remove('sidebar-open');
     });
 
-    // Auto-hide sidebar when resizing to desktop
     window.addEventListener('resize', () => {
         if (window.innerWidth >= 992) {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            navbar.classList.remove('sidebar-open');
         }
     });
 
-    // Open search bar
+    // ---------------- Search Overlay ----------------
     const desktopSearchBtn = document.getElementById("searchToggleBtn");
     const mobileSearchBtn = document.getElementById("mobileSearchToggleBtn");
-    const searchOverlay = document.querySelector(".search-overlay");
     const closeSearchBtn = document.querySelector(".close-search");
 
     function openSearch() {
+        // Collapse sidebar if open
+        if (sidebar.classList.contains("active")) {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+            navbar.classList.remove("sidebar-open");
+        }
+
+        // Show search overlay
         searchOverlay.classList.add("active");
+
+        // Ensure search input is focused immediately
+        const input = searchOverlay.querySelector("input");
+        if (input) input.focus();
     }
 
     function closeSearch() {
         searchOverlay.classList.remove("active");
     }
 
-    // Desktop button
     if (desktopSearchBtn) desktopSearchBtn.addEventListener("click", openSearch);
-
-    // Mobile button
     if (mobileSearchBtn) mobileSearchBtn.addEventListener("click", openSearch);
-
-    // Close button
     if (closeSearchBtn) closeSearchBtn.addEventListener("click", closeSearch);
 
-    // Close on overlay click
     searchOverlay.addEventListener("click", (e) => {
         if (e.target === searchOverlay) closeSearch();
     });

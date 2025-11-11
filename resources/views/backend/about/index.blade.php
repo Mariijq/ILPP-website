@@ -16,8 +16,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="mission" class="form-label">Mission</label>
-                <textarea name="mission" id="mission" class="form-control" rows="4">{{ old('mission', $about->mission ?? '') }}</textarea>
+                <label for="mision" class="form-label">Mission</label>
+                <textarea name="mision" id="mision" class="form-control" rows="4">{{ old('mision', $about->mision ?? '') }}</textarea>
             </div>
 
             <div class="mb-3">

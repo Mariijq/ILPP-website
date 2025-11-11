@@ -104,7 +104,8 @@ class PublicationBackendController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:5120',
         ]);
 

@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\News;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\News;
 
 class NewsController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $news = News::orderBy('date', 'desc')->get();
+
         return view('frontend.pages.news', compact('news'));
 
     }
 
     public function show($id)
-{
-    $newsItem = News::findOrFail($id);
-    return view('frontend.pages.news-details', compact('newsItem'));
-}
+    {
+        $newsItem = News::findOrFail($id);
 
+        $recentNews = News::where('id', '!=', $id)
+            ->orderBy('date', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('frontend.pages.news-details', compact('newsItem', 'recentNews'));
+    }
 }

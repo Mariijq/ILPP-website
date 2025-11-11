@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Toastr;
 use App\DataTables\ProjectsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Toastr;
 
 class ProjectController extends Controller
 {
@@ -29,8 +29,9 @@ class ProjectController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'status' => 'required|in:ongoing,finished', 
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:ongoing,finished',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+
         ]);
 
         try {
@@ -39,12 +40,12 @@ class ProjectController extends Controller
             }
 
             Project::create($validated);
-            Toastr::success('Project added successfully!', ['title'=>'Success']);
+            Toastr::success('Project added successfully!', ['title' => 'Success']);
 
             return redirect()->route('projects.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Unable to add project: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -73,8 +74,8 @@ class ProjectController extends Controller
             'date' => 'required|date',
             'short_description' => 'nullable|string|max:500',
             'detailed_description' => 'nullable|string',
-            'status' => 'required|in:ongoing,finished', 
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|in:ongoing,finished',
+'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
         try {
             if ($request->hasFile('image')) {
@@ -86,12 +87,12 @@ class ProjectController extends Controller
             }
             $project->update($validated);
 
-            Toastr::success('Project updated successfully!', ['title'=>'Success']);
+            Toastr::success('Project updated successfully!', ['title' => 'Success']);
 
             return redirect()->route('projects.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Unable to add project: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -109,7 +110,7 @@ class ProjectController extends Controller
 
             $project->delete();
 
-            Toastr::success('Project deleted successfully!', ['title'=>'Success']);
+            Toastr::success('Project deleted successfully!', ['title' => 'Success']);
 
             return redirect()->route('projects.index');
 

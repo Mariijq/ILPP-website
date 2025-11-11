@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Toastr;
 use App\DataTables\TeamMemberDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
+use Toastr;
 
 class TeamMemberController extends Controller
 {
@@ -25,6 +25,7 @@ class TeamMemberController extends Controller
     {
         return view('backend.team-members.create');
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -37,18 +38,19 @@ class TeamMemberController extends Controller
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
         ]);
-        try {
 
+        try {
             if ($request->hasFile('image')) {
-                $data['image'] = $request->file('image'->store('team-members', 'public'));
+                $data['image'] = $request->file('image')->store('team-members', 'public');
             }
 
             TeamMember::create($data);
-            Toastr::success('Team Member add successfully!', ['title'=>'Success']);
 
-            return redirect->route('team-members.index');
+            Toastr::success('Team Member added successfully!', ['title' => 'Success']);
+
+            return redirect()->route('team-members.index');
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -93,11 +95,11 @@ class TeamMemberController extends Controller
             }
 
             $teamMember->update($data);
-            Toastr::success('Team member updated successfully', ['title'=>'Succes']);
+            Toastr::success('Team member updated successfully', ['title' => 'Succes']);
 
             return redirect()->route('team-members.index');
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -114,12 +116,13 @@ class TeamMemberController extends Controller
             }
 
             $teamMember->delete();
-            Toastr::success('Team member deleted successfully', ['title'=>'Success']);
+            Toastr::success('Team member deleted successfully', ['title' => 'Success']);
 
             return redirect()->route('team-members.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
             return back();
         }
     }

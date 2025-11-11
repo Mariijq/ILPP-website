@@ -13,7 +13,7 @@
     </section>
 
     <!-- Programs -->
-    <section id="programs" class="programs">
+    <section id="programs" class="home-section programs">
         <h2>Our Programs</h2>
         <div class="program-grid">
             <div class="program-card">Youth Leadership Academy</div>
@@ -22,5 +22,7 @@
         </div>
     </section>
 
-    <!-- More sections ... -->
+    <!-- ================= Testimonials Section ================= -->
+@include('frontend.pages.sections.testimonials')
+
 @endsection

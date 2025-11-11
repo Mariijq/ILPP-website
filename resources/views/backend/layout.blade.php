@@ -50,6 +50,7 @@
                 <a href="{{ route('publications.index') }}">Publications</a>
                 <a href="{{ route('gallery.index') }}">Gallery</a>
                 <a href="{{ route('contact-info.index') }}">Contact Info</a>
+                <a href="{{ route('testimonials.index') }}">Testimonials</a>
 
 
 

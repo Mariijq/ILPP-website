@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class GalleryImage extends Model
 {
     protected $fillable = [
-        'image',
-        'title',       // optional
-        'description', // optional
+        'title',
+        'description',
+        'image_path',
+        'category',
     ];
-
 }

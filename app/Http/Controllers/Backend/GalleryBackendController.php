@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\GalleryImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Toastr;
 
 class GalleryBackendController extends Controller
 {
@@ -33,21 +35,22 @@ class GalleryBackendController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'images' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:8192',
         ]);
 
         try {
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $file) {
                     $path = $file->store('gallery_images', 'public');
-                    GalleryImage::create(['path' => $path]);
+                    GalleryImage::create(['image_path' => $path]);
                 }
             }
-            Toastr::success('Image uploaded successfully!', ['title'=>'success']);
+            Toastr::success('Image uploaded successfully!', ['title' => 'success']);
 
             return redirect()->route('gallery.index');
         } catch (\Exception $e) {
-            Toastr::error('Unable to add project: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back();
         }
@@ -92,11 +95,11 @@ class GalleryBackendController extends Controller
             }
 
             $image->delete();
-            Toastr::success('Image deleted successfully!', ['title'=>'Success']);
+            Toastr::success('Image deleted successfully!', ['title' => 'Success']);
 
             return redirect()->route('gallery.index');
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back();
         }

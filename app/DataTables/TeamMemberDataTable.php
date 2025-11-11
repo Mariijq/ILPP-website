@@ -68,9 +68,9 @@ class TeamMemberDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
-            Column::make('type'),
-            Column::make('logo'),
-            Column::make('website'),
+            Column::make('position'),  // replaces 'type'
+            Column::make('bio'),
+            Column::make('image'),     // replaces 'logo'
             Column::make('order'),
             Column::make('created_at'),
             Column::computed('action')

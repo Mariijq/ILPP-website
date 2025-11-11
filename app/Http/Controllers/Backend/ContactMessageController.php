@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 
 class ContactMessageController extends Controller
@@ -12,7 +13,7 @@ class ContactMessageController extends Controller
      */
     public function index()
     {
-        //
+        return view('frontend.pages.contact');
     }
 
     /**
@@ -28,7 +29,22 @@ class ContactMessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+                $request->validate([
+            'Name' => 'required|string|max:255',
+            'Email' => 'required|email|max:255',
+            'Phone' => 'nullable|string|max:50',
+            'Message' => 'required|string',
+        ]);
+
+        ContactMessage::create([
+            'name' => $request->Name,
+            'email' => $request->Email,
+            'phone' => $request->Phone,
+            'message' => $request->Message,
+        ]);
+
+        return redirect()->back()->with('success', 'Your message has been sent!');
+
     }
 
     /**
