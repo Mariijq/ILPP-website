@@ -7,12 +7,9 @@
     </div>
     <div class="card">
         <div class="card-body">
-            {!! $dataTable->table(['class' => 'table table-striped table-bordered'], true) !!}
+            {!! $dataTable->table(['class' => 'table table-bordered table-striped table-hover'], false) !!}
 
         </div>
     </div>
 
-    @push('scripts')
-        {!! $dataTable->scripts() !!}
-    @endpush
 @endsection

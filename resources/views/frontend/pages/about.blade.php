@@ -3,20 +3,26 @@
     <div class="details-wrapper">
         <div class="details-main">
             @foreach ($about as $item)
+                <div class="section-header">
+                    <h2>Vision</h2>
+                </div>
                 <div class="details">
-                    <h1>Vision</h1>
                     <p> {!! $item->vision !!}
                     </p>
                 </div>
                 <hr>
+                <div class="section-header">
+                    <h2>Mission</h2>
+                </div>
                 <div class="details">
-                    <h1>Mission</h1>
                     <p> {!! $item->mision !!}
                     </p>
                 </div>
                 <hr>
+                <div class="section-header">
+                    <h2>Vision</h2>
+                </div>
                 <div class="details">
-                    <h1>Goals</h1>
                     <p> {!! $item->goals !!}
                     </p>
                 </div>

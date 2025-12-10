@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use Toastr;
 
 class ContactMessageController extends Controller
 {
@@ -13,7 +14,9 @@ class ContactMessageController extends Controller
      */
     public function index()
     {
-        return view('frontend.pages.contact');
+        $messages = ContactMessage::latest()->paginate(20); // paginated
+
+        return view('backend.contact-messages.index', compact('messages'));
     }
 
     /**
@@ -29,22 +32,7 @@ class ContactMessageController extends Controller
      */
     public function store(Request $request)
     {
-                $request->validate([
-            'Name' => 'required|string|max:255',
-            'Email' => 'required|email|max:255',
-            'Phone' => 'nullable|string|max:50',
-            'Message' => 'required|string',
-        ]);
-
-        ContactMessage::create([
-            'name' => $request->Name,
-            'email' => $request->Email,
-            'phone' => $request->Phone,
-            'message' => $request->Message,
-        ]);
-
-        return redirect()->back()->with('success', 'Your message has been sent!');
-
+        //
     }
 
     /**
@@ -74,8 +62,19 @@ class ContactMessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $message = ContactMessage::findOrFail($id);
+
+        try {
+            $message->delete();
+            Toastr::success('Message deleted successfully!', ['title' => 'Success']);
+
+            return redirect()->route('contact-messages.index');
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'error']);
+
+            return redirect()->back();
+        }
     }
 }

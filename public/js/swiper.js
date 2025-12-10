@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // ================= Owl Carousel =================
     $('#customers-testimonials').owlCarousel({
         loop: true,
         center: true,

@@ -8,13 +8,17 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
-    public function index(){
-        $ongoingProjects = Project::where('status', 'ongoing')->latest()->get();
-        $finishedProjects = Project::where('status', 'finished')->latest()->get();
+public function index() {
+    $ongoingProjects = Project::where('status', 'ongoing')
+        ->latest()
+        ->paginate(8, ['*'], 'ongoingPage'); // custom query parameter
 
-        return view('frontend.pages.projects', compact('ongoingProjects', 'finishedProjects'));
-    }
+    $finishedProjects = Project::where('status', 'finished')
+        ->latest()
+        ->paginate(8, ['*'], 'finishedPage'); // custom query parameter
 
+    return view('frontend.pages.projects', compact('ongoingProjects', 'finishedProjects'));
+}
     public function show($id)
 {
     $project = Project::findOrFail($id);

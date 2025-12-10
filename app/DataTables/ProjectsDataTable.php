@@ -34,20 +34,18 @@ class ProjectsDataTable extends DataTable
                 $detailsUrl = route('projects.show', $project->id);
 
                 return '
-                    <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
-                        <i class="bi bi-eye"></i>
-                    </a>
-                    <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <form method="POST" action="'.$deleteUrl.'" 
-                          style="display:inline-block;" 
-                          onsubmit="return confirm(\'Are you sure?\');">
-                        '.csrf_field().method_field('DELETE').'
-                        <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>';
+        <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>';
             })
             ->addColumn('status', function ($project) {
                 $badgeClass = $project->status === 'Finished' ? 'bg-secondary' : 'bg-success';

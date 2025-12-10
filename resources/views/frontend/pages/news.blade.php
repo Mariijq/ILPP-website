@@ -1,4 +1,5 @@
 @extends('frontend.layouts.main')
+
 @section('content')
 
 <div class="grid-wrapper">
@@ -8,21 +9,25 @@
 
     <div class="grid-band">
         @foreach($news as $item)
-        <div class="grid-item">
-            <a href="{{ route('news-details', $item->id) }}" class="card">
-                <div class="thumb" style="background-image: url('{{ asset('storage/'.$item->image) }}');"></div>
-                <article>
-                    <h1>{{ $item->title }}</h1>
-                    @if($item->subtitle)
-                        <p>{{ $item->subtitle }}</p>
-                    @endif
-                    @if($item->date)
-                        <span>{{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}</span>
-                    @endif
-                </article>
-            </a>
-        </div>
+            <div class="grid-item">
+                <a href="{{ route('news-details', $item->id) }}" class="card">
+                    <div class="thumb" style="background-image: url('{{ asset('storage/'.$item->image) }}');"></div>
+                    <article>
+                        <h1>{{ $item->title }}</h1>
+                        @if($item->date)
+                            <span>{{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}</span>
+                        @endif
+                    </article>
+                </a>
+            </div>
         @endforeach
+    </div>
+
+    {{-- Pagination --}}
+    <div class="pagination-wrapper">
+        {{-- {{ $news->links() }} --}}
+        {{-- If you use Bootstrap 5: --}}
+        {{ $news->links('pagination::bootstrap-5') }}
     </div>
 </div>
 

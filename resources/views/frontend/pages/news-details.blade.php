@@ -16,11 +16,9 @@
                     <p class="details-date">{{ \Carbon\Carbon::parse($newsItem->date)->format('M d, Y') }}</p>
                 @endif
 
-
                 @if ($newsItem->subtitle)
                     <h3 class="details-subtitle">{{ $newsItem->subtitle }}</h3>
                 @endif
-
             </header>
 
             @if ($newsItem->short_description)
@@ -30,6 +28,29 @@
             <div class="details-content">
                 {!! $newsItem->detailed_description !!}
             </div>
+
+            <!-- Media Gallery -->
+            @if($newsItem->media && $newsItem->media->count())
+                <div class="media-gallery">
+                    <h3 class="sidebar-title">Gallery</h3>
+                    <div class="grid-band">
+                        @foreach($newsItem->media as $media)
+                            @if($media->type === 'image')
+                                <a href="{{ asset('storage/' . $media->path) }}" target="_blank" class="card">
+                                    <div class="thumb" style="background-image: url('{{ asset('storage/' . $media->path) }}');"></div>
+                                </a>
+                            @elseif($media->type === 'video')
+                                <div class="card">
+                                    <video controls style="width:100%; max-height:300px;">
+                                        <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
 
         <!-- Sidebar -->

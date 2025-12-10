@@ -35,6 +35,7 @@ class GalleryBackendController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'title' => 'nullable|string|max:255',
             'images' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:8192',
         ]);
@@ -43,7 +44,9 @@ class GalleryBackendController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $file) {
                     $path = $file->store('gallery_images', 'public');
-                    GalleryImage::create(['image_path' => $path]);
+                    GalleryImage::create(['image_path' => $path,
+                        'title' => $request->title,
+                    ]);
                 }
             }
             Toastr::success('Image uploaded successfully!', ['title' => 'success']);
@@ -78,7 +81,23 @@ class GalleryBackendController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $image = GalleryImage::findOrFail($id);
+            $image->title = $request->title;
+            $image->save();
+
+            Toastr::success('Title updated successfully!', ['title' => 'Success']);
+
+            return back();
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
+            return back();
+        }
     }
 
     /**

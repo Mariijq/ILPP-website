@@ -1,8 +1,56 @@
+/* ========================= GLOBAL STYLES & VARIABLES ========================= */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+}
+
+:root {
+    --primary-color: #26a6a0;
+    --primary-color-rgb: 38, 166, 160;
+    --dark-primary-color: #008080;
+    --light-primary-color: #c7d5d4;
+    --background-color: #fff;
+    --accent-bg: #f8fafa;
+    --text-color: #333;
+    --muted-text: #666;
+    --gray-ccc: #ccc;
+    --gray-c7: #c7c7c7;
+    --gray-e0: #e0e0e0;
+    --danger: #e94560;
+    --danger-hover: #d43f56;
+    --box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    --box-shadow-hover: 0 0 20px rgba(0, 0, 0, 0.1);
+    --fs-12: 12px;
+    --fs-14: 14px;
+    --fs-16: 16px;
+    --fs-18: 18px;
+    --fs-20: 20px;
+    --fs-24: 24px;
+    --fs-28: 28px;
+    --fs-32: 32px;
+    --fw-400: 400;
+    --fw-500: 500;
+    --fw-600: 600;
+}
+
 /* ===================== SIDEBAR ===================== */
 .backend-sidebar {
     width: 250px;
-    background: #ffffff;
-    color: #26a6a0;
+    background: var(--background-color);
+    color: var(--primary-color);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -12,7 +60,7 @@
     bottom: 0;
     left: 0;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    transition: left 0.3s;
 }
 
 .backend-sidebar .brand {
@@ -26,45 +74,74 @@
 }
 
 .backend-sidebar .brand h2 {
-    font-size: 18px;
+    font-size: var(--fs-18);
     margin: 0;
+    color: var(--text-color);
 }
 
-.backend-sidebar .menu a {
+.backend-sidebar .menu a,
+.backend-sidebar .menu button.btn-toggle {
     display: block;
-    color: #26a6a0;
     text-decoration: none;
-    padding: 12px 15px;
+    color: var(--primary-color);
     border-radius: 8px;
+    padding: 10px 15px;
     margin-bottom: 8px;
-    transition: background 0.3s, color 0.3s;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
 .backend-sidebar .menu a:hover,
-.backend-sidebar .menu a.active {
-    background: #26a6a0;
-    color: #fff;
+.backend-sidebar .menu a.active,
+.backend-sidebar .menu button.btn-toggle:hover {
+    background: var(--primary-color);
+    color: var(--background-color);
 }
 
-/* Logout button */
+.backend-sidebar .menu button.btn-toggle::after {
+    content: '▼';
+    float: right;
+    transition: transform 0.3s;
+}
+
+.backend-sidebar .menu button.btn-toggle.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.backend-sidebar .menu .collapse ul {
+    list-style: none;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.backend-sidebar .menu .collapse ul li a {
+    display: block;
+    padding: 8px 15px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+}
+
 .logout-form {
     margin-top: auto;
-    text-align: center;
 }
 
 .logout-btn {
-    background: #e94560;
-    color: white;
-    border: none;
-    padding: 10px 20px;
     width: 100%;
+    padding: 10px 20px;
+    background: var(--danger);
+    color: var(--background-color);
+    border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s;
 }
 
 .logout-btn:hover {
-    background: #d43f56;
+    background: var(--danger-hover);
 }
 
 /* ===================== MAIN CONTENT ===================== */
@@ -72,282 +149,303 @@
     flex: 1;
     margin-left: 250px;
     padding: 40px;
+    transition: margin-left 0.3s;
+}
+
+.backend-main.shifted {
+    margin-left: 250px;
 }
 
 .backend-header h1 {
-    font-size: 28px;
-    color: #1a1a2e;
+    font-size: var(--fs-28);
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 
 .backend-content {
-    background: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* ===================== DASHBOARD CARDS ===================== */
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.password-form {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.password-form h3 {
-    margin-bottom: 20px;
-    color: #26a6a0;
-}
-
-.password-form button {
-    border-radius: 8px;
-    padding: 10px 20px;
-    transition: 0.3s;
-}
-
-.password-form button:hover {
-    background-color: #495057;
-    color: #fff;
-}
-
-
-/* ===================== ADMIN LOGIN ===================== */
-body.backend-login {
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-
-}
-
-.login-card {
-    width: 400px;
-    max-width: 90%;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
-}
-
-.login-card h3 {
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #26a6a0;
-    text-align: center;
-}
-
-.form-control {
-    border-radius: 8px;
-    padding: 12px 15px;
-}
-
-.btn-login {
-    background-color: #26a6a0;
-    border: none;
-    padding: 12px;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: 0.3s;
-    color: #ffffff;
-}
-
-.btn-login:hover {
-    background-color: #495057;
-    color: #ffffff;
-}
-
-.alert {
-    font-size: 0.9rem;
-}
-
-.login-card .login-logo {
-    display: block;
-    margin: 0 auto 20px auto;
-    width: 100px;
-    height: auto;
-}
-
-.login-card .login-logo:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-
-}
-
-/* Collapsible menu buttons */
-.btn-toggle {
-    display: block;
-    width: 100%;
-    padding: 12px 15px;
-    text-align: left;
-    background: none;
-    border: none;
-    color: #26a6a0;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-weight: normal;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-}
-
-.btn-toggle:hover {
-    background-color: #26a6a0;
-    color: #f1f1f1;
-}
-
-.btn-toggle:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-.btn-toggle.collapsed::after {
-    content: '▼';
-    float: right;
-    transform: rotate(-90deg);
-}
-
-.btn-toggle::after {
-    content: '▼';
-    float: right;
-    transition: transform 0.3s;
-}
-
-.collapse.show .btn-toggle::after {
-    transform: rotate(0deg);
-}
-
-/* Submenu inside collapse */
-.btn-toggle+.collapse ul {
-    list-style: none;
-    padding-left: 20px;
-    margin: 0;
-}
-
-.btn-toggle+.collapse ul li a {
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #26a6a0;
-    border-radius: 8px;
-    margin-bottom: 4px;
-    transition: background 0.3s, color 0.3s;
-}
-
-.btn-toggle+.collapse ul li a:hover {
-    background: #26a6a0;
-    color: #fff;
-}
-
-/* ================= Show News Page ================= */
-.show label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.show p {
-    margin: 0 0 15px 0;
-    color: #555;
-}
-
-.show div {
-    margin-bottom: 15px;
-}
-
-.show-img {
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-
-.gallery-img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
-/* ================= About Us Page ================= */
-.about-us-form {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.about-us-form textarea.form-control {
-    resize: vertical;
-}
-
-/* ================ Index Blades ================ */
-.btn-custom {
-    background-color: #26a6a0;
-    border-color: #26a6a0;
-    color: #fff;
-}
-
-.btn-custom:hover {
-    background-color: #008080;
-    color: #fff;
-}
-
-/* ====== Shared Backend Styles ====== */
+/* ===================== SHARED STYLES ===================== */
 .card {
     border: none;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background: #fff;
-}
-
-.form-label {
-    color: #333;
+    box-shadow: var(--box-shadow-hover);
+    background: var(--background-color);
 }
 
 .form-control {
     border-radius: 8px;
     padding: 10px 14px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--gray-ccc);
 }
 
 .form-control:focus {
-    border-color: #a2e9e4;
-    box-shadow: #a2e9e4;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
 }
 
-/* Custom purple button style */
 .btn-custom {
-    background-color: #26a6a0;
-    color: #fff;
-    border: none;
+    background: var(--primary-color);
+    color: var(--background-color);
     border-radius: 8px;
-    padding: 0.6rem 1.5rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    padding: 10px 20px;
+    transition: 0.3s;
 }
 
 .btn-custom:hover {
-    background-color: #008080;
-    color: #fff;
+    background: var(--dark-primary-color);
+    color: var(--background-color);
 }
 
 .btn-secondary {
-    background-color: #e0e0e0;
-    color: #333;
-    border: none;
+    background: var(--gray-e0);
+    color: var(--text-color);
     border-radius: 8px;
+    text-align: center;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-secondary:hover {
-    background-color: #c7c7c7;
-    color: #000;
+    background: var(--gray-c7);
+    color: var(--text-color);
+}
+
+.dataTables_wrapper {
+    width: 100% !important;
+}
+
+.show .file-box img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* ===================== LOGIN PAGE ===================== */
+.backend-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--accent-bg);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.login-card {
+    background: var(--background-color);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-card .forget-password a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.login-logo {
+    width: 80px;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.login-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--light-primary-color);
+    font-size: 14px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(38, 166, 160, 0.2);
+}
+
+.btn-login {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: var(--dark-primary-color);
+}
+
+/* ===================== CONTACT MESSAGES ===================== */
+.messages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.message-card {
+    background: var(--background-color);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow-hover);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message-header h3 {
+    font-size: var(--fs-16);
+    font-weight: var(--fw-600);
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.message-date {
+    font-size: var(--fs-12);
+    color: var(--muted-text);
+}
+
+.message-body p {
+    margin: 5px 0;
+    font-size: var(--fs-14);
+    color: var(--text-color);
+}
+
+.message-footer {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.btn-delete {
+    background-color: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: var(--danger-hover);
+}
+
+/* Pagination */
+.pagination-wrapper {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-wrapper .pagination {
+    gap: 8px;
+}
+
+.pagination-wrapper .page-item .page-link {
+    border-radius: 8px;
+    border: 1px solid var(--gray-ccc);
+    color: var(--primary-color);
+    padding: 6px 12px;
+    transition: 0.3s;
+}
+
+.pagination-wrapper .page-item.active .page-link {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    border-color: var(--primary-color);
+}
+
+.pagination-wrapper .page-item .page-link:hover {
+    background-color: var(--light-primary-color);
+    border-color: var(--primary-color);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 991px) {
+    .backend-sidebar {
+        width: 220px;
+        left: -220px;
+        z-index: 9999;
+    }
+
+    .backend-sidebar.active {
+        left: 0;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .backend-main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .backend-main.shifted {
+        margin-left: 220px;
+    }
+
+    /* Hamburger button */
+    .hamburger {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 15px;
+        right: 15px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: var(--primary-color);
+        color: var(--background-color);
+        cursor: pointer;
+    }
+
+    /* Sidebar collapse spacing on mobile */
+    .backend-sidebar .menu .collapse ul li a {
+        padding-left: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .backend-header h1 {
+        font-size: var(--fs-20);
+    }
+
+    .form-control,
+    .btn-custom,
+    .btn-secondary {
+        width: 100%;
+        font-size: var(--fs-14);
+    }
+
+    .messages-grid {
+        grid-template-columns: 1fr;
+    }
 }

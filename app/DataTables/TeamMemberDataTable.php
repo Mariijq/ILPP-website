@@ -28,15 +28,15 @@ class TeamMemberDataTable extends DataTable
                 $deleteUrl = route('team-members.destroy', $member->id);
 
                 return '
-                    <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                    <form method="POST" action="'.$deleteUrl.'" style="display:inline-block;" onsubmit="return confirm(\'Are you sure?\');">
-                        '.csrf_field().method_field('DELETE').'
-                        <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>';
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>';
             })
             ->rawColumns(['action', 'image'])
             ->setRowId('id');

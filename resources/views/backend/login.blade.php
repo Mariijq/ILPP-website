@@ -7,22 +7,24 @@
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 <body class="backend-login">
+<div class="login-card">
+    <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="login-logo">
+    <h3 class="login-title">Institute for Leadership and Public Policy</h3>
 
-    <div class="login-card">
-        <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="login-logo">
-        <h3>Institute for Leadership and Public Policy</h3>
+    <form action="{{ route('backend.login.submit') }}" method="POST">
+        @csrf
+        <div class="mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+        </div>
+        <div class="mb-3">
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-login w-100">Login</button>
+    </form>
 
-        <form action="{{ route('backend.login.submit') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <input type="email" name="email" class="form-control" placeholder="Email" required>
-            </div>
-            <div class="mb-3">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-            </div>
-            <button type="submit" class="btn btn-login w-100">Login</button>
-        </form>
+    <div class="forget-password">
+        <a href="{{ route('backend.password.request') }}">Forgot Password?</a>
     </div>
-
+</div>
 </body>
 </html>

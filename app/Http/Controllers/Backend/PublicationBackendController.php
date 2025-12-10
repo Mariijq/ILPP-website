@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Toastr;
 use App\DataTables\PublicationsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Publication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Toastr;
 
 class PublicationBackendController extends Controller
 {
@@ -57,12 +58,12 @@ class PublicationBackendController extends Controller
 
             // Create publications
             Publication::create($validated);
-            Toastr::success('Publication added successfully!', ['title'=>'Success']);
+            Toastr::success('Publication added successfully!', ['title' => 'Success']);
 
             return redirect()->route('publications.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -127,13 +128,13 @@ class PublicationBackendController extends Controller
                 $path = $request->file('file')->store('publications_files', 'public');
                 $validated['file'] = $path;
             }
-            $publication->update($validated);
+            $publications->update($validated);
 
-            Toastr::success('Publication updated successfully!', ['title'=>'Success']);
+            Toastr::success('Publication updated successfully!', ['title' => 'Success']);
 
             return redirect()->route('publications.index');
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -159,12 +160,12 @@ class PublicationBackendController extends Controller
 
             $publication->delete();
 
-            Toastr::success('Publication deleted successfully!', ['title'=>'Success']);
+            Toastr::success('Publication deleted successfully!', ['title' => 'Success']);
 
             return redirect()->route('publications.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back();
         }

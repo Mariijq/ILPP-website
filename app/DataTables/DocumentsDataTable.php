@@ -20,15 +20,24 @@ class DocumentsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($row) {
+            ->addColumn('action', function ($document) {
+                $viewUrl = route('documents.show', $document->id);
+                $editUrl = route('documents.edit', $document->id);
+                $deleteUrl = route('documents.destroy', $document->id);
+
                 return '
-                <a href="'.route('documents.show', $row->id).'" class="btn btn-info btn-sm">View</a>
-                <a href="'.route('documents.edit', $row->id).'" class="btn btn-warning btn-sm">Edit</a>
-                <form action="'.route('documents.destroy', $row->id).'" method="POST" style="display:inline-block;">
-                    '.csrf_field().method_field('DELETE').'
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure?\')">Delete</button>
-                </form>
-            ';
+        <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>';
             })
             ->rawColumns(['action'])
             ->setRowId('id');

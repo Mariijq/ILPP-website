@@ -7,6 +7,7 @@ use App\DataTables\PartnerDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Partner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PartnersController extends Controller
 {

@@ -22,6 +22,12 @@
         </div>
         @endforeach
     </div>
+    {{-- Pagination --}}
+    <div class="pagination-wrapper">
+        {{-- {{ $news->links() }} --}}
+        {{-- If you use Bootstrap 5: --}}
+        {{ $publications->links('pagination::bootstrap-5') }}
+    </div>
 
 </div>
 

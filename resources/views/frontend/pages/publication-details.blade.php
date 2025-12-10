@@ -9,7 +9,8 @@
                 <h1 class="details-title">{{ $publications->title }}</h1>
 
                 @if ($publications->image)
-                    <img src="{{ asset('storage/' . $publications->image) }}" alt="{{ $publications->title }}" class="details-image">
+                    <img src="{{ asset('storage/' . $publications->image) }}" alt="{{ $publications->title }}"
+                        class="details-image">
                 @endif
 
                 @if ($publications->date)
@@ -24,6 +25,21 @@
 
             <div class="details-content">
                 {!! $publications->detailed_description !!}
+                @if ($publications->file)
+                    <div class="publication-file mt-3 d-flex gap-2">
+                        <!-- Open file in browser -->
+                        <a href="{{ route('publications.open', $publications->id) }}" target="_blank"
+                            class="btn btn-secondary">
+                            <i class="bi bi-eye"></i> Open File
+                        </a>
+
+                        <!-- Download file -->
+                        <a href="{{ route('publications.download', $publications->id) }}" class="btn btn-custom">
+                            <i class="bi bi-download"></i> Download File
+                        </a>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

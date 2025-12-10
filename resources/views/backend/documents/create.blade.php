@@ -4,12 +4,9 @@
     <h4 class="mb-4">{{ isset($document) ? 'Edit Document' : 'Add Document' }}</h4>
 
     <div class="document-form">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
         <form action="{{ isset($document) ? route('documents.update', $document->id) : route('documents.store') }}"
-            method="POST" enctype="multipart/form-data">
+              method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($document))
                 @method('PUT')
@@ -18,7 +15,7 @@
             <div class="mb-3">
                 <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
                 <input type="text" name="title" id="title" class="form-control"
-                    value="{{ old('title', $document->title ?? '') }}" required>
+                       value="{{ old('title', $document->title ?? '') }}" required>
             </div>
 
             <div class="mb-3">
@@ -33,8 +30,10 @@
                 @if (isset($document) && $document->file_path)
                     <div class="mt-2">
                         <small class="text-muted">
-                            Current file: <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank">View
-                                File</a>
+                            Current file:
+                            <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                View File
+                            </a>
                         </small>
                     </div>
                 @endif

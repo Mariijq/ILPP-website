@@ -1,11 +1,9 @@
 @extends('frontend.layouts.main')
-
 @section('content')
 <section class="grid-wrapper">
     <div class="section-header">
-        <h2>Our Partners</h2>
+        <h2>Partners / Supporters</h2>
     </div>
-
     <div class="grid-band">
         @foreach($partners as $partner)
             <a href="{{ $partner->website ?? '#' }}" target="_blank" class="card">

@@ -24,6 +24,7 @@ class PartnerDataTable extends DataTable
                 if ($partner->logo && file_exists(storage_path('app/public/'.$partner->logo))) {
                     return '<img src="'.asset('storage/'.$partner->logo).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
+
                 return '<span class="text-muted">No Logo</span>';
             })
             ->addColumn('action', function ($partner) {
@@ -32,18 +33,18 @@ class PartnerDataTable extends DataTable
                 $deleteUrl = route('partners.destroy', $partner->id);
 
                 return '
-                <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">
-                    <i class="bi bi-eye"></i>
-                </a>
-                <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <form method="POST" action="'.$deleteUrl.'" style="display:inline-block;" onsubmit="return confirm(\'Are you sure you want to delete this partner?\');">
-                    '.csrf_field().method_field('DELETE').'
-                    <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>';
+        <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>';
             })
             ->rawColumns(['logo', 'action'])
             ->setRowId('id');

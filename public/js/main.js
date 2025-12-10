@@ -2,19 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('.frontend-sidebar');
     const navbar = document.querySelector('.navbar');
-    const closeBtn = document.querySelector('.close-menu');
-
-    // Sidebar overlay
     let overlay = document.querySelector('.sidebar-overlay');
+
+    // Create overlay if not exists
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.classList.add('sidebar-overlay');
         document.body.appendChild(overlay);
     }
-
-    // Search overlay
-    const searchOverlay = document.querySelector(".search-overlay");
-    if (searchOverlay) searchOverlay.style.zIndex = 4000; // above sidebar overlay
 
     // ---------------- Sidebar Toggle ----------------
     hamburger.addEventListener('click', () => {
@@ -23,18 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         navbar.classList.add('sidebar-open');
     });
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            navbar.classList.remove('sidebar-open');
-        });
-    }
-
     overlay.addEventListener('click', () => {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
         navbar.classList.remove('sidebar-open');
+        closeSearch();
     });
 
     window.addEventListener('resize', () => {
@@ -45,23 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Sidebar dropdown toggles
+    document.querySelectorAll('.btn-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const collapse = btn.nextElementSibling;
+            collapse.classList.toggle('show');
+            btn.classList.toggle('collapsed');
+        });
+    });
+
     // ---------------- Search Overlay ----------------
+    const searchOverlay = document.querySelector(".search-overlay");
     const desktopSearchBtn = document.getElementById("searchToggleBtn");
     const mobileSearchBtn = document.getElementById("mobileSearchToggleBtn");
     const closeSearchBtn = document.querySelector(".close-search");
 
     function openSearch() {
-        // Collapse sidebar if open
-        if (sidebar.classList.contains("active")) {
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-            navbar.classList.remove("sidebar-open");
-        }
-
-        // Show search overlay
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+        navbar.classList.remove("sidebar-open");
         searchOverlay.classList.add("active");
-
-        // Ensure search input is focused immediately
         const input = searchOverlay.querySelector("input");
         if (input) input.focus();
     }
@@ -77,4 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
     searchOverlay.addEventListener("click", (e) => {
         if (e.target === searchOverlay) closeSearch();
     });
+    // Desktop language switcher toggle
+    // Language switcher toggle (desktop + mobile)
+    document.querySelectorAll('.language-switcher').forEach(langSwitcher => {
+        const currentLangBtn = langSwitcher.querySelector('.current-lang');
+
+        if (currentLangBtn) {
+            currentLangBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent closing immediately
+                langSwitcher.classList.toggle('show');
+            });
+        }
+    });
+
+    // Close all language dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        document.querySelectorAll('.language-switcher').forEach(langSwitcher => {
+            if (!langSwitcher.contains(e.target)) {
+                langSwitcher.classList.remove('show');
+            }
+        });
+    });
+
 });

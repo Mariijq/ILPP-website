@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Toastr;
-use App\Models\Document;
 use App\DataTables\DocumentsDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 use Illuminate\Http\Request;
+use Toastr;
 
 class DocumentController extends Controller
 {
@@ -44,12 +44,12 @@ class DocumentController extends Controller
 
             Document::create($validated);
 
-            Toastr::success('Document added successfully', ['title'=>'Success']);
+            Toastr::success('Document added successfully', ['title' => 'Success']);
 
-            return redirect()->route('backend.documents.index');
+            return redirect()->route('documents.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back()->withInput();
         }
@@ -93,14 +93,14 @@ class DocumentController extends Controller
             }
 
             $document->update($validated);
-            Toastr::success('Document updated successfully!', ['title'=>'Success']);
+            Toastr::success('Document updated successfully!', ['title' => 'Success']);
 
             return redirect()->route('backend.documents.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
-            return back()->withOnput();
+            return back()->withInput();
         }
     }
 
@@ -115,12 +115,12 @@ class DocumentController extends Controller
             }
 
             $document->delete();
-            Toastr::success('Document deleted successfully!', ['title'=>'Success']);
+            Toastr::success('Document deleted successfully!', ['title' => 'Success']);
 
             return redirect()->route('backend.documents.index');
 
-        } catch (\Exception) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'Error']);
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
             return back();
         }

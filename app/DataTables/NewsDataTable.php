@@ -22,6 +22,7 @@ class NewsDataTable extends DataTable
                 if ($news->image && file_exists(storage_path('app/public/'.$news->image))) {
                     return '<img src="'.asset('storage/'.$news->image).'" class="news-img" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
+
                 return '<span class="text-muted">No Image</span>';
             })
             ->addColumn('action', function ($news) {
@@ -30,18 +31,18 @@ class NewsDataTable extends DataTable
                 $detailsUrl = route('news.show', $news->id);
 
                 return '
-            <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
-                <i class="bi bi-eye"></i>
-            </a>
-            <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <form method="POST" action="'.$deleteUrl.'" style="display:inline-block;" onsubmit="return confirm(\'Are you sure?\');">
-                '.csrf_field().method_field('DELETE').'
-                <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </form>';
+        <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>';
             })
             ->rawColumns(['action', 'image'])
             ->setRowId('id');
@@ -58,6 +59,13 @@ class NewsDataTable extends DataTable
             ->setTableId('news-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->responsive(true)  // ADD THIS
+            ->autoWidth(false)  // ADD THIS
+            ->parameters([      // ADD THIS
+                'responsive' => true,
+                'autoWidth' => false,
+            ])
+
             ->orderBy(0)
             ->selectStyleSingle()
             ->buttons([

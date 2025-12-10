@@ -23,12 +23,21 @@ class TestimonialsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validator = \Validator::make($request->all(), [
+            'name'        => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
-            'review' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'review'      => 'nullable|string|max:300',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+        ], [
+            'review.max'  => 'The review must not exceed 300 characters.',
         ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                Toastr::error($error, ['title' => 'Validation Error']);
+            }
+            return back()->withInput();
+        }
 
         $data = $request->only(['name', 'designation', 'review']);
 
@@ -44,8 +53,7 @@ class TestimonialsController extends Controller
             return redirect()->route('testimonials.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
         }
     }
@@ -57,21 +65,31 @@ class TestimonialsController extends Controller
 
     public function update(Request $request, Testimonials $testimonial)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validator = \Validator::make($request->all(), [
+            'name'        => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
-            'review' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'review'      => 'nullable|string|max:300',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+        ], [
+            'review.max'  => 'The review must not exceed 300 characters.',
         ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                Toastr::error($error, ['title' => 'Validation Error']);
+            }
+            return back()->withInput();
+        }
 
         $data = $request->only(['name', 'designation', 'review']);
 
         try {
             if ($request->hasFile('image')) {
-                // Delete old image if exists
+
                 if ($testimonial->image && Storage::disk('public')->exists($testimonial->image)) {
                     Storage::disk('public')->delete($testimonial->image);
                 }
+
                 $data['image'] = $request->file('image')->store('testimonials', 'public');
             }
 
@@ -82,8 +100,7 @@ class TestimonialsController extends Controller
             return redirect()->route('testimonials.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
         }
     }
@@ -91,7 +108,6 @@ class TestimonialsController extends Controller
     public function destroy(Testimonials $testimonial)
     {
         try {
-            // Delete image if exists
             if ($testimonial->image && Storage::disk('public')->exists($testimonial->image)) {
                 Storage::disk('public')->delete($testimonial->image);
             }
@@ -103,8 +119,7 @@ class TestimonialsController extends Controller
             return redirect()->route('testimonials.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back();
         }
     }

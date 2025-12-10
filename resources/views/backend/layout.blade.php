@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>@yield('title') - ILPP Dashboard</title>
     <link rel="icon" href="{{ asset('images/Logo.png') }}" type="image/png">
 
@@ -12,12 +11,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
-    <!-- Custom Admin CSS -->
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Sidebar Toggle Button -->
+    <div class="hamburger mobile-only d-flex">
+        <i class="bi bi-list"></i>
+    </div>
 
     <div class="backend-wrapper d-flex">
         <!-- Sidebar -->
@@ -28,34 +38,45 @@
             </div>
 
             <nav class="menu">
-                <!-- Collapsible Section -->
-                <button class="btn btn-toggle w-100 text-start collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#who-collapse" aria-expanded="false">
+                <!-- Home Section -->
+                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-home"
+                    aria-expanded="false">
+                    Home
+                </button>
+                <div class="collapse" id="collapse-home">
+                    <ul class="list-unstyled ps-3">
+                        <li><a href="{{ route('testimonials.index') }}">Testimonials</a></li>
+                        <li><a href="{{ route('slides.index') }}">Slider</a></li>
+                    </ul>
+                </div>
+
+                <!-- Who We Are Section -->
+                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-who"
+                    aria-expanded="false">
                     Who We Are
                 </button>
-                <div class="collapse" id="who-collapse">
+                <div class="collapse" id="collapse-who">
                     <ul class="list-unstyled ps-3">
                         <li><a href="{{ route('about.edit') }}">About ILPP</a></li>
                         <li><a href="{{ route('history.edit') }}">History</a></li>
                         <li><a href="{{ route('what-we-do.index') }}">What We Do</a></li>
-                        <li> <a href="{{ route('team-members.index') }}">Team Members</a></li>
+                        <li><a href="{{ route('team-members.index') }}">Team Members</a></li>
                         <li><a href="{{ route('partners.index') }}">Partners</a></li>
                         <li><a href="{{ route('documents.index') }}">Internal Docs</a></li>
                     </ul>
                 </div>
 
+                <!-- Other Sections -->
                 <a href="{{ route('backend.dashboard') }}">Settings</a>
                 <a href="{{ route('news.index') }}">News</a>
                 <a href="{{ route('projects.index') }}">Projects</a>
                 <a href="{{ route('publications.index') }}">Publications</a>
                 <a href="{{ route('gallery.index') }}">Gallery</a>
                 <a href="{{ route('contact-info.index') }}">Contact Info</a>
-                <a href="{{ route('testimonials.index') }}">Testimonials</a>
-
-
-
+                <a href="{{ route('contact-messages.index') }}">Contact Messages</a>
             </nav>
 
+            <!-- Logout -->
             <div class="logout-form mt-auto">
                 <form action="{{ route('backend.logout') }}" method="POST">
                     @csrf
@@ -76,11 +97,10 @@
         </main>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
@@ -89,95 +109,92 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-    {{-- DataTables styles --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    @if (isset($dataTable))
-        {!! $dataTable->scripts() !!}
-    @endif
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // History and general description
-            if (document.getElementById('detailed_description')) {
-                CKEDITOR.replace('detailed_description', {
-                    height: 300,
-                    removeButtons: ''
-                });
-            }
+        $(document).ready(function() {
+            const $hamburger = $('.hamburger');
+            const $sidebar = $('.backend-sidebar');
+            const $main = $('.backend-main');
 
-            if (document.getElementById('vision')) {
-                CKEDITOR.replace('vision', {
-                    height: 150,
-                    removeButtons: ''
-                });
-            }
+            // Toggle sidebar
+            $hamburger.click(function() {
+                $sidebar.toggleClass('active');
+                $main.toggleClass('shifted');
 
-            if (document.getElementById('mission')) {
-                CKEDITOR.replace('mission', {
-                    height: 150,
-                    removeButtons: ''
-                });
-            }
+                // Hide hamburger when sidebar is open
+                if ($sidebar.hasClass('active')) {
+                    $hamburger.hide();
+                } else {
+                    $hamburger.show();
+                }
+            });
 
-            if (document.getElementById('goals')) {
-                CKEDITOR.replace('goals', {
-                    height: 150,
-                    removeButtons: ''
-                });
-            }
-
-            if (document.getElementById('description')) {
-                CKEDITOR.replace('description', {
-                    height: 300,
-                    removeButtons: ''
-                });
-            }
-
-            // What We Do fields
-            if (document.getElementById('leadership')) {
-                CKEDITOR.replace('leadership', {
-                    height: 300,
-                    removeButtons: ''
-                });
-            }
-
-            if (document.getElementById('research')) {
-                CKEDITOR.replace('research', {
-                    height: 300,
-                    removeButtons: ''
-                });
-            }
-
-            if (document.getElementById('public_policy')) {
-                CKEDITOR.replace('public_policy', {
-                    height: 300,
+            // Click outside sidebar closes it on mobile
+            $(document).click(function(e) {
+                if ($sidebar.hasClass('active')) {
+                    if (!$(e.target).closest($sidebar).length && !$(e.target).closest($hamburger).length) {
+                        $sidebar.removeClass('active');
+                        $main.removeClass('shifted');
+                        $hamburger.show(); // show hamburger again
+                    }
+                }
+            });
+        });
+        // CKEditor initialization
+        ['detailed_description', 'vision', 'mision', 'goals', 'description', 'leadership', 'research',
+            'public_policy', 'history'
+        ].forEach(id => {
+            if (document.getElementById(id)) {
+                CKEDITOR.replace(id, {
+                    height: (id === 'detailed_description' || id === 'description' || id ===
+                        'leadership' || id === 'research' || id === 'public_policy') ? 300 : 150,
                     removeButtons: ''
                 });
             }
         });
 
+        // Toastr Notifications
         @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
-
         @if (session('error'))
             toastr.error("{{ session('error') }}");
         @endif
-
         @if (session('warning'))
             toastr.warning("{{ session('warning') }}");
         @endif
-
         @if (session('info'))
             toastr.info("{{ session('info') }}");
         @endif
+
+        // ========================= SWEETALERT DELETE CONFIRMATION =========================
+        $(document).on('click', '.delete-form button', function(e) {
+            e.preventDefault(); // prevent form submission
+
+            const form = $(this).closest('form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#26a6a0',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
     </script>
 
 
+    @if (isset($dataTable))
+        {!! $dataTable->scripts() !!}
+    @endif
 </body>
 
 </html>

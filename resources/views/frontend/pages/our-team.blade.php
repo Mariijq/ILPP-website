@@ -1,11 +1,9 @@
 @extends('frontend.layouts.main')
-
 @section('content')
 <section class="grid-wrapper">
     <div class="section-header">
         <h2>Our Team</h2>
     </div>
-
     <div class="grid-band">
         @foreach ($members as $member)
             <div class="card team-card">
