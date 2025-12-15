@@ -544,7 +544,7 @@ header {
   max-width: 800px;
   margin: 50px auto 50px auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
 }
 
@@ -552,6 +552,14 @@ header {
   background-color: var(--background-color);
   padding: 50px 40px;
   text-align: center;
+  box-shadow: var(--box-shadow);
+}
+.contact_us_2 .form-box {
+  flex: 1 1 48%; /* Take roughly half the width */
+  min-width: 400px; /* prevents form from being too small */
+  background-color: var(--background-color);
+  padding: 50px 40px;
+  border-radius: 10px;
   box-shadow: var(--box-shadow);
 }
 

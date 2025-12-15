@@ -7,13 +7,6 @@
         <div class="blueBG"></div>
 
         <div class="responsive-container-block container">
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
             <!-- Shared container -->
             <div class="contact-main-wrapper">
 

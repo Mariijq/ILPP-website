@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         // Get latest testimonials
-        $testimonials = Testimonials::latest()->take(6)->get();
+        $testimonials = Testimonials::latest()->take(1)->get();
 
         // Get latest slides with news and map data for frontend
         $slides = Slide::with('news')

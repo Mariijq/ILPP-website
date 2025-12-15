@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 class ProjectsController extends Controller
 {
 public function index() {
-    $ongoingProjects = Project::where('status', 'ongoing')
+    $ongoingProjects = Project::where('status', 'Ongoing')
         ->latest()
         ->paginate(8, ['*'], 'ongoingPage'); // custom query parameter
 
-    $finishedProjects = Project::where('status', 'finished')
+    $finishedProjects = Project::where('status', 'Finished')
         ->latest()
         ->paginate(8, ['*'], 'finishedPage'); // custom query parameter
 
