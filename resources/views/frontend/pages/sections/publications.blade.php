@@ -1,5 +1,5 @@
 <div class="publications-section">
-    <h2 class="section-title">Latest Publications</h2>
+    <h2 class="section-title">{{ __('frontend.publications') }}</h2>
 
     <div class="publications-grid">
         @foreach ($publications->take(3) as $pub)

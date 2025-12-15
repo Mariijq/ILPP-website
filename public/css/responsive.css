@@ -3,7 +3,7 @@
 ========================= */
 
 /* Extra small (mobile <576px) */
-@media (max-width: 576px) {
+@media (max-width: 575px) {
 
   /* Main */
   .grid-band {
@@ -84,7 +84,7 @@
   }
 
   .banner-content h1 {
-    font-size: 18px; /* smaller font for mobile */
+    font-size: 18px; 
     line-height: 1.2;
   }
 
@@ -106,13 +106,11 @@
     margin-top: 10px;
   }
 
-  /* Hide swiper buttons on small screens */
   .swiper-button-next,
   .swiper-button-prev {
     display: none;
   }
 
-  /* Center pagination dots */
   .swiper-pagination {
     bottom: 10px;
   }
@@ -127,14 +125,6 @@
   .mobile-only,
   .sidebar-overlay {
     display: flex !important;
-  }
-
-  .logo-section span {
-    display: none;
-  }
-
-  .search-toggle {
-    font-size: var(--fs-18);
   }
 
   .frontend-sidebar {
@@ -155,6 +145,14 @@
   .sidebar-overlay.active {
     opacity: 1;
     pointer-events: all;
+  }
+
+  .logo-section span {
+    display: none;
+  }
+
+  .search-toggle {
+    font-size: var(--fs-18);
   }
 
   /* Footer */
@@ -199,7 +197,8 @@
     width: 100%;
     text-align: center;
   }
-  /* ================= PROJECTS & PUBLICATIONS ================= */
+
+  /* Projects & Publications */
   .projects-grid,
   .publications-grid {
     grid-template-columns: 1fr;
@@ -211,7 +210,7 @@
     font-size: 1rem;
   }
 
-  /* ================= SEARCH RESULTS ================= */
+  /* Search results */
   .search-results-container {
     padding: 0 10px;
   }
@@ -229,136 +228,12 @@
     padding: 6px 12px;
     font-size: var(--fs-12);
   }
-
 }
 
-@media (min-width: 576px) and (max-width: 767px) {
-
-  /* Main */
-  .grid-band {
-    grid-template-columns: 1fr;
-  }
-
-  .team-image-wrapper {
-    width: 100px;
-    height: 100px;
-  }
-
-  /* Contact */
-  .contact_us_2 .contactus-head {
-    font-size: var(--fs-28);
-    line-height: 34px;
-  }
-
-  .contact-details-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 25px;
-  }
-
-  .contact-details-wrapper .contact-map {
-    height: 280px;
-  }
-
-  .contact-details-wrapper .contact-info h2 {
-    font-size: var(--fs-24);
-  }
-
-  .contact-details-wrapper .contact-info p,
-  .contact-details-wrapper .contact-info a {
-    font-size: var(--fs-14);
-  }
-
-  /* Banner */
-  .banner-item {
-    padding: 35px;
-    gap: 25px;
-    text-align: center;
-    min-height: 420px;
-  }
-
-  .banner-content {
-    align-items: center;
-    gap: 15px;
-  }
-
-  .banner-content h1 {
-    font-size: var(--fs-20);
-  }
-
-  .banner-content p {
-    font-size: var(--fs-16);
-  }
-
-  .banner-content .btn {
-    font-size: var(--fs-14);
-    padding: 10px 18px;
-  }
-
-  /* Navbar */
-  .navlinks-section.desktop-only {
-    display: none !important;
-  }
-
-  .hamburger,
-  .frontend-sidebar,
-  .mobile-only,
-  .sidebar-overlay {
-    display: flex !important;
-  }
-
-  .search-toggle {
-    font-size: var(--fs-20);
-  }
-
-  /* Footer */
-  .footer-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding: 20px;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .footer-column {
-    flex: 1 1 150px;
-    min-width: 150px;
-  }
-
-  .footer-column h2 {
-    font-size: var(--fs-18);
-  }
-
-  .footer-column p,
-  .footer-column a,
-  .footer-column ul li a {
-    font-size: var(--fs-12);
-  }
-
-  .footer-bottom {
-    font-size: var(--fs-12);
-    margin-top: 20px;
-  }
-
-    /* Projects & Publications */
-  .projects-grid,
-  .publications-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .project-info h3,
-  .publication-info h3 {
-    font-size: 1.1rem;
-  }
-
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
+/* -------------------------
+   TABLET (576px – 991px)
+------------------------- */
+@media (min-width: 576px) and (max-width: 991px) {
 
   /* Main */
   .grid-band {
@@ -381,16 +256,16 @@
   }
 
   /* Contact */
-  .contact_us_2 .input,
-  .contact_us_2 .textinput,
-  .contact_us_2 .submit-btn {
-    width: 100%;
+  .contact_us_2 .contactus-head {
+    font-size: var(--fs-28);
+    line-height: 34px;
   }
 
   .contact-details-wrapper {
     align-items: center;
     padding: 30px;
     gap: 35px;
+    flex-direction: column;
   }
 
   .contact-details-wrapper .contact-map {
@@ -464,7 +339,7 @@
     font-size: var(--fs-14);
   }
 
-    /* Projects & Publications */
+  /* Projects & Publications */
   .projects-grid,
   .publications-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -475,10 +350,12 @@
   .publication-info h3 {
     font-size: 1.2rem;
   }
-
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+/* -------------------------
+   DESKTOP (≥992px)
+------------------------- */
+@media (min-width: 992px) {
 
   /* Main */
   .grid-band {
@@ -551,7 +428,7 @@
   .footer-container {
     gap: 25px;
     padding: 30px 50px;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: flex-start;
   }
 
@@ -569,114 +446,3 @@
     font-size: var(--fs-14);
   }
 }
-/* 
-@media (min-width: 1200px) {
-  .grid-band {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .logo-section img {
-    height: 55px;
-  }
-
-  .banner-item {
-    padding: 60px;
-    min-height: 520px;
-  }
-
-  .banner-content h1 {
-    font-size: var(--fs-42);
-  }
-
-  .banner-content p {
-    font-size: var(--fs-20);
-  }
-
-  .banner-image img {
-    max-height: 350px;
-  }
-
-  Navbar
-  .navlinks-section.desktop-only {
-    display: flex !important;
-  }
-
-  .hamburger,
-  .frontend-sidebar,
-  .mobile-only,
-  .sidebar-overlay {
-    display: none !important;
-  }
-
-  .navlinks-section ul {
-    gap: 20px;
-  }
-
-  .navlinks-section>ul>li>a {
-    font-size: var(--fs-16);
-  }
-
-  Contact
-  .contact-details-wrapper {
-    flex-direction: row;
-    padding: 40px 50px;
-    gap: 50px;
-  }
-
-  .contact-details-wrapper .contact-map {
-    height: 380px;
-  }
-
-  .contact-details-wrapper .contact-info h2 {
-    font-size: var(--fs-32);
-  }
-
-  .contact-details-wrapper .contact-info p,
-  .contact-details-wrapper .contact-info a {
-    font-size: var(--fs-16);
-  }
-}
-
-Extra large desktops (≥1400px)
-@media (min-width: 1400px) {
-
-  .grid-band {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .banner-item {
-    padding: 70px;
-    min-height: 550px;
-  }
-
-  .banner-content h1 {
-    font-size: var(--fs-48);
-  }
-
-  .banner-content p {
-    font-size: var(--fs-24);
-  }
-
-  .banner-image img {
-    max-height: 380px;
-  }
-
-  Contact
-  .contact-details-wrapper {
-    padding: 50px 60px;
-    gap: 50px;
-  }
-
-  .contact-details-wrapper .contact-map {
-    height: 400px;
-  }
-
-  .contact-details-wrapper .contact-info h2 {
-    font-size: var(--fs-34);
-  }
-
-  .contact-details-wrapper .contact-info p,
-  .contact-details-wrapper .contact-info a {
-    font-size: var(--fs-16);
-  }
-} */

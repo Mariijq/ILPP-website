@@ -1,5 +1,5 @@
 <div class="projects-section">
-    <h2 class="section-title">Projects</h2>
+    <h2 class="section-title">{{ __('frontend.projects') }}</h2>
 
     <div class="projects-grid">
         @foreach ($projects->take(3) as $project)

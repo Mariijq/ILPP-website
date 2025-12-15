@@ -7,7 +7,7 @@
 
         <!-- Column 1: Contact Info + Logo -->
         <div class="footer-column">
-            <h2>Contact Us</h2>
+            <h2>{{ __('frontend.contact') }}</h2>
             <p><i class="bi bi-geo-alt"></i> {{ $contact?->address }}</p>
             <p><i class="bi bi-envelope"></i>
                 @if ($contact?->email)
@@ -30,33 +30,33 @@
 
         <!-- Column 2: Website Links -->
         <div class="footer-column">
-            <h2>Website Links</h2>
+            <h2>{{ __('frontend.website_links') }}</h2>
             <ul>
-                <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('news') }}">News</a></li>
-                <li><a href="{{ route('projects') }}">Projects</a></li>
-                <li><a href="{{ route('publications') }}">Publications</a></li>
-                <li><a href="{{ route('gallery') }}">Gallery</a></li>
-                <li><a href="{{ route('contact') }}">Contact</a></li>
+                <li><a href="{{ route('home') }}">{{ __('frontend.home') }}</a></li>
+                <li><a href="{{ route('news') }}">{{ __('frontend.news') }}</a></li>
+                <li><a href="{{ route('projects') }}">{{ __('frontend.projects') }}</a></li>
+                <li><a href="{{ route('publications') }}">{{ __('frontend.publications') }}</a></li>
+                <li><a href="{{ route('gallery') }}">{{ __('frontend.gallery') }}</a></li>
+                <li><a href="{{ route('contact') }}">{{ __('frontend.contact_us') }}</a></li>
             </ul>
         </div>
 
         <!-- Column 3: Who We Are -->
         <div class="footer-column">
-            <h2>Who We Are</h2>
+            <h2>{{ __('frontend.who_we_are_footer') }}</h2>
             <ul>
-                <li><a href="{{ route('about') }}">About ILPP</a></li>
-                <li><a href="{{ route('history') }}">History</a></li>
-                <li><a href="{{ route('what-we-do') }}">What we do</a></li>
-                <li><a href="{{ route('team') }}">Our Team</a></li>
-                <li><a href="{{ route('partners') }}">Our Partners</a></li>
-                <li><a href="{{ route('documents') }}">Internal Documents</a></li>
+                <li><a href="{{ route('about') }}">{{ __('frontend.about_ilpp') }}</a></li>
+                <li><a href="{{ route('history') }}">{{ __('frontend.history') }}</a></li>
+                <li><a href="{{ route('what-we-do') }}">{{ __('frontend.what_we_do') }}</a></li>
+                <li><a href="{{ route('team') }}">{{ __('frontend.our_team') }}</a></li>
+                <li><a href="{{ route('partners') }}">{{ __('frontend.our_partners') }}</a></li>
+                <li><a href="{{ route('documents') }}">{{ __('frontend.internal_documents') }}</a></li>
             </ul>
         </div>
 
     </div>
 
     <div class="footer-bottom">
-        &copy; {{ date('Y') }} Institute for Leadership and Public Policy (ILPP). All rights reserved.
+        &copy; {{ date('Y') }} {{ __('frontend.institute_name') }}. All rights reserved.
     </div>
 </footer>

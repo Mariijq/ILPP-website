@@ -2,7 +2,7 @@
 @section('content')
     <div class="grid-wrapper">
         <header class="section-header">
-            <h2>Gallery</h2>
+            <h2>{{ __('frontend.gallery') }}</h2>
         </header>
 
         <div class="grid-band">

@@ -7,7 +7,7 @@
                         <h1>{{ $slide['title'] ?? '' }}</h1>
                         <p>{{ \Carbon\Carbon::parse($slide['date'])->format('d M Y') }}</p>
                         @if (!empty($slide['link']))
-                            <a href="{{ $slide['link'] }}" class="btn btn-primary">Learn More</a>
+                            <a href="{{ $slide['link'] }}" class="btn btn-primary">{{ __('frontend.learn_more') }}</a>
                         @endif
                     </div>
                     @if (!empty($slide['image']))

@@ -4,7 +4,7 @@
 
 <div class="grid-wrapper">
     <header class="section-header">
-        <h2>Publications</h2>
+        <h2>{{ __('frontend.publications') }}</h2>
     </header>
 
     <div class="grid-band">

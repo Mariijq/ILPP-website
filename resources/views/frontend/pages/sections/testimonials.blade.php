@@ -1,6 +1,6 @@
 <section class="hometestimonials">
     <div class="container">
-        <h2 class="section-title">Testimonials</h2>
+        <h2 class="section-title">{{ __('frontend.testimonials') }}</h2>
 
         <!-- Carousel -->
         <div id="customers-testimonials" class="owl-carousel testimonials-carousel">

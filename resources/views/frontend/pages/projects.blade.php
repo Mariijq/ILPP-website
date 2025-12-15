@@ -5,7 +5,7 @@
 
     {{-- Ongoing Projects --}}
     <header class="section-header">
-        <h2>Ongoing Projects</h2>
+        <h2>{{ __('frontend.ongoing_projects') }}</h2>
     </header>
 
     <div class="grid-band">
@@ -16,7 +16,7 @@
                     <article>
                         <h1>{{ $project->title }}</h1>
                         @if($project->date)
-                            <span>{{ \Carbon\Carbon::parse($project->date)->format('M d, Y') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($project->date)->translatedFormat(__('frontend.project_date_format')) }}</span>
                         @endif
                     </article>
                 </a>
@@ -31,7 +31,7 @@
 
     {{-- Finished Projects --}}
     <header class="section-header mt-5">
-        <h2>Finished Projects</h2>
+        <h2>{{ __('frontend.finished_projects') }}</h2>
     </header>
 
     <div class="grid-band">
@@ -42,7 +42,7 @@
                     <article>
                         <h1>{{ $project->title }}</h1>
                         @if($project->date)
-                            <span>{{ \Carbon\Carbon::parse($project->date)->format('M d, Y') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($project->date)->translatedFormat(__('frontend.project_date_format')) }}</span>
                         @endif
                     </article>
                 </a>

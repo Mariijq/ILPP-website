@@ -245,13 +245,15 @@ header {
     z-index: 9999;
 }
 
-.language-switcher .lang-dropdown li {
+.language-switcher .lang-dropdown li a{
     padding: 6px 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 5px;
     transition: background 0.2s;
+    text-decoration: none;
+    color: var(--primary-color);
 }
 
 .language-switcher .lang-dropdown li:hover {
