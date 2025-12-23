@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->json('title')->change();
-            $table->json('content')->change();
+        Schema::table('contact_infos', function (Blueprint $table) {
+            $table->string('youtube')->nullable()->after('linkedin');
 
         });
     }
@@ -23,9 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->jsonb('title_json')->nullable();
-            $table->jsonb('content_json')->nullable();
+        Schema::table('contact_infos', function (Blueprint $table) {
+            $table->dropColumn('youtube');
 
         });
     }

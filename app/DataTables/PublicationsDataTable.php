@@ -16,46 +16,56 @@ class PublicationsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('date', fn ($publication) => $publication->date ? Carbon::parse($publication->date)->format('d M Y') : '')
-            ->addColumn('short_description', fn ($publication) => \Illuminate\Support\Str::limit($publication->short_description, 50))
-            ->addColumn('image', function ($publication) {
-                if ($publication->image && file_exists(storage_path('app/public/'.$publication->image))) {
-                    return '<img src="'.asset('storage/'.$publication->image).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
+
+            ->addColumn('title', fn ($p) => $p->title[app()->getLocale()] ?? $p->title['en']
+            )
+
+            ->addColumn('date', fn ($p) => $p->date ? Carbon::parse($p->date)->format('d M Y') : ''
+            )
+
+            ->addColumn('short_description', fn ($p) => \Str::limit(
+                $p->short_description[app()->getLocale()] ?? $p->short_description['en'],
+                50
+            )
+            )
+
+            ->addColumn('image', function ($p) {
+                if ($p->image && file_exists(storage_path('app/public/'.$p->image))) {
+                    return '<img src="'.asset('storage/'.$p->image).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
 
                 return '<span class="text-muted">No Image</span>';
             })
-            ->addColumn('file', function ($publication) {
-                if ($publication->file && file_exists(storage_path('app/public/'.$publication->file))) {
-                    $fileName = basename($publication->file);
 
-                    return '<a href="'.asset('storage/'.$publication->file).'" target="_blank" class="btn btn-outline-secondary btn-sm" title="Download '.$fileName.'">
-                        <i class="bi bi-file-earmark-arrow-down"></i> '.$fileName.'
-                    </a>';
+            ->addColumn('file', function ($p) {
+                if ($p->file && file_exists(storage_path('app/public/'.$p->file))) {
+                    $fileName = basename($p->file);
+
+                    return '<a href="'.asset('storage/'.$p->file).'" target="_blank" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-file-earmark-arrow-down"></i> '.$fileName.'
+                </a>';
                 }
 
                 return '<span class="text-muted">No File</span>';
             })
-            ->addColumn('action', function ($publication) {
-                $editUrl = route('publications.edit', $publication->id);
-                $deleteUrl = route('publications.destroy', $publication->id);
-                $detailsUrl = route('publications.show', $publication->id);
 
+            ->addColumn('action', function ($p) {
                 return '
-        <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
-            <i class="bi bi-eye"></i>
-        </a>
-        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-            '.csrf_field().method_field('DELETE').'
-            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                <i class="bi bi-trash"></i>
-            </button>
-        </form>';
+                <a href="'.route('publications.show', $p->id).'" class="btn btn-info btn-sm me-1">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="'.route('publications.edit', $p->id).'" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="'.route('publications.destroy', $p->id).'" class="d-inline">
+                    '.csrf_field().method_field('DELETE').'
+                    <button class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>';
             })
-            ->rawColumns(['action', 'image', 'file'])
+
+            ->rawColumns(['image', 'file', 'action'])
             ->setRowId('id');
     }
 

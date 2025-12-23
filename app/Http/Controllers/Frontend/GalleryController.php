@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\GalleryImage;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\GalleryImage;
 
 class GalleryController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
-        $images = GalleryImage::latest()->paginate(12);
+        $images = GalleryImage::latest()->get(); // fetch all images
 
-        return view('frontend.pages.gallery', compact('images'));
+        return view('frontend.pages.sections.gallery', compact('images'));
 
     }
 }

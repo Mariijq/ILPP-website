@@ -8,6 +8,7 @@ use Laravel\Scout\Searchable;
 class Publication extends Model
 {
     use Searchable;
+
     protected $fillable = [
         'title',
         'subtitle',
@@ -20,4 +21,10 @@ class Publication extends Model
 
     protected $dates = ['date'];
 
+    protected $casts = [
+        'title' => 'array',
+        'short_description' => 'array',
+        'detailed_description' => 'array',
+        'date' => 'date',
+    ];
 }

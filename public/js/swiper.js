@@ -5,8 +5,10 @@ $(document).ready(function () {
         center: true,
         items: 3,
         margin: 0,
-        autoplay: true,
-        dots: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        }, dots: true,
         autoplayTimeout: 8500,
         smartSpeed: 450,
         responsive: {

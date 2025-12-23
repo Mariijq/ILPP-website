@@ -12,36 +12,47 @@ use Yajra\DataTables\Services\DataTable;
 
 class TestimonialsDataTable extends DataTable
 {
-    public function dataTable($query): EloquentDataTable
-    {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('image', function ($testimonial) {
-                if ($testimonial->image && file_exists(storage_path('app/public/'.$testimonial->image))) {
-                    return '<img src="'.asset('storage/'.$testimonial->image).'" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">';
-                }
+public function dataTable($query): EloquentDataTable
+{
+    return datatables()
+        ->eloquent($query)
+        ->addColumn('name', function ($testimonial) {
+            return $testimonial->name['en'] ?? '';
+        })
+        ->addColumn('designation', function ($testimonial) {
+            return $testimonial->designation['en'] ?? '';
+        })
+        ->addColumn('review', function ($testimonial) {
+            // Decode JSON and return English review
+            return $testimonial->review['en'] ?? '';
+        })
+        ->addColumn('short_review', function ($testimonial) {
+            return \Illuminate\Support\Str::limit($testimonial->review['en'] ?? '', 50);
+        })
+        ->addColumn('image', function ($testimonial) {
+            if ($testimonial->image && file_exists(storage_path('app/public/'.$testimonial->image))) {
+                return '<img src="'.asset('storage/'.$testimonial->image).'" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">';
+            }
+            return '<span class="text-muted">No Image</span>';
+        })
+        ->addColumn('action', function ($testimonial) {
+            $editUrl = route('testimonials.edit', $testimonial->id);
+            $deleteUrl = route('testimonials.destroy', $testimonial->id);
 
-                return '<span class="text-muted">No Image</span>';
-            })
-            ->addColumn('short_review', fn ($testimonial) => Str::limit($testimonial->review, 50))
-            ->addColumn('action', function ($testimonial) {
-                $editUrl = route('testimonials.edit', $testimonial->id);
-                $deleteUrl = route('testimonials.destroy', $testimonial->id);
-
-                return '
-        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <form action="'.$deleteUrl.'" method="POST" class="d-inline-block delete-form">
-            '.csrf_field().method_field('DELETE').'
-            <button type="submit" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i>
-            </button>
-        </form>
-    ';
-            })
-            ->rawColumns(['action', 'image']);
-    }
+            return '
+                <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form action="'.$deleteUrl.'" method="POST" class="d-inline-block delete-form">
+                    '.csrf_field().method_field('DELETE').'
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            ';
+        })
+        ->rawColumns(['action', 'image']);
+}
 
     public function query(Testimonials $model)
     {

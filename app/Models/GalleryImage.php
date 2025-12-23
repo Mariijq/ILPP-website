@@ -14,4 +14,9 @@ class GalleryImage extends Model
         'image_path',
         'category',
     ];
+        protected $casts = [
+        'title' => 'array',
+        'description' => 'array',
+    ];
+
 }

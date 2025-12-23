@@ -62,7 +62,8 @@
                             @endif
                         </p>
                         <p><i class="bi bi-telephone"></i> {{ $contact?->phone }}</p>
-                        <p>{{ __('frontend.follow_us') }}
+                        <div class="social-links">
+                                                    <p>{{ __('frontend.follow_us') }}
                             @if ($contact?->facebook)
                                 <a href="{{ $contact->facebook }}"><i class="bi bi-facebook"></i></a>
                             @endif
@@ -72,6 +73,11 @@
                             @if ($contact?->linkedin)
                                 <a href="{{ $contact->linkedin }}"><i class="bi bi-linkedin"></i></a>
                             @endif
+                            @if ($contact?->youtube)
+                                <a href="{{ $contact->youtube }}"><i class="bi bi-youtube"></i></a>
+                            @endif
+
+                        </div>
                         </p>
                     </div>
                     <div class="contact-map">

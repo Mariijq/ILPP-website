@@ -1,6 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('content')
+@php $locale = app()->getLocale(); @endphp
 
 <div class="grid-wrapper">
     <header class="section-header">
@@ -13,7 +14,7 @@
             <a href="{{ route('publication-details', $publication->id) }}" class="card">
                 <div class="thumb" style="background-image: url('{{ asset('storage/'.$publication->image) }}');"></div>
                 <article>
-                    <h1>{{ $publication->title }}</h1>
+                        <h1>{{ $publication->title[$locale] ?? $publication->title['en'] }}</h1>
                     @if($publication->date)
                         <span>{{ \Carbon\Carbon::parse($publication->date)->format('M d, Y') }}</span>
                     @endif

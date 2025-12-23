@@ -66,6 +66,7 @@ class ContactInfoController extends Controller
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
+            'youtube' => 'nullable|url',
             'map_embed' => 'nullable|string',
         ]);
         try {

@@ -3,14 +3,22 @@
 
     <div class="publications-grid">
         @foreach ($publications->take(3) as $pub)
+
+            @php
+                $locale = app()->getLocale();
+                $title = $pub->title[$locale] ?? $pub->title['en'] ?? '';
+            @endphp
+
             <a href="{{ route('publication-details', $pub->id) }}" class="publication-card">
 
-                <img src="{{ asset('storage/' . $pub->image) }}" alt="{{ $pub->title }}" class="publication-img">
+                <img src="{{ asset('storage/' . $pub->image) }}"
+                     alt="{{ $title }}"
+                     class="publication-img">
 
                 <div class="publication-overlay"></div>
 
                 <div class="publication-info">
-                    <h3>{{ $pub->title }}</h3>
+                    <h3>{{ $title }}</h3>
                 </div>
 
             </a>

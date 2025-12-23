@@ -2,42 +2,68 @@
 @section('title', 'What We Do')
 
 @section('content')
-    <div class="what-we-do-form">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+@php
+    $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+@endphp
 
-        <form action="{{ route('what-we-do.update') }}" method="POST">
-            @csrf
+<div class="what-we-do-form">
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" name="title" id="title" class="form-control"
-                    value="{{ old('title', $whatWeDo->title ?? '') }}">
-            </div>
+    <form action="{{ route('what-we-do.update') }}" method="POST">
+        @csrf
 
-            <div class="mb-3">
-                <label for="leadership" class="form-label">Leadership</label>
-                <textarea name="leadership" id="leadership" class="form-control" rows="10">{{ old('leadership', $whatWeDo->leadership ?? '') }}</textarea>
-            </div>
+        {{-- Multilingual Tabs --}}
+        <ul class="nav nav-tabs" id="whatWeDoTabs" role="tablist">
+            @foreach($languages as $code => $label)
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @if($loop->first) active @endif" 
+                            id="tab-{{ $code }}" data-bs-toggle="tab" 
+                            data-bs-target="#tab-content-{{ $code }}" type="button" role="tab">
+                        {{ $label }}
+                    </button>
+                </li>
+            @endforeach
+        </ul>
 
-            <div class="mb-3">
-                <label for="research" class="form-label">Research</label>
-                <textarea name="research" id="research" class="form-control" rows="10">{{ old('research', $whatWeDo->research ?? '') }}</textarea>
-            </div>
+        <div class="tab-content mt-3">
+            @foreach($languages as $code => $label)
+                <div class="tab-pane fade @if($loop->first) show active @endif" 
+                     id="tab-content-{{ $code }}" role="tabpanel">
 
-            <div class="mb-3">
-                <label for="public_policy" class="form-label">Public Policy</label>
-                <textarea name="public_policy" id="public_policy" class="form-control" rows="10">{{ old('public_policy', $whatWeDo->public_policy ?? '') }}</textarea>
-            </div>
+                    {{-- Title --}}
+                    <div class="mb-3">
+                        <label class="form-label">Title ({{ $label }})</label>
+                        <input type="text" name="title_{{ $code }}" class="form-control"
+                               value="{{ old('title_'.$code, $whatWeDo->title[$code] ?? '') }}">
+                    </div>
 
-            <div class="d-flex justify-content-end">
-                <a href="{{ route('what-we-do.index') }}" class="btn btn-secondary me-2">Cancel</a>
-                <button type="submit" class="btn btn-custom">
-                    Save </button>
-            </div>
-        </form>
-    </div>
+                    {{-- Leadership --}}
+                    <div class="mb-3">
+                        <label class="form-label">Leadership ({{ $label }})</label>
+                        <textarea name="leadership_{{ $code }}" class="form-control ckeditor" rows="6">{{ old('leadership_'.$code, $whatWeDo->leadership[$code] ?? '') }}</textarea>
+                    </div>
 
+                    {{-- Research --}}
+                    <div class="mb-3">
+                        <label class="form-label">Research ({{ $label }})</label>
+                        <textarea name="research_{{ $code }}" class="form-control ckeditor" rows="6">{{ old('research_'.$code, $whatWeDo->research[$code] ?? '') }}</textarea>
+                    </div>
 
+                    {{-- Public Policy --}}
+                    <div class="mb-3">
+                        <label class="form-label">Public Policy ({{ $label }})</label>
+                        <textarea name="public_policy_{{ $code }}" class="form-control ckeditor" rows="6">{{ old('public_policy_'.$code, $whatWeDo->public_policy[$code] ?? '') }}</textarea>
+                    </div>
+
+                </div>
+            @endforeach
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-custom">Save</button>
+        </div>
+    </form>
+</div>
 @endsection

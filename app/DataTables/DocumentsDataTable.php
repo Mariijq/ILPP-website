@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\App;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -39,6 +40,17 @@ class DocumentsDataTable extends DataTable
             </button>
         </form>';
             })
+            ->editColumn('title', function ($doc) {
+                $locale = App::getLocale();
+
+                return $doc->title[$locale] ?? $doc->title['en'] ?? '';
+            })
+            ->editColumn('description', function ($doc) {
+                $locale = App::getLocale();
+
+                return \Str::limit($doc->description[$locale] ?? $doc->description['en'] ?? '', 50);
+            })
+
             ->rawColumns(['action'])
             ->setRowId('id');
     }

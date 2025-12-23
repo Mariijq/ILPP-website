@@ -15,42 +15,65 @@ class ProjectsDataTable extends DataTable
 {
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        $locale = app()->getLocale();
+
         return datatables()
             ->eloquent($query)
-            ->addColumn('date', fn ($project) => $project->date ? Carbon::parse($project->date)->format('d M Y') : '')
-            ->addColumn('short_description', fn ($project) => \Illuminate\Support\Str::limit($project->short_description, 50))
+
+            ->editColumn('title', function ($project) use ($locale) {
+                return $project->title[$locale]
+                    ?? $project->title['en']
+                    ?? '';
+            })
+
+            ->editColumn('short_description', function ($project) use ($locale) {
+                return \Illuminate\Support\Str::limit(
+                    $project->short_description[$locale]
+                        ?? $project->short_description['en']
+                        ?? '',
+                    50
+                );
+            })
+
+            ->addColumn('date', fn ($project) => $project->date ? Carbon::parse($project->date)->format('d M Y') : ''
+            )
+
             ->addColumn('image', function ($project) {
                 if ($project->image && file_exists(storage_path('app/public/'.$project->image))) {
                     return '<img src="'.asset('storage/'.$project->image).'" 
-                            class="projects-img" 
-                            style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
+                        class="projects-img" 
+                        style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
 
                 return '<span class="text-muted">No Image</span>';
             })
+
+            ->addColumn('status', function ($project) {
+                $badgeClass = $project->status === 'finished'
+                    ? 'bg-secondary'
+                    : 'bg-success';
+
+                return '<span class="badge '.$badgeClass.'">'.ucfirst($project->status).'</span>';
+            })
+
             ->addColumn('action', function ($project) {
                 $editUrl = route('projects.edit', $project->id);
                 $deleteUrl = route('projects.destroy', $project->id);
                 $detailsUrl = route('projects.show', $project->id);
 
                 return '
-        <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
-            <i class="bi bi-eye"></i>
-        </a>
-        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-            '.csrf_field().method_field('DELETE').'
-            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                <i class="bi bi-trash"></i>
-            </button>
-        </form>';
-            })
-            ->addColumn('status', function ($project) {
-                $badgeClass = $project->status === 'Finished' ? 'bg-secondary' : 'bg-success';
-
-                return '<span class="badge '.$badgeClass.'">'.$project->status.'</span>';
+                <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+                    '.csrf_field().method_field('DELETE').'
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>';
             })
 
             ->rawColumns(['action', 'image', 'status'])
@@ -82,9 +105,9 @@ class ProjectsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('title'),
+            Column::make('title')->title('Title'),
             Column::make('date'),
-            Column::make('short_description'),
+            Column::make('short_description')->title('Short Description'),
             Column::make('image'),
             Column::make('status'),
             Column::make('created_at'),

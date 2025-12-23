@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\AboutUs;
+use App\Models\Document;
 use App\Models\History;
 use App\Models\Partner;
 use App\Models\TeamMember;
 use App\Models\WhatWeDo;
-use App\Models\Document;
 
 class WhoWeAreController extends Controller
 {
@@ -43,10 +43,18 @@ class WhoWeAreController extends Controller
 
     public function partners()
     {
-        $partners = Partner::orderBy('order')->get(); // ordered by your `order` field
-
+        // Fetch only Funding & Support partners
+        $partners = Partner::where('type', 'Funding & Support')->orderBy('order')->get();
         return view('frontend.pages.partners', compact('partners'));
     }
+
+    public function supporters()
+    {
+        // Fetch only Strategic Partners
+        $supporters = Partner::where('type', 'Strategic Partners')->orderBy('order')->get();
+        return view('frontend.pages.supporters', compact('supporters'));
+    }
+
 
     public function documents()
     {

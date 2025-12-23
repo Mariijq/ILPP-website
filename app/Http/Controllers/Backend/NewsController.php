@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\NewsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\News;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 use Toastr;
 
 class NewsController extends Controller
@@ -27,24 +25,57 @@ class NewsController extends Controller
     {
         try {
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'subtitle' => 'nullable|string|max:255',
+                'title_en' => 'required|string|max:255',
+                'title_mk' => 'nullable|string|max:255',
+                'title_al' => 'nullable|string|max:255',
+                'subtitle_en' => 'nullable|string|max:255',
+                'subtitle_mk' => 'nullable|string|max:255',
+                'subtitle_al' => 'nullable|string|max:255',
                 'date' => 'required|date',
-                'short_description' => 'nullable|string|max:500',
-                'detailed_description' => 'nullable|string',
+                'short_description_en' => 'nullable|string|max:500',
+                'short_description_mk' => 'nullable|string|max:500',
+                'short_description_al' => 'nullable|string|max:500',
+                'detailed_description_en' => 'nullable|string',
+                'detailed_description_mk' => 'nullable|string',
+                'detailed_description_al' => 'nullable|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
                 'media.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:51200',
             ]);
 
-            // Format date properly
-            $validated['date'] = Carbon::parse($validated['date'])->format('Y-m-d');
+            // Format date
+            $validated['date'] = \Carbon\Carbon::parse($validated['date'])->format('Y-m-d');
+
+            // Prepare JSON fields
+            $newsData = [
+                'title' => [
+                    'en' => $validated['title_en'],
+                    'mk' => $validated['title_mk'] ?? '',
+                    'al' => $validated['title_al'] ?? '',
+                ],
+                'subtitle' => [
+                    'en' => $validated['subtitle_en'] ?? '',
+                    'mk' => $validated['subtitle_mk'] ?? '',
+                    'al' => $validated['subtitle_al'] ?? '',
+                ],
+                'short_description' => [
+                    'en' => $validated['short_description_en'] ?? '',
+                    'mk' => $validated['short_description_mk'] ?? '',
+                    'al' => $validated['short_description_al'] ?? '',
+                ],
+                'detailed_description' => [
+                    'en' => $validated['detailed_description_en'] ?? '',
+                    'mk' => $validated['detailed_description_mk'] ?? '',
+                    'al' => $validated['detailed_description_al'] ?? '',
+                ],
+                'date' => $validated['date'],
+            ];
 
             // Store main image
             if ($request->hasFile('image')) {
-                $validated['image'] = $request->file('image')->store('news_images', 'public');
+                $newsData['image'] = $request->file('image')->store('news_images', 'public');
             }
 
-            $news = News::create($validated);
+            $news = News::create($newsData);
 
             // Additional media
             if ($request->hasFile('media')) {
@@ -61,14 +92,6 @@ class NewsController extends Controller
 
             return redirect()->route('news.index');
 
-        } catch (ValidationException $e) {
-            foreach ($e->errors() as $errors) {
-                foreach ($errors as $error) {
-                    Toastr::error($error, ['title' => 'Validation Error']);
-                }
-            }
-
-            return back()->withInput();
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 
@@ -96,32 +119,60 @@ class NewsController extends Controller
 
         try {
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'subtitle' => 'nullable|string|max:255',
+                'title_en' => 'required|string|max:255',
+                'title_mk' => 'nullable|string|max:255',
+                'title_al' => 'nullable|string|max:255',
+                'subtitle_en' => 'nullable|string|max:255',
+                'subtitle_mk' => 'nullable|string|max:255',
+                'subtitle_al' => 'nullable|string|max:255',
                 'date' => 'required|date',
-                'short_description' => 'nullable|string|max:500',
-                'detailed_description' => 'nullable|string',
+                'short_description_en' => 'nullable|string|max:500',
+                'short_description_mk' => 'nullable|string|max:500',
+                'short_description_al' => 'nullable|string|max:500',
+                'detailed_description_en' => 'nullable|string',
+                'detailed_description_mk' => 'nullable|string',
+                'detailed_description_al' => 'nullable|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
                 'media.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi|max:51200',
             ]);
 
-            // Format date properly
-            $validated['date'] = Carbon::parse($validated['date'])->format('Y-m-d');
+            $validated['date'] = \Carbon\Carbon::parse($validated['date'])->format('Y-m-d');
 
-            // Update main image if uploaded
+            $newsData = [
+                'title' => [
+                    'en' => $validated['title_en'],
+                    'mk' => $validated['title_mk'] ?? '',
+                    'al' => $validated['title_al'] ?? '',
+                ],
+                'subtitle' => [
+                    'en' => $validated['subtitle_en'] ?? '',
+                    'mk' => $validated['subtitle_mk'] ?? '',
+                    'al' => $validated['subtitle_al'] ?? '',
+                ],
+                'short_description' => [
+                    'en' => $validated['short_description_en'] ?? '',
+                    'mk' => $validated['short_description_mk'] ?? '',
+                    'al' => $validated['short_description_al'] ?? '',
+                ],
+                'detailed_description' => [
+                    'en' => $validated['detailed_description_en'] ?? '',
+                    'mk' => $validated['detailed_description_mk'] ?? '',
+                    'al' => $validated['detailed_description_al'] ?? '',
+                ],
+                'date' => $validated['date'],
+            ];
+
+            // Update main image
             if ($request->hasFile('image')) {
-                if ($news->image && Storage::disk('public')->exists($news->image)) {
-                    Storage::disk('public')->delete($news->image);
+                if ($news->image && \Storage::disk('public')->exists($news->image)) {
+                    \Storage::disk('public')->delete($news->image);
                 }
-                $validated['image'] = $request->file('image')->store('news_images', 'public');
+                $newsData['image'] = $request->file('image')->store('news_images', 'public');
             }
 
-            // Remove 'media' key to prevent mass assignment error
-            unset($validated['media']);
+            $news->update($newsData);
 
-            $news->update($validated);
-
-            // Add new additional media
+            // Add new media
             if ($request->hasFile('media')) {
                 foreach ($request->file('media') as $file) {
                     $type = strpos($file->getMimeType(), 'video') !== false ? 'video' : 'image';
@@ -136,14 +187,6 @@ class NewsController extends Controller
 
             return redirect()->route('news.index');
 
-        } catch (ValidationException $e) {
-            foreach ($e->errors() as $errors) {
-                foreach ($errors as $error) {
-                    Toastr::error($error, ['title' => 'Validation Error']);
-                }
-            }
-
-            return back()->withInput();
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
 

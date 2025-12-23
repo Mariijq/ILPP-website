@@ -10,116 +10,94 @@ use Toastr;
 
 class GalleryBackendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $images = GalleryImage::latest()->get();
-
         return view('backend.gallery.index', compact('images'));
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
             'images' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:8192',
         ]);
 
         try {
+            $title = $request->title ? ['en' => $request->title] : ['en' => ''];
+            $description = $request->description ? ['en' => $request->description] : ['en' => ''];
+
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $file) {
                     $path = $file->store('gallery_images', 'public');
-                    GalleryImage::create(['image_path' => $path,
-                        'title' => $request->title,
+
+                    GalleryImage::create([
+                        'image_path' => $path,
+                        'title' => $title,
+                        'description' => $description,
                     ]);
                 }
             }
-            Toastr::success('Image uploaded successfully!', ['title' => 'success']);
 
+            Toastr::success('Images uploaded successfully!', ['title' => 'Success']);
             return redirect()->route('gallery.index');
+
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
             return back();
         }
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
             'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         try {
             $image = GalleryImage::findOrFail($id);
-            $image->title = $request->title;
+
+            if ($request->has('title')) {
+                $current = $image->title ?? [];
+                $current['en'] = $request->title;
+                $image->title = $current;
+            }
+
+            if ($request->has('description')) {
+                $current = $image->description ?? [];
+                $current['en'] = $request->description;
+                $image->description = $current;
+            }
+
             $image->save();
 
-            Toastr::success('Title updated successfully!', ['title' => 'Success']);
-
+            Toastr::success('Image updated successfully!', ['title' => 'Success']);
             return back();
+
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
             return back();
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $image = GalleryImage::findOrFail($id);
 
         try {
-            // Delete image file from storage
-            if ($image->path && Storage::disk('public')->exists($image->path)) {
-                Storage::disk('public')->delete($image->path);
+            if ($image->image_path && Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
             }
 
             $image->delete();
             Toastr::success('Image deleted successfully!', ['title' => 'Success']);
-
             return redirect()->route('gallery.index');
+
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
             return back();
         }
     }

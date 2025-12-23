@@ -13,4 +13,10 @@ class AboutUs extends Model
         'mision',
         'goals',
     ];
+        protected $casts = [
+        'vision' => 'array',
+        'mision' => 'array',
+        'goals' => 'array',
+    ];
+
 }

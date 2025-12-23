@@ -12,10 +12,18 @@ class News extends Model
     protected $fillable = [
         'title',
         'subtitle',
-        'date',
         'short_description',
         'detailed_description',
         'image',
+        'date',
+    ];
+
+    protected $casts = [
+        'title' => 'array',
+        'subtitle' => 'array',
+        'short_description' => 'array',
+        'detailed_description' => 'array',
+        'date' => 'date',
     ];
 
     public function media()
@@ -23,14 +31,15 @@ class News extends Model
         return $this->hasMany(NewsMedia::class);
     }
 
-    public function toSearchableArray()
-    {
-        return [
-            'id' => $this->id, // Add this
-            'title' => (string) $this->title,
-            'subtitle' => (string) $this->subtitle,
-            'short_description' => (string) $this->short_description,
-            'detailed_description' => (string) $this->detailed_description,
-        ];
-    }
+public function toSearchableArray()
+{
+    return [
+        'id' => $this->id,
+
+        'title' => implode(' ', $this->title ?? []),
+        'subtitle' => implode(' ', $this->subtitle ?? []),
+        'short_description' => implode(' ', $this->short_description ?? []),
+        'detailed_description' => implode(' ', $this->detailed_description ?? []),
+    ];
+}
 }

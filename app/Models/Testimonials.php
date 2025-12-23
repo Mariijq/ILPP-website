@@ -8,5 +8,12 @@ use Laravel\Scout\Searchable;
 class Testimonials extends Model
 {
     use Searchable;
+
     protected $fillable = ['name', 'designation', 'review', 'image'];
+
+    protected $casts = [
+        'name' => 'array',
+        'designation' => 'array',
+        'review' => 'array',
+    ];
 }

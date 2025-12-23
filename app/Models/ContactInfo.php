@@ -15,6 +15,7 @@ class ContactInfo extends Model
         'facebook',
         'instagram',
         'linkedin',
+        'youtube',
         'map_embed',
     ];
 }

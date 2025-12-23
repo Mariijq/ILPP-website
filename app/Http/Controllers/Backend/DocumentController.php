@@ -31,28 +31,33 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'file_path' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png|max:20480', // 20MB limit
-        ]);
-
-        try {
-            // Store uploaded file
-            $filePath = $request->file('file_path')->store('documents', 'public');
-            $validated['file_path'] = $filePath;
-
-            Document::create($validated);
-
-            Toastr::success('Document added successfully', ['title' => 'Success']);
-
-            return redirect()->route('documents.index');
-
-        } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
-            return back()->withInput();
+        $rules = [];
+        foreach (['en', 'mk', 'al'] as $lang) {
+            $rules["title_$lang"] = 'required|string|max:255';
+            $rules["description_$lang"] = 'nullable|string';
         }
+
+        $rules['file_path'] = 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png|max:20480';
+
+        $validated = $request->validate($rules);
+
+        $data = [
+            'title' => [],
+            'description' => [],
+        ];
+
+        foreach (['en', 'mk', 'al'] as $lang) {
+            $data['title'][$lang] = $validated["title_$lang"];
+            $data['description'][$lang] = $validated["description_$lang"] ?? '';
+        }
+
+        $data['file_path'] = $request->file('file_path')->store('documents', 'public');
+
+        Document::create($data);
+
+        Toastr::success('Document added successfully!', ['title' => 'Success']);
+
+        return redirect()->route('documents.index');
     }
 
     /**
@@ -74,35 +79,39 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Document $document)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'file_path' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png|max:20480',
-        ]);
-
-        try {
-            // Handle file replacement
-
-            if ($request->hasFile('file_path')) {
-                if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
-                    Storage::disk('public')->delete($document->file_path);
-                }
-                $validated['file_path'] = $request->file('file_path')->store('documents', 'public');
-            }
-
-            $document->update($validated);
-            Toastr::success('Document updated successfully!', ['title' => 'Success']);
-
-            return redirect()->route('backend.documents.index');
-
-        } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
-            return back()->withInput();
-        }
+public function update(Request $request, Document $document)
+{
+    $rules = [];
+    foreach (['en', 'mk', 'al'] as $lang) {
+        $rules["title_$lang"] = 'required|string|max:255';
+        $rules["description_$lang"] = 'nullable|string';
     }
+
+    $rules['file_path'] = 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png|max:20480';
+
+    $validated = $request->validate($rules);
+
+    $data = [
+        'title' => [],
+        'description' => [],
+    ];
+
+    foreach (['en', 'mk', 'al'] as $lang) {
+        $data['title'][$lang] = $validated["title_$lang"];
+        $data['description'][$lang] = $validated["description_$lang"] ?? '';
+    }
+
+    if ($request->hasFile('file_path')) {
+        Storage::disk('public')->delete($document->file_path);
+        $data['file_path'] = $request->file('file_path')->store('documents', 'public');
+    }
+
+    $document->update($data);
+
+    Toastr::success('Document updated successfully!', ['title' => 'Success']);
+
+    return redirect()->route('documents.index');
+}
 
     /**
      * Remove the specified resource from storage.
@@ -117,7 +126,7 @@ class DocumentController extends Controller
             $document->delete();
             Toastr::success('Document deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('backend.documents.index');
+            return redirect()->route('documents.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

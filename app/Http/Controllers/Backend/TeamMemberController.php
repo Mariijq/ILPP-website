@@ -6,8 +6,8 @@ use App\DataTables\TeamMemberDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
-use Toastr;
 use Illuminate\Support\Facades\Storage;
+use Toastr;
 
 class TeamMemberController extends Controller
 {
@@ -33,28 +33,50 @@ class TeamMemberController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
+            'name_en' => 'required|string|max:255',
+            'name_mk' => 'nullable|string|max:255',
+            'name_al' => 'nullable|string|max:255',
+            'position_en' => 'nullable|string|max:255',
+            'position_mk' => 'nullable|string|max:255',
+            'position_al' => 'nullable|string|max:255',
+            'bio_en' => 'nullable|string',
+            'bio_mk' => 'nullable|string',
+            'bio_al' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
         ]);
 
-        try {
-            if ($request->hasFile('image')) {
-                $data['image'] = $request->file('image')->store('team-members', 'public');
-            }
+        // Convert multilingual inputs into JSON array
+        $data['name'] = [
+            'en' => $data['name_en'],
+            'mk' => $data['name_mk'] ?? '',
+            'al' => $data['name_al'] ?? '',
+        ];
+        unset($data['name_en'], $data['name_mk'], $data['name_al']);
 
-            TeamMember::create($data);
+        $data['position'] = [
+            'en' => $data['position_en'] ?? '',
+            'mk' => $data['position_mk'] ?? '',
+            'al' => $data['position_al'] ?? '',
+        ];
+        unset($data['position_en'], $data['position_mk'], $data['position_al']);
 
-            Toastr::success('Team Member added successfully!', ['title' => 'Success']);
+        $data['bio'] = [
+            'en' => $data['bio_en'] ?? '',
+            'mk' => $data['bio_mk'] ?? '',
+            'al' => $data['bio_al'] ?? '',
+        ];
+        unset($data['bio_en'], $data['bio_mk'], $data['bio_al']);
 
-            return redirect()->route('team-members.index');
-        } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
-            return back()->withInput();
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('team-members', 'public');
         }
+
+        TeamMember::create($data);
+
+        Toastr::success('Team Member added successfully!', ['title' => 'Success']);
+
+        return redirect()->route('team-members.index');
     }
 
     /**
@@ -76,34 +98,55 @@ class TeamMemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, TeamMember $teamMember)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
+            'name_en' => 'required|string|max:255',
+            'name_mk' => 'nullable|string|max:255',
+            'name_al' => 'nullable|string|max:255',
+            'position_en' => 'nullable|string|max:255',
+            'position_mk' => 'nullable|string|max:255',
+            'position_al' => 'nullable|string|max:255',
+            'bio_en' => 'nullable|string',
+            'bio_mk' => 'nullable|string',
+            'bio_al' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
         ]);
 
-        try {
-            if ($request->hasFile('image')) {
-                // Delete old image if exists
-                if ($teamMember->image) {
-                    Storage::disk('public')->delete($teamMember->image);
-                }
-                $data['image'] = $request->file('image')->store('team-members', 'public');
+        $data['name'] = [
+            'en' => $data['name_en'],
+            'mk' => $data['name_mk'] ?? '',
+            'al' => $data['name_al'] ?? '',
+        ];
+        unset($data['name_en'], $data['name_mk'], $data['name_al']);
+
+        $data['position'] = [
+            'en' => $data['position_en'] ?? '',
+            'mk' => $data['position_mk'] ?? '',
+            'al' => $data['position_al'] ?? '',
+        ];
+        unset($data['position_en'], $data['position_mk'], $data['position_al']);
+
+        $data['bio'] = [
+            'en' => $data['bio_en'] ?? '',
+            'mk' => $data['bio_mk'] ?? '',
+            'al' => $data['bio_al'] ?? '',
+        ];
+        unset($data['bio_en'], $data['bio_mk'], $data['bio_al']);
+
+        if ($request->hasFile('image')) {
+            if ($teamMember->image) {
+                Storage::disk('public')->delete($teamMember->image);
             }
-
-            $teamMember->update($data);
-            Toastr::success('Team member updated successfully', ['title' => 'Succes']);
-
-            return redirect()->route('team-members.index');
-        } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
-
-            return back()->withInput();
+            $data['image'] = $request->file('image')->store('team-members', 'public');
         }
+
+        $teamMember->update($data);
+
+        Toastr::success('Team Member updated successfully!', ['title' => 'Success']);
+
+        return redirect()->route('team-members.index');
     }
 
     /**

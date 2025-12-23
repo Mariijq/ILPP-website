@@ -12,4 +12,9 @@ class History extends Model
         'description',
         'title',
     ];
+
+    protected $casts = [
+        'description' => 'array',
+        'title' => 'array',
+    ];
 }

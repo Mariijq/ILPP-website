@@ -1,76 +1,117 @@
 @extends('backend.layout')
-
+@section('title', 'Publications')
 @section('content')
-    <h4 class="mb-4">{{ isset($publications) ? 'Edit Publication' : 'Add Publication' }}</h4>
 
-    <div class="publication-form">
+@php
+    $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+@endphp
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>{{ isset($publication) ? 'Edit Publication' : 'Add Publication' }}</h3>
+    </div>
+
+    <div class="card-body">
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         <form
-            action="{{ isset($publications) ? route('publications.update', $publications->id) : route('publications.store') }}"
+            action="{{ isset($publication) ? route('publications.update', $publication->id) : route('publications.store') }}"
             method="POST" enctype="multipart/form-data">
             @csrf
-            @if (isset($publications))
+            @if (isset($publication))
                 @method('PUT')
             @endif
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                <input type="text" name="title" id="title" class="form-control"
-                    value="{{ old('title', $publications->title ?? '') }}" required>
-            </div>
+            {{-- LANGUAGE TABS --}}
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach ($languages as $code => $label)
+                    <li class="nav-item">
+                        <button class="nav-link @if ($loop->first) active @endif"
+                                data-bs-toggle="tab"
+                                data-bs-target="#lang-{{ $code }}"
+                                type="button">
+                            {{ $label }}
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
 
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" name="date" id="date" class="form-control"
-                    value="{{ old('date', isset($publications) && $publications->date ? $publications->date->format('Y-m-d') : '') }}"
-                    required>
-            </div>
+            <div class="tab-content mt-3">
+                @foreach ($languages as $code => $label)
+                    <div class="tab-pane fade @if ($loop->first) show active @endif"
+                         id="lang-{{ $code }}">
 
-            <div class="mb-3">
-                <label for="short_description" class="form-label">Short Description</label>
-                <textarea name="short_description" id="short_description" class="form-control">{{ old('short_description', $publications->short_description ?? '') }}</textarea>
-            </div>
+                        {{-- TITLE --}}
+                        <div class="mb-3">
+                            <label class="form-label">Title ({{ $label }})</label>
+                            <input type="text"
+                                   name="title_{{ $code }}"
+                                   class="form-control"
+                                   value="{{ old('title_'.$code, $publication->title[$code] ?? '') }}"
+                                   {{ $code === 'en' ? 'required' : '' }}>
+                        </div>
 
-            <div class="mb-3">
-                <label for="detailed_description" class="form-label">Detailed Description</label>
-                <textarea name="detailed_description" id="detailed_description" class="form-control">{{ old('detailed_description', $publications->detailed_description ?? '') }}</textarea>
-            </div>
+                        {{-- SHORT DESCRIPTION --}}
+                        <div class="mb-3">
+                            <label class="form-label">Short Description ({{ $label }})</label>
+                            <textarea name="short_description_{{ $code }}"
+                                      class="form-control"
+                                      rows="3">{{ old('short_description_'.$code, $publication->short_description[$code] ?? '') }}</textarea>
+                        </div>
 
-            <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input type="file" name="image" id="image" class="form-control">
+                        {{-- DETAILED DESCRIPTION --}}
+                        <div class="mb-3">
+                            <label class="form-label">Detailed Description ({{ $label }})</label>
+                            <textarea name="detailed_description_{{ $code }}"
+                                      class="form-control ckeditor"
+                                      rows="6">{{ old('detailed_description_'.$code, $publication->detailed_description[$code] ?? '') }}</textarea>
+                        </div>
 
-                @if (isset($publications) && $publications->image)
-                    <div class="mt-2">
-                        <img src="{{ asset('storage/' . $publications->image) }}" alt="Publication Image" width="100"
-                            height="100" style="object-fit: cover;">
                     </div>
+                @endforeach
+            </div>
+
+            {{-- IMAGE --}}
+            <div class="mb-3 mt-3">
+                <label class="form-label">Image</label>
+                <input type="file" name="image" class="form-control">
+
+                @if (isset($publication) && $publication->image)
+                    <img src="{{ asset('storage/' . $publication->image) }}"
+                         style="width:80px;height:80px;margin-top:10px;object-fit:cover;">
                 @endif
             </div>
-            <div class="mb-3">
-                <label for="file" class="form-label fw-semibold">File</label>
-                <input type="file" name="file" id="file" class="form-control">
 
-                @if (isset($publications) && $publications->file)
-                    <div class="mt-3">
-                        <a href="{{ asset('storage/' . $publications->file) }}" target="_blank"
-                            class="btn btn-outline-primary btn-sm">
+            {{-- FILE --}}
+            <div class="mb-3">
+                <label class="form-label">File</label>
+                <input type="file" name="file" class="form-control">
+
+                @if (isset($publication) && $publication->file)
+                    <div class="mt-2">
+                        <a href="{{ asset('storage/' . $publication->file) }}"
+                           target="_blank"
+                           class="btn btn-outline-primary btn-sm">
                             View Current File
                         </a>
                     </div>
                 @endif
             </div>
 
-
+            {{-- ACTIONS --}}
             <div class="d-flex justify-content-end">
-                <a href="{{ route('publications.index') }}" class="btn btn-secondary me-2">Cancel</a>
+                <a href="{{ route('publications.index') }}" class="btn btn-secondary me-2">
+                    Cancel
+                </a>
                 <button type="submit" class="btn btn-custom">
-                    {{ isset($publications) ? 'Update' : 'Save' }}
+                    {{ isset($publication) ? 'Update' : 'Save' }}
                 </button>
             </div>
+
         </form>
     </div>
+</div>
+
 @endsection

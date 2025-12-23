@@ -13,10 +13,10 @@ class WhatWeDoController extends Controller
     {
         // Auto-create record if none exists
         $whatWeDo = WhatWeDo::first() ?? WhatWeDo::create([
-            'title' => 'Our Programs',
-            'leadership' => '',
-            'research' => '',
-            'public_policy' => '',
+            'title' => ['en' => 'Our Programs', 'mk' => '', 'al' => ''],
+            'leadership' => ['en' => '', 'mk' => '', 'al' => ''],
+            'research' => ['en' => '', 'mk' => '', 'al' => ''],
+            'public_policy' => ['en' => '', 'mk' => '', 'al' => ''],
         ]);
 
         return view('backend.what-we-do.index', compact('whatWeDo'));
@@ -24,16 +24,23 @@ class WhatWeDoController extends Controller
 
     public function updateOrCreate(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'nullable|string|max:255',
-            'leadership' => 'nullable|string',
-            'research' => 'nullable|string',
-            'public_policy' => 'nullable|string',
-        ]);
+        $languages = ['en', 'mk', 'al'];
+
+        $fields = ['title', 'leadership', 'research', 'public_policy'];
+
+        $data = [];
+
+        foreach ($fields as $field) {
+            $data[$field] = [];
+            foreach ($languages as $lang) {
+                $inputName = $field . '_' . $lang;
+                $data[$field][$lang] = $request->input($inputName, '');
+            }
+        }
 
         WhatWeDo::updateOrCreate(['id' => 1], $data);
 
-        Toastr::success('Content updated successfully!', ['title'=>'Success']);
+        Toastr::success('Content updated successfully!', ['title' => 'Success']);
         return redirect()->back();
     }
 }

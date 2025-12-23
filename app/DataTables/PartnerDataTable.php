@@ -16,39 +16,47 @@ class PartnerDataTable extends DataTable
      *
      * @param  \Illuminate\Database\Eloquent\Builder<Partner>  $query
      */
-    public function dataTable($query): EloquentDataTable
-    {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('logo', function ($partner) {
-                if ($partner->logo && file_exists(storage_path('app/public/'.$partner->logo))) {
-                    return '<img src="'.asset('storage/'.$partner->logo).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
-                }
+public function dataTable($query): EloquentDataTable
+{
+    return datatables()
+        ->eloquent($query)
 
-                return '<span class="text-muted">No Logo</span>';
-            })
-            ->addColumn('action', function ($partner) {
-                $viewUrl = route('partners.show', $partner->id);
-                $editUrl = route('partners.edit', $partner->id);
-                $deleteUrl = route('partners.destroy', $partner->id);
+        ->addColumn('name', function ($partner) {
+            $locale = app()->getLocale();
 
-                return '
-        <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">
-            <i class="bi bi-eye"></i>
-        </a>
-        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-            '.csrf_field().method_field('DELETE').'
-            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                <i class="bi bi-trash"></i>
-            </button>
-        </form>';
-            })
-            ->rawColumns(['logo', 'action'])
-            ->setRowId('id');
-    }
+            return $partner->name[$locale]
+                ?? $partner->name['en']
+                ?? '';
+        })
+
+        ->addColumn('logo', function ($partner) {
+            if ($partner->logo && file_exists(storage_path('app/public/' . $partner->logo))) {
+                return '<img src="' . asset('storage/' . $partner->logo) . '" 
+                        style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
+            }
+
+            return '<span class="text-muted">No Logo</span>';
+        })
+
+        ->addColumn('action', function ($partner) {
+            return '
+                <a href="' . route('partners.show', $partner->id) . '" class="btn btn-info btn-sm me-1">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="' . route('partners.edit', $partner->id) . '" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="' . route('partners.destroy', $partner->id) . '" class="d-inline">
+                    ' . csrf_field() . method_field('DELETE') . '
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>';
+        })
+
+        ->rawColumns(['logo', 'action'])
+        ->setRowId('id');
+}
 
     /**
      * Get the query source of dataTable.

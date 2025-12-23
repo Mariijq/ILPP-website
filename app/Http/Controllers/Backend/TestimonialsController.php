@@ -23,35 +23,45 @@ class TestimonialsController extends Controller
 
     public function store(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'name'        => 'required|string|max:255',
-            'designation' => 'nullable|string|max:255',
-            'review'      => 'nullable|string|max:300',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
-        ], [
-            'review.max'  => 'The review must not exceed 300 characters.',
+        $validated = $request->validate([
+            'name_en'        => 'required|string|max:255',
+            'designation_en' => 'nullable|string|max:255',
+            'review_en'      => 'nullable|string|max:300',
+            'name_mk'        => 'nullable|string|max:255',
+            'designation_mk' => 'nullable|string|max:255',
+            'review_mk'      => 'nullable|string|max:300',
+            'name_al'        => 'nullable|string|max:255',
+            'designation_al' => 'nullable|string|max:255',
+            'review_al'      => 'nullable|string|max:300',
+            'image'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                Toastr::error($error, ['title' => 'Validation Error']);
-            }
-            return back()->withInput();
+        $data = [
+            'name' => [
+                'en' => $validated['name_en'],
+                'mk' => $validated['name_mk'] ?? '',
+                'al' => $validated['name_al'] ?? '',
+            ],
+            'designation' => [
+                'en' => $validated['designation_en'] ?? '',
+                'mk' => $validated['designation_mk'] ?? '',
+                'al' => $validated['designation_al'] ?? '',
+            ],
+            'review' => [
+                'en' => $validated['review_en'] ?? '',
+                'mk' => $validated['review_mk'] ?? '',
+                'al' => $validated['review_al'] ?? '',
+            ],
+        ];
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('testimonials', 'public');
         }
 
-        $data = $request->only(['name', 'designation', 'review']);
-
         try {
-            if ($request->hasFile('image')) {
-                $data['image'] = $request->file('image')->store('testimonials', 'public');
-            }
-
             Testimonials::create($data);
-
             Toastr::success('Testimonial added successfully!', ['title' => 'Success']);
-
             return redirect()->route('testimonials.index');
-
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
@@ -65,40 +75,49 @@ class TestimonialsController extends Controller
 
     public function update(Request $request, Testimonials $testimonial)
     {
-        $validator = \Validator::make($request->all(), [
-            'name'        => 'required|string|max:255',
-            'designation' => 'nullable|string|max:255',
-            'review'      => 'nullable|string|max:300',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
-        ], [
-            'review.max'  => 'The review must not exceed 300 characters.',
+        $validated = $request->validate([
+            'name_en'        => 'required|string|max:255',
+            'designation_en' => 'nullable|string|max:255',
+            'review_en'      => 'nullable|string|max:300',
+            'name_mk'        => 'nullable|string|max:255',
+            'designation_mk' => 'nullable|string|max:255',
+            'review_mk'      => 'nullable|string|max:300',
+            'name_al'        => 'nullable|string|max:255',
+            'designation_al' => 'nullable|string|max:255',
+            'review_al'      => 'nullable|string|max:300',
+            'image'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                Toastr::error($error, ['title' => 'Validation Error']);
-            }
-            return back()->withInput();
-        }
-
-        $data = $request->only(['name', 'designation', 'review']);
+        $data = [
+            'name' => [
+                'en' => $validated['name_en'],
+                'mk' => $validated['name_mk'] ?? '',
+                'al' => $validated['name_al'] ?? '',
+            ],
+            'designation' => [
+                'en' => $validated['designation_en'] ?? '',
+                'mk' => $validated['designation_mk'] ?? '',
+                'al' => $validated['designation_al'] ?? '',
+            ],
+            'review' => [
+                'en' => $validated['review_en'] ?? '',
+                'mk' => $validated['review_mk'] ?? '',
+                'al' => $validated['review_al'] ?? '',
+            ],
+        ];
 
         try {
             if ($request->hasFile('image')) {
-
                 if ($testimonial->image && Storage::disk('public')->exists($testimonial->image)) {
                     Storage::disk('public')->delete($testimonial->image);
                 }
-
                 $data['image'] = $request->file('image')->store('testimonials', 'public');
             }
 
             $testimonial->update($data);
 
             Toastr::success('Testimonial updated successfully!', ['title' => 'Success']);
-
             return redirect()->route('testimonials.index');
-
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
@@ -115,9 +134,7 @@ class TestimonialsController extends Controller
             $testimonial->delete();
 
             Toastr::success('Testimonial deleted successfully!', ['title' => 'Success']);
-
             return redirect()->route('testimonials.index');
-
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back();

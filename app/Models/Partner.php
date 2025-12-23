@@ -14,4 +14,14 @@ class Partner extends Model
         'website',
         'order',
     ];  
+
+    protected $casts = [
+        'name' => 'array',
+    ];
+    public function getLocalizedNameAttribute()
+{
+    $locale = app()->getLocale();
+    return $this->name[$locale] ?? $this->name['en'] ?? '';
+}
+
 }

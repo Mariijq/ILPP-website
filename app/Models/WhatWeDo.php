@@ -13,4 +13,11 @@ class WhatWeDo extends Model
         'research',
         'public_policy',
     ];
+
+    protected $casts = [
+        'title' => 'array',
+        'leadership' => 'array',
+        'research' => 'array',
+        'public_policy' => 'array',
+    ];
 }

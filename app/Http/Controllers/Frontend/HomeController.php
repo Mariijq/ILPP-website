@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Slide;
 use App\Models\Testimonials;
+use App\Models\GalleryImage;
 
 class HomeController extends Controller
 {
@@ -32,7 +33,8 @@ class HomeController extends Controller
         // Get latest 6 projects
         $projects = \App\Models\Project::latest()->take(6)->get();
         $publications = \App\Models\Publication::latest()->take(6)->get();
+    $galleryImages = GalleryImage::latest()->get(); // fetch all gallery images
 
-        return view('frontend.pages.home', compact('testimonials', 'slides', 'projects', 'publications'));
+        return view('frontend.pages.home', compact('testimonials', 'slides', 'projects', 'publications', 'galleryImages'));
     }
 }

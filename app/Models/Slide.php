@@ -11,6 +11,11 @@ class Slide extends Model
     use Searchable;
     protected $fillable = ['news_id', 'title', 'subtitle', 'date', 'image', 'order'];
 
+    protected $casts = [
+        'title'    => 'array',
+        'subtitle' => 'array',
+        'date'     => 'date',
+    ];
     public function news()
     {
         return $this->belongsTo(News::class);

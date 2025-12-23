@@ -1,4 +1,5 @@
 @extends('frontend.layouts.main')
+@php $locale = app()->getLocale(); @endphp
 
 @section('content')
     <div class="details-wrapper">
@@ -6,11 +7,11 @@
         <!-- Main Content -->
         <div class="details-main">
             <header class="details">
-                <h1 class="details-title">{{ $project->title }}</h1>
+                <h1 class="details-title">{{ $project->title[$locale] ?? $project->title['en'] }}</h1>
 
                 @if ($project->image)
                     <img src="{{ asset('storage/' . $project->image) }}" 
-                         alt="{{ $project->title }}" 
+                         alt="{{ $project->localized_title }}" 
                          class="details-image">
                 @endif
 
@@ -19,7 +20,7 @@
                 @endif
 
                 @if ($project->subtitle)
-                    <h3 class="details-subtitle">{{ $project->subtitle }}</h3>
+                    <h3 class="details-subtitle">{{ $project->subtitle[$locale] ?? $project->subtitle['en'] }}</h3>
                 @endif
 
                 @if ($project->status)
@@ -28,11 +29,11 @@
             </header>
 
             @if ($project->short_description)
-                <p class="details-short-description">{{ $project->short_description }}</p>
+                <p class="details-short-description">{{ $project->short_description[$locale] ?? $project->short_description['en'] }}</p>
             @endif
 
             <div class="details-content">
-                {!! $project->detailed_description !!}
+                {!! $project->detailed_description[$locale] ?? $project->detailed_description['en'] !!}
             </div>
         </div>
 

@@ -24,12 +24,14 @@
 </head>
 
 <body>
+
     <!-- Sidebar Toggle Button -->
     <div class="hamburger mobile-only d-flex">
         <i class="bi bi-list"></i>
     </div>
 
     <div class="backend-wrapper d-flex">
+
         <!-- Sidebar -->
         <aside class="backend-sidebar">
             <div class="brand">
@@ -38,9 +40,8 @@
             </div>
 
             <nav class="menu">
-                <!-- Home Section -->
-                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-home"
-                    aria-expanded="false">
+
+                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-home">
                     Home
                 </button>
                 <div class="collapse" id="collapse-home">
@@ -50,9 +51,7 @@
                     </ul>
                 </div>
 
-                <!-- Who We Are Section -->
-                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-who"
-                    aria-expanded="false">
+                <button class="btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-who">
                     Who We Are
                 </button>
                 <div class="collapse" id="collapse-who">
@@ -66,7 +65,6 @@
                     </ul>
                 </div>
 
-                <!-- Other Sections -->
                 <a href="{{ route('backend.dashboard') }}">Settings</a>
                 <a href="{{ route('news.index') }}">News</a>
                 <a href="{{ route('projects.index') }}">Projects</a>
@@ -76,7 +74,6 @@
                 <a href="{{ route('contact-messages.index') }}">Contact Messages</a>
             </nav>
 
-            <!-- Logout -->
             <div class="logout-form mt-auto">
                 <form action="{{ route('backend.logout') }}" method="POST">
                     @csrf
@@ -85,7 +82,7 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <main class="backend-main flex-grow-1">
             <header class="backend-header">
                 <h1>@yield('title')</h1>
@@ -97,10 +94,11 @@
         </main>
     </div>
 
-    <!-- Scripts -->
+    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
@@ -108,93 +106,74 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Sidebar + CKEditor -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+
             const $hamburger = $('.hamburger');
             const $sidebar = $('.backend-sidebar');
             const $main = $('.backend-main');
 
-            // Toggle sidebar
-            $hamburger.click(function() {
+            $hamburger.on('click', function () {
                 $sidebar.toggleClass('active');
                 $main.toggleClass('shifted');
+                $hamburger.toggle(!$sidebar.hasClass('active'));
+            });
 
-                // Hide hamburger when sidebar is open
-                if ($sidebar.hasClass('active')) {
-                    $hamburger.hide();
-                } else {
+            $(document).on('click', function (e) {
+                if ($sidebar.hasClass('active') &&
+                    !$(e.target).closest($sidebar).length &&
+                    !$(e.target).closest($hamburger).length) {
+
+                    $sidebar.removeClass('active');
+                    $main.removeClass('shifted');
                     $hamburger.show();
                 }
             });
 
-            // Click outside sidebar closes it on mobile
-            $(document).click(function(e) {
-                if ($sidebar.hasClass('active')) {
-                    if (!$(e.target).closest($sidebar).length && !$(e.target).closest($hamburger).length) {
-                        $sidebar.removeClass('active');
-                        $main.removeClass('shifted');
-                        $hamburger.show(); // show hamburger again
-                    }
-                }
-            });
-        });
-        // CKEditor initialization
-        ['detailed_description', 'vision', 'mision', 'goals', 'description', 'leadership', 'research',
-            'public_policy', 'history'
-        ].forEach(id => {
-            if (document.getElementById(id)) {
-                CKEDITOR.replace(id, {
-                    height: (id === 'detailed_description' || id === 'description' || id ===
-                        'leadership' || id === 'research' || id === 'public_policy') ? 300 : 150,
+            /* ================= CKEDITOR INIT ================= */
+            document.querySelectorAll('.ckeditor').forEach(function (el) {
+                CKEDITOR.replace(el.id, {
+                    height: 300,
                     removeButtons: ''
                 });
-            }
-        });
-
-        // Toastr Notifications
-        @if (session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
-        @if (session('error'))
-            toastr.error("{{ session('error') }}");
-        @endif
-        @if (session('warning'))
-            toastr.warning("{{ session('warning') }}");
-        @endif
-        @if (session('info'))
-            toastr.info("{{ session('info') }}");
-        @endif
-
-        // ========================= SWEETALERT DELETE CONFIRMATION =========================
-        $(document).on('click', '.delete-form button', function(e) {
-            e.preventDefault(); // prevent form submission
-
-            const form = $(this).closest('form');
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "This action cannot be undone!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#26a6a0',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
             });
+
+            /* ================= TOASTR ================= */
+            @if (session('success')) toastr.success("{{ session('success') }}"); @endif
+            @if (session('error')) toastr.error("{{ session('error') }}"); @endif
+            @if (session('warning')) toastr.warning("{{ session('warning') }}"); @endif
+            @if (session('info')) toastr.info("{{ session('info') }}"); @endif
+
+            /* ================= DELETE CONFIRM ================= */
+            $(document).on('click', '.delete-form button', function (e) {
+                e.preventDefault();
+                const form = $(this).closest('form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action cannot be undone!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#26a6a0',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(result => {
+                    if (result.isConfirmed) form.submit();
+                });
+            });
+
         });
     </script>
-
 
     @if (isset($dataTable))
         {!! $dataTable->scripts() !!}
     @endif
-</body>
 
+</body>
 </html>

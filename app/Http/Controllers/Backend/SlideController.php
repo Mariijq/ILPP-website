@@ -17,16 +17,20 @@ class SlideController extends Controller
     {
         return $dataTable->render('backend.slides.index');
     }
+
     // Create slide (select news)
     public function create()
     {
         $news = News::latest()->get(); // get all news
-        return view('backend.slides.create', compact('news'));
+        $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+        return view('backend.slides.create', compact('news', 'languages'));
     }
 
     // Store new slide
     public function store(Request $request)
     {
+        $languages = ['en', 'mk', 'al'];
+
         $request->validate([
             'news_id' => 'required|exists:news,id',
             'order' => 'nullable|integer',
@@ -34,10 +38,18 @@ class SlideController extends Controller
 
         $news = News::findOrFail($request->news_id);
 
+        $title = [];
+        $subtitle = [];
+
+        foreach ($languages as $lang) {
+            $title[$lang] = $news->title[$lang] ?? ($lang === 'en' ? $news->title['en'] : '');
+            $subtitle[$lang] = $news->subtitle[$lang] ?? ($lang === 'en' ? $news->subtitle['en'] : '');
+        }
+
         Slide::create([
             'news_id'  => $news->id,
-            'title'    => $news->title,
-            'subtitle' => $news->subtitle,
+            'title'    => $title,
+            'subtitle' => $subtitle,
             'date'     => $news->date ?? $news->created_at->format('Y-m-d'),
             'image'    => $news->image,
             'order'    => $request->order ?? 0,
@@ -51,12 +63,15 @@ class SlideController extends Controller
     public function edit(Slide $slide)
     {
         $news = News::latest()->get();
-        return view('backend.slides.create', compact('slide', 'news'));
+        $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+        return view('backend.slides.create', compact('slide', 'news', 'languages'));
     }
 
     // Update slide
     public function update(Request $request, Slide $slide)
     {
+        $languages = ['en', 'mk', 'al'];
+
         $request->validate([
             'news_id' => 'required|exists:news,id',
             'order' => 'nullable|integer',
@@ -64,10 +79,18 @@ class SlideController extends Controller
 
         $news = News::findOrFail($request->news_id);
 
+        $title = [];
+        $subtitle = [];
+
+        foreach ($languages as $lang) {
+            $title[$lang] = $news->title[$lang] ?? ($lang === 'en' ? $news->title['en'] : '');
+            $subtitle[$lang] = $news->subtitle[$lang] ?? ($lang === 'en' ? $news->subtitle['en'] : '');
+        }
+
         $slide->update([
             'news_id'  => $news->id,
-            'title'    => $news->title,
-            'subtitle' => $news->subtitle,
+            'title'    => $title,
+            'subtitle' => $subtitle,
             'date'     => $news->date ?? $news->created_at->format('Y-m-d'),
             'image'    => $news->image,
             'order'    => $request->order ?? 0,

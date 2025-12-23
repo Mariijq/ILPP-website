@@ -10,5 +10,7 @@
 
     <!-- ================= Testimonials Section ================= -->
 @include('frontend.pages.sections.testimonials')
+@include('frontend.pages.sections.gallery')
+
 
 @endsection

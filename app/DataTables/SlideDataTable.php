@@ -11,6 +11,13 @@ use Yajra\DataTables\Services\DataTable;
 
 class SlideDataTable extends DataTable
 {
+    protected $locale;
+
+    public function __construct()
+    {
+        $this->locale = app()->getLocale(); // current locale
+    }
+
     public function dataTable($query): EloquentDataTable
     {
         return datatables()
@@ -19,11 +26,17 @@ class SlideDataTable extends DataTable
                 if ($slide->image && file_exists(storage_path('app/public/'.$slide->image))) {
                     return '<img src="'.asset('storage/'.$slide->image).'" style="width:80px;height:50px;object-fit:cover;border-radius:6px;">';
                 }
-
                 return '<span class="text-muted">No Image</span>';
             })
+            ->addColumn('title', function ($slide) {
+                return $slide->title[$this->locale] ?? $slide->title['en'] ?? '';
+            })
+            ->addColumn('subtitle', function ($slide) {
+                return $slide->subtitle[$this->locale] ?? $slide->subtitle['en'] ?? '';
+            })
             ->addColumn('news_title', function ($slide) {
-                return $slide->news ? $slide->news->title : '<span class="text-muted">No News</span>';
+                $news = $slide->news;
+                return $news ? ($news->title[$this->locale] ?? $news->title['en'] ?? '') : '<span class="text-muted">No News</span>';
             })
             ->addColumn('action', function ($slide) {
                 $editUrl = route('slides.edit', $slide->id);
@@ -40,7 +53,7 @@ class SlideDataTable extends DataTable
             </button>
         </form>';
             })
-            ->rawColumns(['action', 'image', 'news_title'])
+            ->rawColumns(['action', 'image'])
             ->setRowId('id');
     }
 

@@ -13,4 +13,17 @@ class Document extends Model
         'file_path',
         'description',
     ];
+        protected $casts = [
+        'title' => 'array',
+        'description' => 'array',
+    ];
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => implode(' ', $this->title ?? []),
+            'description' => implode(' ', $this->description ?? []),
+        ];
+    }
 }

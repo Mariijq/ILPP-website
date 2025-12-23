@@ -1,7 +1,8 @@
 @extends('backend.layout')
 
-@section('title', isset($slide->id) ? 'Edit Slide' : 'Add Slide')
+@section('title', 'Slides')
 
+@php $locale = app()->getLocale(); @endphp
 @section('content')
     <h4 class="mb-4">{{ isset($slide->id) ? 'Edit Slide' : 'Add Slide' }}</h4>
 
@@ -13,7 +14,7 @@
             <select name="news_id" class="form-control" required>
                 <option value="">-- Select News --</option>
                 @foreach ($news as $n)
-                    <option value="{{ $n->id }}">{{ $n->title }}</option>
+                    <option value="{{ $n->id }}">{{ $n->title[$locale] ?? $n->title['en'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -23,7 +24,7 @@
             <input type="number" name="order" class="form-control">
         </div>
 
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-custom">Save</button>
     </form>
 
 

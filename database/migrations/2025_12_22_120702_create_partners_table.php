@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('logo')->nullable(); // image/logo
             $table->string('website')->nullable(); // for orgs or bio link for people
-            $table->enum('type', ['person', 'organization'])->default('organization');
+            $table->enum('type', ['Funding & Support', 'Strategic Partners'])->default('Funding & Support');
             $table->integer('order')->default(0);
             $table->timestamps();
-
-
         });
     }
 

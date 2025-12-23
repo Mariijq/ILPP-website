@@ -6,22 +6,45 @@
     <div class="document-form">
 
         <form action="{{ isset($document) ? route('documents.update', $document->id) : route('documents.store') }}"
-              method="POST" enctype="multipart/form-data">
+            method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($document))
                 @method('PUT')
             @endif
+            @php
+                $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+            @endphp
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                <input type="text" name="title" id="title" class="form-control"
-                       value="{{ old('title', $document->title ?? '') }}" required>
+            <ul class="nav nav-tabs mb-3">
+                @foreach ($languages as $code => $lang)
+                    <li class="nav-item">
+                        <button class="nav-link {{ $loop->first ? 'active' : '' }}" data-bs-toggle="tab"
+                            data-bs-target="#lang-{{ $code }}">
+                            {{ $lang }}
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+
+            <div class="tab-content">
+                @foreach ($languages as $code => $lang)
+                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="lang-{{ $code }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" name="title_{{ $code }}" class="form-control"
+                                value="{{ old("title_$code", $document->title[$code] ?? '') }}" >
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea name="description_{{ $code }}" class="form-control ckeditor" rows="4">{{ old("description_$code", $document->description[$code] ?? '') }}</textarea>
+                        </div>
+
+                    </div>
+                @endforeach
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" class="form-control" rows="4">{{ old('description', $document->description ?? '') }}</textarea>
-            </div>
 
             <div class="mb-3">
                 <label for="file_path" class="form-label">Upload File</label>
@@ -31,7 +54,8 @@
                     <div class="mt-2">
                         <small class="text-muted">
                             Current file:
-                            <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank"
+                                class="btn btn-outline-primary btn-sm">
                                 View File
                             </a>
                         </small>

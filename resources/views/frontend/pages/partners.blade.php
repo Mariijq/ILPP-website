@@ -2,7 +2,7 @@
 @section('content')
 <section class="grid-wrapper">
     <div class="section-header">
-        <h2>Partners / Supporters</h2>
+        <h2>{{ __('frontend.Funding_&_Support') }}</h2>
     </div>
     <div class="grid-band">
         @foreach($partners as $partner)
@@ -15,7 +15,7 @@
                     </div>
                 @endif
                 <article>
-                    <h1>{{ $partner->name }}</h1>
+<h1>{{ $partner->localized_name }}</h1>
                     @if($partner->type)
                         <span>{{ ucfirst($partner->type) }}</span>
                     @endif

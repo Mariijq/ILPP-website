@@ -2,7 +2,7 @@
 @section('content')
 <section class="grid-wrapper">
     <div class="section-header">
-        <h2>Our Team</h2>
+        <h2>{{ __('frontend.team') }}</h2>
     </div>
     <div class="grid-band">
         @foreach ($members as $member)

@@ -10,7 +10,6 @@ use App\Http\Controllers\Frontend\PublicationsController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\WhoWeAreController;
 use App\Http\Controllers\LanguageController;
-
 use Illuminate\Support\Facades\Route;
 
 // ==================== CLIENT (PUBLIC SITE) ====================//
@@ -20,7 +19,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news-details');
 
-Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
+Route::get('/projects/current', [ProjectsController::class, 'current'])->name('projects.current');
+Route::get('/projects/completed', [ProjectsController::class, 'completed'])->name('projects.completed');
 Route::get('/projects/{id}', [ProjectsController::class, 'show'])->name('project-details');
 
 Route::get('/publications', [PublicationsController::class, 'index'])->name('publications');
@@ -48,6 +48,7 @@ Route::prefix('who-we-are')->group(function () {
     Route::get('what-we-do', [WhoWeAreController::class, 'whatWeDo'])->name('what-we-do');
     Route::get('team', [WhoWeAreController::class, 'team'])->name('team');
     Route::get('partners', [WhoWeAreController::class, 'partners'])->name('partners');
+    Route::get('supporters', [WhoWeAreController::class, 'supporters'])->name('supporters');
     Route::get('documents', [WhoWeAreController::class, 'documents'])->name('documents');
 
 });
