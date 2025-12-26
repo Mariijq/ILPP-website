@@ -19,7 +19,7 @@ class HistoryController extends Controller
             'description' => json_encode(array_fill_keys(array_keys($this->languages), 'Default description...')),
         ]);
 
-        return view('backend.history.index', compact('history'))->with('languages', $this->languages);
+        return view('backend.pages.history.index', compact('history'))->with('languages', $this->languages);
     }
 
     public function updateOrCreate(Request $request)

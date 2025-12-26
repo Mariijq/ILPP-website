@@ -1,4 +1,4 @@
-@extends('frontend.layouts.main')
+@extends('frontend.layouts.layout')
 
 @section('content')
 
@@ -55,32 +55,6 @@
             </div>
         @endif
     </div>
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h3 class="sidebar-title">Recent News</h3>
-
-        @foreach ($recentNews as $item)
-            <a href="{{ route('news-details', $item->id) }}" class="recent-item">
-                @if ($item->image)
-                    <div class="thumb" style="background-image: url('{{ asset('storage/' . $item->image) }}');"></div>
-                @endif
-                <div class="recent-info">
-                    <span class="recent-title">{{ $item->title[$locale] ?? $item->title['en'] }}</span>
-                    @if ($item->short_description)
-                        <span class="recent-desc">
-                            {{ \Illuminate\Support\Str::limit($item->short_description[$locale] ?? $item->short_description['en'], 60) }}
-                        </span>
-                    @endif
-                    @if ($item->date)
-                        <span class="recent-date">
-                            {{ \Carbon\Carbon::parse($item->date)->format('M d, Y') }}
-                        </span>
-                    @endif
-                </div>
-            </a>
-        @endforeach
-    </aside>
 
 </div>
 

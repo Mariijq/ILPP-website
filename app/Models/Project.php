@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Project extends Model
 {
+    use searchable;
+
     protected $fillable = [
         'title',
         'subtitle',
@@ -24,31 +27,16 @@ class Project extends Model
         'date' => 'date',
     ];
 
-//     /**
-//      * Generic accessor for localized fields.
-//      */
-//     public function getLocalizedAttribute($attribute)
-//     {
-//         $locale = app()->getLocale();
-//         $value = $this->$attribute;
-
-//         if (is_array($value)) {
-//             return $value[$locale] ?? $value['en'] ?? '';
-//         }
-
-//         return $value;
-//     }
-
-//     // Explicit localized getters
-//     public function getLocalizedTitleAttribute() { return $this->getLocalizedAttribute('title'); }
-//     public function getLocalizedSubtitleAttribute() { return $this->getLocalizedAttribute('subtitle'); }
-//     public function getLocalizedShortDescriptionAttribute() { return $this->getLocalizedAttribute('short_description'); }
-//     public function getLocalizedDetailedDescriptionAttribute() { return $this->getLocalizedAttribute('detailed_description'); }
-
-//     // Optional: formatted date
-//     public function getFormattedDateAttribute()
-//     {
-//         return $this->date ? $this->date->format('d/m/Y') : null;
-//     }
-// }
+    public function toSearchableArray(): array
+    {
+        return [
+            'title'    => is_array($this->title)
+                ? implode(' ', $this->title)
+                : $this->title,
+                
+            'short_description' => is_array($this->short_description ?? null)
+                ? implode(' ', $this->short_description)
+                : ($this->short_description ?? ''),
+        ];
+    }
 }

@@ -27,4 +27,17 @@ class Publication extends Model
         'detailed_description' => 'array',
         'date' => 'date',
     ];
+        public function toSearchableArray(): array
+    {
+        return [
+            'title'    => is_array($this->title)
+                ? implode(' ', $this->title)
+                : $this->title,
+
+            'short_description' => is_array($this->short_description ?? null)
+                ? implode(' ', $this->short_description)
+                : ($this->short_description ?? ''),
+        ];
+    }
+
 }

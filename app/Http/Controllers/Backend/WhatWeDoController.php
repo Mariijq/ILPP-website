@@ -19,7 +19,7 @@ class WhatWeDoController extends Controller
             'public_policy' => ['en' => '', 'mk' => '', 'al' => ''],
         ]);
 
-        return view('backend.what-we-do.index', compact('whatWeDo'));
+        return view('backend.pages.what-we-do.index', compact('whatWeDo'));
     }
 
     public function updateOrCreate(Request $request)

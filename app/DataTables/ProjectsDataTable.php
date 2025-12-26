@@ -57,9 +57,9 @@ class ProjectsDataTable extends DataTable
             })
 
             ->addColumn('action', function ($project) {
-                $editUrl = route('projects.edit', $project->id);
-                $deleteUrl = route('projects.destroy', $project->id);
-                $detailsUrl = route('projects.show', $project->id);
+                $editUrl = route('backend.projects.edit', $project->id);
+                $deleteUrl = route('backend.projects.destroy', $project->id);
+                $detailsUrl = route('backend.projects.show', $project->id);
 
                 return '
                 <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1">

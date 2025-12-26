@@ -13,12 +13,12 @@ class NewsController extends Controller
 {
     public function index(NewsDataTable $dataTable)
     {
-        return $dataTable->render('backend.news.index');
+        return $dataTable->render('backend.pages.news.index');
     }
 
     public function create()
     {
-        return view('backend.news.create'); // Form for creating news
+        return view('backend.pages.news.create'); // Form for creating news
     }
 
     public function store(Request $request)
@@ -90,7 +90,7 @@ class NewsController extends Controller
 
             Toastr::success('News added successfully!', ['title' => 'Success']);
 
-            return redirect()->route('news.index');
+            return redirect()->route('backend.pages.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
@@ -103,14 +103,14 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        return view('backend.news.show', compact('news'));
+        return view('backend.pages.news.show', compact('news'));
     }
 
     public function edit(string $id)
     {
         $news = News::with('media')->findOrFail($id);
 
-        return view('backend.news.create', compact('news')); // same form for create/edit
+        return view('backend.pages.news.create', compact('news')); // same form for create/edit
     }
 
     public function update(Request $request, string $id)
@@ -185,7 +185,7 @@ class NewsController extends Controller
 
             Toastr::success('News updated successfully!', ['title' => 'Success']);
 
-            return redirect()->route('news.index');
+            return redirect()->route('backend.pages.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
@@ -214,7 +214,7 @@ class NewsController extends Controller
             $news->delete();
             Toastr::success('News deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('news.index');
+            return redirect()->route('backend.pages.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

@@ -36,8 +36,8 @@ public function dataTable($query): EloquentDataTable
             return '<span class="text-muted">No Image</span>';
         })
         ->addColumn('action', function ($testimonial) {
-            $editUrl = route('testimonials.edit', $testimonial->id);
-            $deleteUrl = route('testimonials.destroy', $testimonial->id);
+            $editUrl = route('backend.testimonials.edit', $testimonial->id);
+            $deleteUrl = route('backend.testimonials.destroy', $testimonial->id);
 
             return '
                 <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1">

@@ -19,32 +19,51 @@ class TeamMemberDataTable extends DataTable
                 if ($member->image && file_exists(storage_path('app/public/'.$member->image))) {
                     return '<img src="'.asset('storage/'.$member->image).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
-
                 return '<span class="text-muted">No Image</span>';
             })
-            ->addColumn('bio', fn ($member) => \Illuminate\Support\Str::limit($member->bio, 50))
+            ->addColumn('facebook', function ($member) {
+                return $member->facebook 
+                    ? '<a href="'.$member->facebook.'" target="_blank"><i class="bi bi-facebook"></i></a>' 
+                    : '';
+            })
+            ->addColumn('linkedin', function ($member) {
+                return $member->linkedin 
+                    ? '<a href="'.$member->linkedin.'" target="_blank"><i class="bi bi-linkedin"></i></a>' 
+                    : '';
+            })
             ->addColumn('action', function ($member) {
                 $editUrl = route('team-members.edit', $member->id);
                 $deleteUrl = route('team-members.destroy', $member->id);
 
                 return '
-        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-            '.csrf_field().method_field('DELETE').'
-            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
-                <i class="bi bi-trash"></i>
-            </button>
-        </form>';
+                    <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+                        '.csrf_field().method_field('DELETE').'
+                        <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>';
             })
-            ->rawColumns(['action', 'image'])
+            ->rawColumns(['image', 'facebook', 'linkedin', 'action'])
             ->setRowId('id');
     }
 
     public function query(TeamMember $model)
     {
-        return $model->newQuery()->select(['id', 'name', 'position', 'bio', 'image', 'order', 'created_at']);
+        // Extract JSON fields for English (adjust ->'en' to your locale if needed)
+        return $model->newQuery()->select([
+            'id',
+            'image',
+            'order',
+            'facebook',
+            'linkedin',
+            'created_at',
+            \DB::raw("name->>'en' as name"),
+            \DB::raw("position->>'en' as position"),
+            \DB::raw("bio->>'en' as bio"),
+        ]);
     }
 
     public function html(): HtmlBuilder
@@ -67,11 +86,13 @@ class TeamMemberDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name'),
-            Column::make('position'),  // replaces 'type'
-            Column::make('bio'),
-            Column::make('image'),     // replaces 'logo'
+            Column::make('name')->title('Name'),
+            Column::make('position')->title('Position'),
+            Column::make('bio')->title('Bio'),
+            Column::make('image'),
             Column::make('order'),
+            Column::make('facebook'),
+            Column::make('linkedin'),
             Column::make('created_at'),
             Column::computed('action')
                 ->title('Actions')

@@ -16,7 +16,7 @@ class ContactMessageController extends Controller
     {
         $messages = ContactMessage::latest()->paginate(20); // paginated
 
-        return view('backend.contact-messages.index', compact('messages'));
+        return view('backend.pages.contact-messages.index', compact('messages'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ContactMessageController extends Controller
             $message->delete();
             Toastr::success('Message deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('contact-messages.index');
+            return redirect()->route('backend.contact-messages.index');
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'error']);
 

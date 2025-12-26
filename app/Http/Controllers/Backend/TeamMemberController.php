@@ -16,7 +16,7 @@ class TeamMemberController extends Controller
      */
     public function index(TeamMemberDataTable $dataTable)
     {
-        return $dataTable->render('backend.team-members.index');
+        return $dataTable->render('backend.pages.team-members.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class TeamMemberController extends Controller
      */
     public function create()
     {
-        return view('backend.team-members.create');
+        return view('backend.pages.team-members.create');
     }
 
     /**
@@ -44,6 +44,9 @@ class TeamMemberController extends Controller
             'bio_al' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
+            'facebook' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+
         ]);
 
         // Convert multilingual inputs into JSON array
@@ -76,7 +79,7 @@ class TeamMemberController extends Controller
 
         Toastr::success('Team Member added successfully!', ['title' => 'Success']);
 
-        return redirect()->route('team-members.index');
+        return redirect()->route('backend.team-members.index');
     }
 
     /**
@@ -84,7 +87,7 @@ class TeamMemberController extends Controller
      */
     public function show(TeamMember $teamMember)
     {
-        return view('backend.team-members.show', compact('teamMember'));
+        return view('backend.pages.team-members.show', compact('teamMember'));
     }
 
     /**
@@ -92,7 +95,11 @@ class TeamMemberController extends Controller
      */
     public function edit(string $id)
     {
-        return view('backend.team-members.create', compact('teamMember'));
+        // Fetch the team member by ID
+        $teamMember = TeamMember::findOrFail($id);
+
+        // Pass it to the view
+        return view('backend.pages.team-members.create', compact('teamMember'));
     }
 
     /**
@@ -112,6 +119,9 @@ class TeamMemberController extends Controller
             'bio_al' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'order' => 'nullable|integer',
+            'facebook' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+
         ]);
 
         $data['name'] = [
@@ -146,7 +156,7 @@ class TeamMemberController extends Controller
 
         Toastr::success('Team Member updated successfully!', ['title' => 'Success']);
 
-        return redirect()->route('team-members.index');
+        return redirect()->route('backend.team-members.index');
     }
 
     /**
@@ -162,7 +172,7 @@ class TeamMemberController extends Controller
             $teamMember->delete();
             Toastr::success('Team member deleted successfully', ['title' => 'Success']);
 
-            return redirect()->route('team-members.index');
+            return redirect()->route('backend.team-members.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

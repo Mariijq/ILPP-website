@@ -32,9 +32,9 @@ class NewsDataTable extends DataTable
                 return '<span class="text-muted">No Image</span>';
             })
             ->addColumn('action', function ($news) {
-                $editUrl = route('news.edit', $news->id);
-                $deleteUrl = route('news.destroy', $news->id);
-                $detailsUrl = route('news.show', $news->id);
+                $editUrl = route('backend.news.edit', $news->id);
+                $deleteUrl = route('backend.news.destroy', $news->id);
+                $detailsUrl = route('backend.news.show', $news->id);
 
                 return '
                 <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">

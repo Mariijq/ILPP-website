@@ -1,4 +1,4 @@
-@extends('frontend.layouts.main')
+@extends('frontend.layouts.layout')
 @section('content')
 <section class="grid-wrapper">
     <div class="section-header">

@@ -14,7 +14,7 @@ class AboutUsController extends Controller
         // Get first record or null
         $about = AboutUs::first();
 
-        return view('backend.about.index', compact('about'));
+        return view('pages.backend.about.index', compact('about'));
     }
 
 public function updateOrCreate(Request $request)

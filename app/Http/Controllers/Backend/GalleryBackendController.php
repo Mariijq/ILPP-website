@@ -13,7 +13,8 @@ class GalleryBackendController extends Controller
     public function index()
     {
         $images = GalleryImage::latest()->get();
-        return view('backend.gallery.index', compact('images'));
+
+        return view('backend.pages.gallery.index', compact('images'));
     }
 
     public function store(Request $request)
@@ -22,7 +23,7 @@ class GalleryBackendController extends Controller
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'images' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'images.*' => 'required|file|mimes:jpeg,jpg,png,gif,webp,heic,bmp,tiff',
         ]);
 
         try {
@@ -42,10 +43,12 @@ class GalleryBackendController extends Controller
             }
 
             Toastr::success('Images uploaded successfully!', ['title' => 'Success']);
-            return redirect()->route('gallery.index');
+
+            return redirect()->route('backend.gallery.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
             return back();
         }
     }
@@ -75,10 +78,12 @@ class GalleryBackendController extends Controller
             $image->save();
 
             Toastr::success('Image updated successfully!', ['title' => 'Success']);
+
             return back();
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
             return back();
         }
     }
@@ -94,10 +99,12 @@ class GalleryBackendController extends Controller
 
             $image->delete();
             Toastr::success('Image deleted successfully!', ['title' => 'Success']);
-            return redirect()->route('gallery.index');
+
+            return redirect()->route('backend.gallery.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+
             return back();
         }
     }

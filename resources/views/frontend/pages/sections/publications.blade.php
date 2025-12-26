@@ -2,7 +2,7 @@
     <h2 class="section-title">{{ __('frontend.publications') }}</h2>
 
     <div class="publications-grid">
-        @foreach ($publications->take(3) as $pub)
+        @foreach ($publications as $pub)
 
             @php
                 $locale = app()->getLocale();

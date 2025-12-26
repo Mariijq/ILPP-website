@@ -15,7 +15,7 @@ class DocumentController extends Controller
      */
     public function index(DocumentsDataTable $dataTable)
     {
-        return $dataTable->render('backend.documents.index');
+        return $dataTable->render('backend.pages.documents.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        return view('backend.documents.create');
+        return view('backend.pages.documents.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class DocumentController extends Controller
 
         Toastr::success('Document added successfully!', ['title' => 'Success']);
 
-        return redirect()->route('documents.index');
+        return redirect()->route('backend.documents.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        return view('backend.documents.show', compact('document'));
+        return view('backend.pages.documents.show', compact('document'));
     }
 
     /**
@@ -73,7 +73,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        return view('backend.documents.create', compact('document'));
+        return view('backend.pages.documents.create', compact('document'));
     }
 
     /**
@@ -110,7 +110,7 @@ public function update(Request $request, Document $document)
 
     Toastr::success('Document updated successfully!', ['title' => 'Success']);
 
-    return redirect()->route('documents.index');
+    return redirect()->route('backend.documents.index');
 }
 
     /**
@@ -126,7 +126,7 @@ public function update(Request $request, Document $document)
             $document->delete();
             Toastr::success('Document deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('documents.index');
+            return redirect()->route('backend.documents.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

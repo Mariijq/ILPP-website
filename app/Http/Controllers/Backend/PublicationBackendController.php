@@ -11,133 +11,158 @@ use Toastr;
 
 class PublicationBackendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(PublicationsDataTable $dataTable)
     {
-        return $dataTable->render('backend.publications.index');
-
+        return $dataTable->render('backend.pages.publications.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('backend.publications.create');
-
+        return view('backend.pages.publications.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-public function store(Request $request)
-{
-    $languages = ['en', 'mk', 'al'];
-
-    $request->validate([
-        'date' => 'required|date',
-        'image' => 'nullable|image|max:5120',
-        'file' => 'nullable|file|max:5120',
-    ]);
-
-    $data = [
-        'title' => [],
-        'short_description' => [],
-        'detailed_description' => [],
-        'date' => $request->date,
-    ];
-
-    foreach ($languages as $lang) {
-        $data['title'][$lang] = $request->input("title_$lang");
-        $data['short_description'][$lang] = $request->input("short_description_$lang");
-        $data['detailed_description'][$lang] = $request->input("detailed_description_$lang");
-    }
-
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('publications_images', 'public');
-    }
-
-    if ($request->hasFile('file')) {
-        $data['file'] = $request->file('file')->store('publications_files', 'public');
-    }
-
-    Publication::create($data);
-
-    Toastr::success('Publication added successfully!');
-    return redirect()->route('publications.index');
-}
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function store(Request $request)
     {
-        $publications = Publication::findOrFail($id);
+        $languages = ['en', 'mk', 'al'];
 
-        return view('backend.publications.show', compact('publications'));
+        // Validate input
+        $request->validate([
+            'date' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'file' => 'nullable|file|mimes:pdf|max:10240', // PDF only
+            'title_en' => 'required|string|max:255',
+            'short_description_en' => 'nullable|string',
+            'detailed_description_en' => 'nullable|string',
+        ]);
 
+        // Prepare data
+        $data = [
+            'title' => [],
+            'short_description' => [],
+            'detailed_description' => [],
+            'date' => $request->date,
+        ];
+
+        foreach ($languages as $lang) {
+            $data['title'][$lang] = $request->input("title_$lang");
+            $data['short_description'][$lang] = $request->input("short_description_$lang");
+            $data['detailed_description'][$lang] = $request->input("detailed_description_$lang");
+        }
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('publications_images', 'public');
+        }
+
+        // Handle PDF file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Debug - check if file exists and error
+            if (! $file->isValid()) {
+                return back()->withInput()->withErrors(['file' => 'File upload failed.']);
+            }
+
+            $data['file'] = $file->store('publications_files', 'public');
+        }
+
+        // Save publication
+        $publication = \App\Models\Publication::create($data);
+
+        \Toastr::success('Publication added successfully!');
+
+        return redirect()->route('backend.publications.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $publications = Publication::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        return view('backend.publications.edit', compact('publications'));
-
+        return view('backend.pages.publications.create', compact('publication'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-public function update(Request $request, string $id)
-{
-    $publication = Publication::findOrFail($id);
-    $languages = ['en', 'mk', 'al'];
+    public function update(Request $request, $id)
+    {
+        $publication = Publication::findOrFail($id);
 
-    $data = [
-        'title' => [],
-        'short_description' => [],
-        'detailed_description' => [],
-        'date' => $request->date,
-    ];
+        try {
+            // Validate inputs
+            $validated = $request->validate([
+                'title_en' => 'required|string|max:255',
+                'title_mk' => 'nullable|string|max:255',
+                'title_al' => 'nullable|string|max:255',
+                'short_description_en' => 'nullable|string|max:500',
+                'short_description_mk' => 'nullable|string|max:500',
+                'short_description_al' => 'nullable|string|max:500',
+                'detailed_description_en' => 'nullable|string',
+                'detailed_description_mk' => 'nullable|string',
+                'detailed_description_al' => 'nullable|string',
+                'date' => 'required|date',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+                'file' => 'nullable|mimes:pdf|max:5120',
+            ]);
 
-    foreach ($languages as $lang) {
-        $data['title'][$lang] = $request->input("title_$lang");
-        $data['short_description'][$lang] = $request->input("short_description_$lang");
-        $data['detailed_description'][$lang] = $request->input("detailed_description_$lang");
-    }
+            $data = [
+                'title' => [
+                    'en' => $validated['title_en'],
+                    'mk' => $validated['title_mk'] ?? '',
+                    'al' => $validated['title_al'] ?? '',
+                ],
+                'short_description' => [
+                    'en' => $validated['short_description_en'] ?? '',
+                    'mk' => $validated['short_description_mk'] ?? '',
+                    'al' => $validated['short_description_al'] ?? '',
+                ],
+                'detailed_description' => [
+                    'en' => $validated['detailed_description_en'] ?? '',
+                    'mk' => $validated['detailed_description_mk'] ?? '',
+                    'al' => $validated['detailed_description_al'] ?? '',
+                ],
+                'date' => $validated['date'],
+            ];
 
-    if ($request->hasFile('image')) {
-        if ($publication->image) {
-            Storage::disk('public')->delete($publication->image);
+            // Handle image
+            if ($request->hasFile('image')) {
+                if ($publication->image && Storage::disk('public')->exists($publication->image)) {
+                    Storage::disk('public')->delete($publication->image);
+                }
+                $data['image'] = $request->file('image')->store('publications_images', 'public');
+            } else {
+                $data['image'] = $publication->image;
+            }
+
+            // Handle PDF file
+            if ($request->hasFile('file')) {
+                if ($publication->file && Storage::disk('public')->exists($publication->file)) {
+                    Storage::disk('public')->delete($publication->file);
+                }
+                $data['file'] = $request->file('file')->store('publications_files', 'public');
+            } else {
+                $data['file'] = $publication->file;
+            }
+
+            $publication->update($data);
+
+            Toastr::success('Publication updated successfully!', ['title' => 'Success']);
+
+            return redirect()->route('backend.publications.index');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            foreach ($e->errors() as $errors) {
+                foreach ($errors as $error) {
+                    Toastr::error($error, ['title' => 'Validation Error']);
+                }
+            }
+
+            return back()->withInput();
+        } catch (\Exception $e) {
+            Toastr::error('Unable to update publication: '.$e->getMessage(), ['title' => 'Error']);
+
+            return back()->withInput();
         }
-        $data['image'] = $request->file('image')->store('publications_images', 'public');
     }
 
-    if ($request->hasFile('file')) {
-        if ($publication->file) {
-            Storage::disk('public')->delete($publication->file);
-        }
-        $data['file'] = $request->file('file')->store('publications_files', 'public');
-    }
-
-    $publication->update($data);
-
-    Toastr::success('Publication updated successfully!');
-    return redirect()->route('publications.index');
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $publication = Publication::findOrFail($id);
 
@@ -151,10 +176,9 @@ public function update(Request $request, string $id)
             }
 
             $publication->delete();
-
             Toastr::success('Publication deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('publications.index');
+            return redirect()->route('backend.publications.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

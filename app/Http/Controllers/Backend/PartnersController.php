@@ -16,7 +16,7 @@ class PartnersController extends Controller
      */
     public function index(PartnerDataTable $dataTable)
     {
-        return $dataTable->render('backend.partners.index');
+        return $dataTable->render('backend.pages.partners.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class PartnersController extends Controller
      */
     public function create()
     {
-        return view('backend.partners.create');
+        return view('backend.pages.partners.create');
     }
 
     /**
@@ -71,7 +71,7 @@ class PartnersController extends Controller
     {
         $partners = Partner::findOrFail($id);
 
-        return view('backend.partners.show', compact('partners'));
+        return view('backend.pages.partners.show', compact('partners'));
 
     }
 
@@ -82,7 +82,7 @@ class PartnersController extends Controller
     {
         $partners = Partner::findOrFail($id);
 
-        return view('backend.partners.create', compact('partners'));
+        return view('backend.pages.partners.create', compact('partners'));
     }
 
     /**
@@ -121,7 +121,7 @@ class PartnersController extends Controller
 
         Toastr::success('Partner updated successfully');
 
-        return redirect()->route('partners.index');
+        return redirect()->route('backend.partners.index');
     }
 
     /**
@@ -138,7 +138,7 @@ class PartnersController extends Controller
             $partners->delete();
             Toastr::success('Partner deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('partners.index');
+            return redirect()->route('backend.partners.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

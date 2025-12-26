@@ -1,4 +1,4 @@
-@extends('frontend.layouts.main')
+@extends('frontend.layouts.layout')
 @php $locale = app()->getLocale(); @endphp
 
 @section('content')

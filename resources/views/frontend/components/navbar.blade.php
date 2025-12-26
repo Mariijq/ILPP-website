@@ -88,7 +88,7 @@
 
                     <li><a href="{{ route('documents') }}">{{ __('frontend.bodies') }}</a></li>
                     <li><a href="{{ route('news') }}">{{ __('frontend.news_media') }}</a></li>
-                    <li><a href="{{ route('gallery') }}">{{ __('frontend.voices') }}</a></li>
+                    <li><a href="{{ route('voices') }}">{{ __('frontend.voices') }}</a></li>
 
                     <li class="dropdown">
                         <a href="#" class="dropbtn">{{ __('frontend.contact_documents') }} <i class="bi bi-caret-down-fill"></i></a>
@@ -177,7 +177,7 @@
 
                 <a href="{{ route('documents') }}"><i class="bi bi-diagram-3"></i> {{ __('frontend.bodies') }}</a>
                 <a href="{{ route('news') }}"><i class="bi bi-newspaper"></i> {{ __('frontend.news_media') }}</a>
-                <a href="{{ route('gallery') }}"><i class="bi bi-chat-left-quote"></i> {{ __('frontend.voices') }}</a>
+                <a href="{{ route('voices') }}"><i class="bi bi-chat-left-quote"></i> {{ __('frontend.voices') }}</a>
 
                 <button class="btn-toggle collapsed"><i class="bi bi-telephone"></i> {{ __('frontend.contact_documents') }}</button>
                 <div class="collapse">

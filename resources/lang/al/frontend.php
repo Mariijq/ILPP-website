@@ -20,6 +20,7 @@ return [
     'Strategic_Partners' => 'Partnerë Strategjikë',
     'bodies' => 'Organet',
     'news_media' => 'Lajme & Media',
+    'news' => 'Lajme',
     'voices' => 'Zëra',
     'contact_documents' => 'Kontakt & Dokumente',
     'contact' => 'Kontakt',
@@ -48,22 +49,22 @@ return [
     'enter_email' => 'Ju lutemi shkruani email...',
     'enter_phone' => 'Ju lutemi shkruani telefonin...',
     'enter_message' => 'Ju lutemi shkruani mesazhin tuaj...',
-    'testimonials' => 'Dëshmi',
+    'testimonials' => 'Zëra',
     'learn_more' => 'Mëso më shumë',
+    'voices_subtitle' => 'Historitë dhe perspektivat reale nga komuniteti ynë',
 
-        'Funding_&_Support' => 'Financim & Mbështetje',
-        'Strategic_Partners' => 'Partnerët Strategjikë',
+    'Funding_&_Support' => 'Financim & Mbështetje',
+    'Strategic_Partners' => 'Partnerët Strategjikë',
     'no_logo' => 'Pa logo',
     'partner_type_person' => 'Person',
     'partner_type_organization' => 'Organizatë',
 
-    'vision'  => 'Vizioni',
+    'vision' => 'Vizioni',
     'mission' => 'Misioni',
-    'goals'   => 'Qëllimet',
+    'goals' => 'Qëllimet',
 
     'leadership' => 'Lidership',
     'research' => 'Hulumtim',
     'public_policy' => 'Politika Publike',
-
 
 ];

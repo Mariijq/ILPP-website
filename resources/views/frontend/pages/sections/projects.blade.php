@@ -2,7 +2,7 @@
     <h2 class="section-title">{{ __('frontend.projects') }}</h2>
 
     <div class="projects-grid">
-        @foreach ($projects->take(3) as $project)
+        @foreach ($projects as $project)
             <a href="{{ route('project-details', $project->id) }}" class="project-card">
 
                 <img src="{{ asset('storage/' . $project->image) }}" 

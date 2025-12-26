@@ -13,12 +13,12 @@ class TestimonialsController extends Controller
 {
     public function index(TestimonialsDataTable $dataTable)
     {
-        return $dataTable->render('backend.testimonials.index');
+        return $dataTable->render('backend.pages.testimonials.index');
     }
 
     public function create()
     {
-        return view('backend.testimonials.create');
+        return view('backend.pages.testimonials.create');
     }
 
     public function store(Request $request)
@@ -26,13 +26,13 @@ class TestimonialsController extends Controller
         $validated = $request->validate([
             'name_en'        => 'required|string|max:255',
             'designation_en' => 'nullable|string|max:255',
-            'review_en'      => 'nullable|string|max:300',
+            'review_en'      => 'nullable|string',
             'name_mk'        => 'nullable|string|max:255',
             'designation_mk' => 'nullable|string|max:255',
-            'review_mk'      => 'nullable|string|max:300',
+            'review_mk'      => 'nullable|string',
             'name_al'        => 'nullable|string|max:255',
             'designation_al' => 'nullable|string|max:255',
-            'review_al'      => 'nullable|string|max:300',
+            'review_al'      => 'nullable|string',
             'image'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
@@ -61,7 +61,7 @@ class TestimonialsController extends Controller
         try {
             Testimonials::create($data);
             Toastr::success('Testimonial added successfully!', ['title' => 'Success']);
-            return redirect()->route('testimonials.index');
+            return redirect()->route('backend.testimonials.index');
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
@@ -70,7 +70,7 @@ class TestimonialsController extends Controller
 
     public function edit(Testimonials $testimonial)
     {
-        return view('backend.testimonials.create', compact('testimonial'));
+        return view('backend.pages.testimonials.create', compact('testimonial'));
     }
 
     public function update(Request $request, Testimonials $testimonial)
@@ -78,13 +78,13 @@ class TestimonialsController extends Controller
         $validated = $request->validate([
             'name_en'        => 'required|string|max:255',
             'designation_en' => 'nullable|string|max:255',
-            'review_en'      => 'nullable|string|max:300',
+            'review_en'      => 'nullable|string',
             'name_mk'        => 'nullable|string|max:255',
             'designation_mk' => 'nullable|string|max:255',
-            'review_mk'      => 'nullable|string|max:300',
+            'review_mk'      => 'nullable|string',
             'name_al'        => 'nullable|string|max:255',
             'designation_al' => 'nullable|string|max:255',
-            'review_al'      => 'nullable|string|max:300',
+            'review_al'      => 'nullable|string',
             'image'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ]);
 
@@ -117,7 +117,7 @@ class TestimonialsController extends Controller
             $testimonial->update($data);
 
             Toastr::success('Testimonial updated successfully!', ['title' => 'Success']);
-            return redirect()->route('testimonials.index');
+            return redirect()->route('backend.testimonials.index');
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back()->withInput();
@@ -134,7 +134,7 @@ class TestimonialsController extends Controller
             $testimonial->delete();
 
             Toastr::success('Testimonial deleted successfully!', ['title' => 'Success']);
-            return redirect()->route('testimonials.index');
+            return redirect()->route('backend.testimonials.index');
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return back();

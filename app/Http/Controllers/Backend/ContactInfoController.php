@@ -16,7 +16,7 @@ class ContactInfoController extends Controller
     {
         $contact = ContactInfo::first();
 
-        return view('backend.contact-info.index', compact('contact'));
+        return view('backend.pages.contact-info.index', compact('contact'));
 
     }
 
@@ -75,7 +75,7 @@ class ContactInfoController extends Controller
 
             Toastr::success('Contact Info updated successfully', ['title' => 'Success']);
 
-            return redirect()->route('contact-info.index');
+            return redirect()->route('backend.contact-info.index');
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Rrror']);
         }

@@ -31,15 +31,16 @@ class News extends Model
         return $this->hasMany(NewsMedia::class);
     }
 
-public function toSearchableArray()
-{
-    return [
-        'id' => $this->id,
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => is_array($this->title)
+                ? implode(' ', $this->title)
+                : $this->title,
 
-        'title' => implode(' ', $this->title ?? []),
-        'subtitle' => implode(' ', $this->subtitle ?? []),
-        'short_description' => implode(' ', $this->short_description ?? []),
-        'detailed_description' => implode(' ', $this->detailed_description ?? []),
-    ];
-}
+            'short_description' => is_array($this->short_description ?? null)
+                ? implode(' ', $this->short_description)
+                : ($this->short_description ?? ''),
+        ];
+    }
 }

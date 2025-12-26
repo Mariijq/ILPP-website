@@ -9,7 +9,12 @@ class Testimonials extends Model
 {
     use Searchable;
 
-    protected $fillable = ['name', 'designation', 'review', 'image'];
+    protected $fillable = [
+        'name',
+        'designation',
+        'review',
+        'image',
+    ];
 
     protected $casts = [
         'name' => 'array',

@@ -13,12 +13,12 @@ class ProjectController extends Controller
 {
     public function index(ProjectsDataTable $dataTable)
     {
-        return $dataTable->render('backend.projects.index');
+        return $dataTable->render('backend.pages.projects.index');
     }
 
     public function create()
     {
-        return view('backend.projects.create');
+        return view('backend.pages.projects.create');
     }
 
     public function store(Request $request)
@@ -69,7 +69,7 @@ class ProjectController extends Controller
 
             Toastr::success('Project added successfully!', ['title' => 'Success']);
 
-            return redirect()->route('projects.index');
+            return redirect()->route('backend.projects.index');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             foreach ($e->errors() as $errors) {
@@ -91,14 +91,14 @@ class ProjectController extends Controller
     {
         $projects = Project::findOrFail($id);
 
-        return view('backend.projects.show', compact('projects'));
+        return view('backend.pages.projects.show', compact('projects'));
     }
 
     public function edit($id)
     {
         $project = Project::findOrFail($id);
 
-        return view('backend.projects.create', compact('project'));
+        return view('backend.pages.projects.create', compact('project'));
     }
 
     public function update(Request $request, $id)
@@ -154,7 +154,7 @@ class ProjectController extends Controller
 
             Toastr::success('Project updated successfully!', ['title' => 'Success']);
 
-            return redirect()->route('projects.index');
+            return redirect()->route('backend.projects.index');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             foreach ($e->errors() as $errors) {
@@ -184,7 +184,7 @@ class ProjectController extends Controller
             $project->delete();
             Toastr::success('Project deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('projects.index');
+            return redirect()->route('backend.projects.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

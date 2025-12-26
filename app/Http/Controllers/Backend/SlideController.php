@@ -15,7 +15,7 @@ class SlideController extends Controller
     // Show all slides
     public function index(SlideDataTable $dataTable)
     {
-        return $dataTable->render('backend.slides.index');
+        return $dataTable->render('backend.pages.slides.index');
     }
 
     // Create slide (select news)
@@ -23,7 +23,7 @@ class SlideController extends Controller
     {
         $news = News::latest()->get(); // get all news
         $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
-        return view('backend.slides.create', compact('news', 'languages'));
+        return view('backend.pages.slides.create', compact('news', 'languages'));
     }
 
     // Store new slide
@@ -56,7 +56,7 @@ class SlideController extends Controller
         ]);
 
         Toastr::success('Slide created successfully!');
-        return redirect()->route('slides.index');
+        return redirect()->route('backend.slides.index');
     }
 
     // Edit slide
@@ -97,7 +97,7 @@ class SlideController extends Controller
         ]);
 
         Toastr::success('Slide updated successfully!');
-        return redirect()->route('slides.index');
+        return redirect()->route('backend.slides.index');
     }
 
     // Delete slide
@@ -110,6 +110,6 @@ class SlideController extends Controller
         $slide->delete();
 
         Toastr::success('Slide deleted successfully!');
-        return redirect()->route('slides.index');
+        return redirect()->route('backend.slides.index');
     }
 }

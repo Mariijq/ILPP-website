@@ -1,4 +1,4 @@
-@extends('frontend.layouts.main')
+@extends('frontend.layouts.layout')
 
 {{-- @section('title', 'Home | Institute for Leadership and Public Policy (ILPP)') --}}
 

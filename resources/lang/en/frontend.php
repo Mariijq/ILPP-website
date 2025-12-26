@@ -20,6 +20,7 @@ return [
     'Strategic_Partners' => 'Strategic Partners',
     'bodies' => 'Bodies',
     'news_media' => 'News & Media',
+    'news' => 'News',
     'voices' => 'Voices',
     'contact_documents' => 'Contact & Documents',
     'contact' => 'Contact',
@@ -31,7 +32,6 @@ return [
     'website_links' => 'Website Links',
     'who_we_are_footer' => 'Who We Are',
     'home' => 'Home',
-
 
     'current_projects' => 'Current Projects',
     'completed_projects' => 'Completed Projects',
@@ -54,8 +54,9 @@ return [
     'enter_phone' => 'Please enter phone number...',
     'enter_message' => 'Please enter your message...',
 
-    'testimonials' => 'Testimonials',
+    'testimonials' => 'Voices',
     'learn_more' => 'Learn More',
+    'voices_subtitle' => 'Real stories and perspectives from our community',
 
     'partners_supporters' => 'Partners / Supporters',
     'no_logo' => 'No Logo',

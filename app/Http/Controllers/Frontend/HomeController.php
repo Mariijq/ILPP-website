@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\GalleryImage;
+use App\Models\Project;
+use App\Models\Publication;
 use App\Models\Slide;
 use App\Models\Testimonials;
-use App\Models\GalleryImage;
 
 class HomeController extends Controller
 {
     public function index()
     {
         // Get latest testimonials
-        $testimonials = Testimonials::latest()->take(1)->get();
+        $testimonials = Testimonials::get();
 
         // Get latest slides with news and map data for frontend
         $slides = Slide::with('news')
@@ -31,9 +33,9 @@ class HomeController extends Controller
                 ];
             });
         // Get latest 6 projects
-        $projects = \App\Models\Project::latest()->take(6)->get();
-        $publications = \App\Models\Publication::latest()->take(6)->get();
-    $galleryImages = GalleryImage::latest()->get(); // fetch all gallery images
+        $projects = Project::latest()->take(3)->get();
+        $publications = Publication::latest()->take(3)->get();
+        $galleryImages = GalleryImage::latest()->get(); // fetch all gallery images
 
         return view('frontend.pages.home', compact('testimonials', 'slides', 'projects', 'publications', 'galleryImages'));
     }
