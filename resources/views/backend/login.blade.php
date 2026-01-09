@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    @vite('resources/backend/js/app.js')
+    @vite('resources/backend/css/app.css')
 </head>
 <body class="backend-login">
 <div class="login-card">

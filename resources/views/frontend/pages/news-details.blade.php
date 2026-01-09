@@ -35,7 +35,7 @@
         <!-- Media Gallery -->
         @if($newsItem->media && $newsItem->media->count())
             <div class="media-gallery">
-                <h3 class="sidebar-title">Gallery</h3>
+                <h3 class="sidebar-title"></h3>
                 <div class="grid-band">
                     @foreach($newsItem->media as $media)
                         @if($media->type === 'image')

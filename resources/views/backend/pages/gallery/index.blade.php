@@ -33,12 +33,12 @@
                     <div class="tab-pane fade @if($loop->first) show active @endif" id="tab-content-{{ $code }}" role="tabpanel">
                         <div class="mb-3">
                             <label class="form-label">Title ({{ $label }})</label>
-                            <input type="text" name="title_{{ $code }}" class="form-control" value="{{ old('title_'.$code) }}">
+                            <input type="text" name="title[{{ $code }}]" class="form-control" value="{{ old('title.'.$code) }}">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Description ({{ $label }})</label>
-                            <textarea name="description_{{ $code }}" class="form-control" rows="3">{{ old('description_'.$code) }}</textarea>
+                            <textarea name="description[{{ $code }}]" class="form-control" rows="3">{{ old('description.'.$code) }}</textarea>
                         </div>
                     </div>
                 @endforeach
@@ -92,9 +92,9 @@
                                     @foreach ($languages as $code => $label)
                                         <div class="tab-pane fade @if($loop->first) show active @endif" 
                                              id="edit-tab-content-{{ $code }}-{{ $image->id }}" role="tabpanel">
-                                            <input type="text" name="title_{{ $code }}" class="form-control mb-2" 
+                                            <input type="text" name="title[{{ $code }}]" class="form-control mb-2" 
                                                    value="{{ $image->title[$code] ?? '' }}" placeholder="Title ({{ $label }})">
-                                            <textarea name="description_{{ $code }}" class="form-control mb-2" rows="2" 
+                                            <textarea name="description[{{ $code }}]" class="form-control mb-2" rows="2" 
                                                       placeholder="Description ({{ $label }})">{{ $image->description[$code] ?? '' }}</textarea>
                                         </div>
                                     @endforeach

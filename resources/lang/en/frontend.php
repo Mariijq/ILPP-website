@@ -18,7 +18,7 @@ return [
     'partners' => 'Partners',
     'Funding_&_Support' => 'Funding & Support',
     'Strategic_Partners' => 'Strategic Partners',
-    'bodies' => 'Bodies',
+    'bodies' => 'Career Council',
     'news_media' => 'News & Media',
     'news' => 'News',
     'voices' => 'Voices',
@@ -70,5 +70,10 @@ return [
     'leadership' => 'Leadership',
     'research' => 'Research',
     'public_policy' => 'Public Policy',
+
+    'career_members' => 'Council Members',
+    'no_image' => 'No Image Available',
+    'career_council' => 'Career Council',
+    'career_CPG' => 'Council for Career and Professional Guidance'
 
 ];

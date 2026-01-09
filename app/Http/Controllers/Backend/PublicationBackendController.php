@@ -74,6 +74,15 @@ class PublicationBackendController extends Controller
         return redirect()->route('backend.publications.index');
     }
 
+    public function show($id)
+    {
+        // Find the publication
+        $publication = Publication::findOrFail($id);
+
+        // Return a dedicated view
+        return view('backend.pages.publications.show', compact('publication'));
+    }
+
     public function edit($id)
     {
         $publication = Publication::findOrFail($id);

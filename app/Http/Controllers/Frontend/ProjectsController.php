@@ -8,29 +8,22 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
-    // Current Projects
-    public function current()
+    /**
+     * Display a paginated list of all projects.
+     */
+    public function index()
     {
         $locale = app()->getLocale();
-        $currentProjects = Project::where('status', 'Current')
-            ->latest()
-            ->paginate(8, ['*'], 'currentPage');
 
-        return view('frontend.pages.projects-current', compact('currentProjects', 'locale'));
+        // Fetch all projects ordered by latest
+        $projects = Project::latest()->paginate(8); // change 8 to whatever per-page limit you want
+
+        return view('frontend.pages.projects', compact('projects', 'locale'));
     }
 
-    // Completed Projects
-    public function completed()
-    {
-        $locale = app()->getLocale();
-        $completedProjects = Project::where('status', 'Completed')
-            ->latest()
-            ->paginate(8, ['*'], 'completedPage');
-
-        return view('frontend.pages.projects-completed', compact('completedProjects', 'locale'));
-    }
-
-    // Single Project Details
+    /**
+     * Single Project Details
+     */
     public function show($id)
     {
         $project = Project::findOrFail($id);

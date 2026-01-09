@@ -12,6 +12,10 @@
                         <img src="{{ asset('storage/' . $image->image_path) }}" 
                              alt="{{ $image->title[$locale] ?? $image->title['en'] ?? 'Gallery Image' }}">
                     </div>
+                    <!-- Title below image -->
+                    <div class="gallery-title mt-2 text-center">
+                        {{ $image->title[$locale] ?? $image->title['en'] ?? '' }}
+                    </div>
                 </div>
             @endforeach
         </div>

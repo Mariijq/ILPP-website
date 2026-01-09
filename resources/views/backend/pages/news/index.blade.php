@@ -1,4 +1,4 @@
-@extends('backend.layouts.layouts.layout')
+@extends('backend.layouts.layout')
 @section('title', 'News Management')
 
 @section('content')

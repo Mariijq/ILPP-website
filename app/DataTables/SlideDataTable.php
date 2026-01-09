@@ -39,8 +39,8 @@ class SlideDataTable extends DataTable
                 return $news ? ($news->title[$this->locale] ?? $news->title['en'] ?? '') : '<span class="text-muted">No News</span>';
             })
             ->addColumn('action', function ($slide) {
-                $editUrl = route('slides.edit', $slide->id);
-                $deleteUrl = route('slides.destroy', $slide->id);
+                $editUrl = route('backend.slides.edit', $slide->id);
+                $deleteUrl = route('backend.slides.destroy', $slide->id);
 
                 return '
         <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">

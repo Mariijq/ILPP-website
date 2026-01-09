@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\CareerCouncilController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\ContactMessageController;
 use App\Http\Controllers\Frontend\GalleryController;
@@ -31,13 +32,10 @@ Route::prefix('news')->group(function () {
 });
 
 // ---------- Projects ----------
-Route::prefix('projects')->group(function () {
-    Route::get('current', [ProjectsController::class, 'current'])->name('projects.current');
-    Route::get('completed', [ProjectsController::class, 'completed'])->name('projects.completed');
-    Route::get('{id}', [ProjectsController::class, 'show'])
-        ->whereNumber('id')
-        ->name('project-details');
-});
+Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
+Route::get('{id}', [ProjectsController::class, 'show'])
+    ->whereNumber('id')
+    ->name('project-details');
 
 // ---------- Publications ----------
 Route::prefix('publications')->group(function () {
@@ -81,3 +79,7 @@ Route::prefix('who-we-are')->group(function () {
     Route::get('supporters', [WhoWeAreController::class, 'supporters'])->name('supporters');
     Route::get('documents', [WhoWeAreController::class, 'documents'])->name('documents');
 });
+
+// ---------- Career Council ----------
+Route::get('/career-council', [CareerCouncilController::class, 'index'])
+    ->name('career-council');

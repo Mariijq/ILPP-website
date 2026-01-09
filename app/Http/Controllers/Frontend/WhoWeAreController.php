@@ -44,17 +44,22 @@ class WhoWeAreController extends Controller
     public function partners()
     {
         // Fetch only Funding & Support partners
-        $partners = Partner::where('type', 'Funding & Support')->orderBy('order')->get();
+        $partners = Partner::where('type', 'Funding & Support')
+            ->orderByRaw('"order"::integer ASC')
+            ->get();
+
         return view('frontend.pages.partners', compact('partners'));
     }
 
     public function supporters()
     {
         // Fetch only Strategic Partners
-        $supporters = Partner::where('type', 'Strategic Partners')->orderBy('order')->get();
+        $supporters = Partner::where('type', 'Strategic Partners')
+            ->orderByRaw('"order"::integer ASC')
+            ->get();
+
         return view('frontend.pages.supporters', compact('supporters'));
     }
-
 
     public function documents()
     {

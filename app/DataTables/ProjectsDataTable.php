@@ -48,14 +48,6 @@ class ProjectsDataTable extends DataTable
                 return '<span class="text-muted">No Image</span>';
             })
 
-            ->addColumn('status', function ($project) {
-                $badgeClass = $project->status === 'finished'
-                    ? 'bg-secondary'
-                    : 'bg-success';
-
-                return '<span class="badge '.$badgeClass.'">'.ucfirst($project->status).'</span>';
-            })
-
             ->addColumn('action', function ($project) {
                 $editUrl = route('backend.projects.edit', $project->id);
                 $deleteUrl = route('backend.projects.destroy', $project->id);
@@ -76,7 +68,7 @@ class ProjectsDataTable extends DataTable
                 </form>';
             })
 
-            ->rawColumns(['action', 'image', 'status'])
+            ->rawColumns(['action', 'image'])
             ->setRowId('id');
     }
 
@@ -109,7 +101,6 @@ class ProjectsDataTable extends DataTable
             Column::make('date'),
             Column::make('short_description')->title('Short Description'),
             Column::make('image'),
-            Column::make('status'),
             Column::make('created_at'),
             Column::computed('action')
                 ->title('Actions')

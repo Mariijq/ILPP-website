@@ -9,7 +9,7 @@
     </header>
 
     <div class="grid-band">
-        @foreach ($completedProjects as $project)
+        @foreach ($projects as $project)
             <div class="grid-item">
                 <a href="{{ route('project-details', $project->id) }}" class="card">
                     <div class="thumb" style="background-image: url('{{ asset('storage/' . $project->image) }}');"></div>
@@ -26,7 +26,7 @@
 
     {{-- Pagination --}}
     <div class="pagination-wrapper" style="margin-top: 20px;">
-        {{ $completedProjects->links('pagination::bootstrap-5') }}
+        {{ $projects->links('pagination::bootstrap-5') }}
     </div>
 
 </div>

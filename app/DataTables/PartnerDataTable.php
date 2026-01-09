@@ -40,13 +40,13 @@ public function dataTable($query): EloquentDataTable
 
         ->addColumn('action', function ($partner) {
             return '
-                <a href="' . route('partners.show', $partner->id) . '" class="btn btn-info btn-sm me-1">
+                <a href="' . route('backend.partners.show', $partner->id) . '" class="btn btn-info btn-sm me-1">
                     <i class="bi bi-eye"></i>
                 </a>
-                <a href="' . route('partners.edit', $partner->id) . '" class="btn btn-primary btn-sm me-1">
+                <a href="' . route('backend.partners.edit', $partner->id) . '" class="btn btn-primary btn-sm me-1">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form method="POST" action="' . route('partners.destroy', $partner->id) . '" class="d-inline">
+                <form method="POST" action="' . route('backend.partners.destroy', $partner->id) . '" class="d-inline">
                     ' . csrf_field() . method_field('DELETE') . '
                     <button type="submit" class="btn btn-danger btn-sm">
                         <i class="bi bi-trash"></i>

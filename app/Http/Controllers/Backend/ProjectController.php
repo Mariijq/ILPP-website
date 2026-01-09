@@ -36,7 +36,6 @@ class ProjectController extends Controller
                 'detailed_description_mk' => 'nullable|string',
                 'detailed_description_al' => 'nullable|string',
                 'date' => 'required|date',
-                'status' => 'required|in:Current,Completed',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             ]);
 
@@ -63,7 +62,6 @@ class ProjectController extends Controller
                     'al' => $validated['detailed_description_al'] ?? '',
                 ],
                 'date' => $validated['date'],
-                'status' => $validated['status'],
                 'image' => $validated['image'] ?? null,
             ]);
 
@@ -118,7 +116,6 @@ class ProjectController extends Controller
                 'detailed_description_mk' => 'nullable|string',
                 'detailed_description_al' => 'nullable|string',
                 'date' => 'required|date',
-                'status' => 'required|in:Current,Completed',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             ]);
 
@@ -148,7 +145,6 @@ class ProjectController extends Controller
                     'al' => $validated['detailed_description_al'] ?? '',
                 ],
                 'date' => $validated['date'],
-                'status' => $validated['status'],
                 'image' => $validated['image'] ?? $project->image,
             ]);
 

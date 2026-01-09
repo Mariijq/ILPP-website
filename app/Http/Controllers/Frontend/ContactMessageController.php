@@ -5,32 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\ContactMessage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageMail;
 use Toastr;
 
 class ContactMessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('frontend.pages.contact'); 
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -40,54 +22,26 @@ class ContactMessageController extends Controller
         ]);
 
         try {
-            ContactMessage::create([
-                'name' => $request->first_name.' '.$request->last_name,
+            // Save message to DB
+            $contactMessage = ContactMessage::create([
+                'name' => $request->first_name . ' ' . $request->last_name,
                 'email' => $request->email,
-                'phone' => $request->phone,
+                'phone' => $request->phone ?? '', // avoid null
                 'message' => $request->message,
             ]);
 
-            // Optional Toastr for frontend
-            Toastr::success('Your message has been sent successfully!',  ['title'=>'Success']);
+            // Send email to admin
+            $adminEmail = env('MAIL_ADMIN_EMAIL', 'ilpp.infodesk@gmail.com'); // use env
+            if ($adminEmail) {
+                Mail::to($adminEmail)->send(new ContactMessageMail($contactMessage));
+            }
 
+            Toastr::success('Your message has been sent successfully!', ['title' => 'Success']);
             return redirect()->back();
-        } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title'=>'error']);
 
+        } catch (\Exception $e) {
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
             return redirect()->back()->withInput();
         }
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -57,6 +57,9 @@
                         <li><a href="{{ route('backend.history.edit') }}">History</a></li>
                         <li><a href="{{ route('backend.what-we-do.index') }}">What We Do</a></li>
                         <li><a href="{{ route('backend.team-members.index') }}">Team Members</a></li>
+                        <li><a href="{{ route('backend.collaborators.index') }}">Collaborators</a></li>
+                        <li><a href="{{ route('backend.career-councils.index') }}">Career Council</a></li>
+                        <li><a href="{{ route('backend.council-members.index') }}">Council Members</a></li>
                         <li><a href="{{ route('backend.partners.index') }}">Partners</a></li>
                         <li><a href="{{ route('backend.documents.index') }}">Internal Docs</a></li>
                     </ul>

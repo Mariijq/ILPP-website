@@ -68,16 +68,9 @@
                         </ul>
                     </li>
 
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">{{ __('frontend.projects') }} <i class="bi bi-caret-down-fill"></i></a>
-                        <ul class="dropdown-content">
-                            <li><a href="{{ route('projects.current') }}">{{ __('frontend.current_projects') }}</a></li>
-                            <li><a href="{{ route('projects.completed') }}">{{ __('frontend.completed_projects') }}</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="{{ route('projects') }}">{{ __('frontend.projects') }}</a></li>
 
                     <li><a href="{{ route('publications') }}">{{ __('frontend.publications') }}</a></li>
-
                     <li class="dropdown">
                         <a href="#" class="dropbtn">{{ __('frontend.partners') }} <i class="bi bi-caret-down-fill"></i></a>
                         <ul class="dropdown-content">
@@ -86,7 +79,7 @@
                         </ul>
                     </li>
 
-                    <li><a href="{{ route('documents') }}">{{ __('frontend.bodies') }}</a></li>
+                    <li><a href="{{ route('career-council') }}">{{ __('frontend.career_council') }}</a></li>
                     <li><a href="{{ route('news') }}">{{ __('frontend.news_media') }}</a></li>
                     <li><a href="{{ route('voices') }}">{{ __('frontend.voices') }}</a></li>
 
@@ -157,13 +150,7 @@
                     </ul>
                 </div>
 
-                <button class="btn-toggle collapsed"><i class="bi bi-archive"></i> {{ __('frontend.projects') }}</button>
-                <div class="collapse">
-                    <ul>
-                        <li><a href="{{ route('projects.current') }}">{{ __('frontend.current_projects') }}</a></li>
-                        <li><a href="{{ route('projects.completed') }}">{{ __('frontend.completed_projects') }}</a></li>
-                    </ul>
-                </div>
+                <a href="{{ route('projects') }}"><i class="bi bi-archive"></i> {{ __('frontend.projects') }}</a>
 
                 <a href="{{ route('publications') }}"><i class="bi bi-journal"></i> {{ __('frontend.publications') }}</a>
 
@@ -175,7 +162,7 @@
                     </ul>
                 </div>
 
-                <a href="{{ route('documents') }}"><i class="bi bi-diagram-3"></i> {{ __('frontend.bodies') }}</a>
+                <a href="{{ route('career-council') }}"><i class="bi bi-diagram-3"></i> {{ __('frontend.career_council') }}</a>
                 <a href="{{ route('news') }}"><i class="bi bi-newspaper"></i> {{ __('frontend.news_media') }}</a>
                 <a href="{{ route('voices') }}"><i class="bi bi-chat-left-quote"></i> {{ __('frontend.voices') }}</a>
 

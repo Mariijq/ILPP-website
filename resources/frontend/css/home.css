@@ -208,7 +208,7 @@
 /* Swiper navigation buttons */
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--white-color);
+  color: var(--white-color) !important;
   background: rgba(0, 0, 0, 0.4);
   width: 50px;
   height: 50px;
@@ -243,7 +243,7 @@
 }
 
 .swiper-pagination-bullet-active {
-  background: var(--cyan-color);
+  background: var(--cyan-color) !important;
   transform: scale(1.3);
   opacity: 1;
 }
@@ -259,6 +259,18 @@
 .publications-section {
   padding: 60px 0;
   background: var(--white-color);
+}
+
+.projects-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background-color: var(--grey-color);
+  z-index: 0;
+  margin: 0 !important;
 }
 
 .section-title {
@@ -357,13 +369,27 @@
   padding: 15px;
 }
 
-/* ======================= PUBLICATIONS SECTION ======================= */
+/* ======================= PROJECTS & PUBLICATIONS ======================= */
+
+/* Common section styling */
+.projects-section,
 .publications-section {
   position: relative;
-  padding: 60px 20px;
+  /* needed for pseudo-element background */
+  padding: 60px 0 0 0;
+  /* top padding, bottom optional */
   background: var(--white-color);
+  /* fallback background */
+  overflow: hidden;
 }
 
+.projects-section .section-title,
+.publications-section .section-title {
+  color: var(--white-color);
+}
+
+/* Grey top band for both sections */
+.projects-section::before,
 .publications-section::before {
   content: '';
   position: absolute;
@@ -371,26 +397,31 @@
   left: 0;
   width: 100%;
   height: 200px;
-  background-color: var(--grey-color);
+  /* adjust height as needed */
+  background-color: var(--grey-color, #f0f0f0);
+  /* fallback grey */
   z-index: 0;
-  margin: 0 !important;
+  /* behind content */
 }
 
-/* Section title */
-.publications-section .section-title {
+/* Section title styling */
+.section-title {
   position: relative;
   z-index: 1;
+  /* above pseudo-element */
   text-align: center;
-  font-size: var(--heading-size);
-  color: var(--white-color);
-  font-weight: var(--fw-600);
+  font-size: var(--fs-40);
+  color: var(--grey-color);
+  font-weight: var(--fw-700);
   margin-bottom: 35px;
 }
 
-/* Publications grid */
+/* Projects grid & Publications grid */
+.projects-grid,
 .publications-grid {
   position: relative;
   z-index: 1;
+  /* above pseudo-element */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
@@ -398,7 +429,8 @@
   margin: 0 auto;
 }
 
-/* Publication card */
+/* Project & Publication cards */
+.project-card,
 .publication-card {
   position: relative;
   height: 300px;
@@ -407,12 +439,14 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.publication-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--box-shadow-hover);
+/* Card hover effect */
+.project-card:hover .project-info h3,
+.publication-card:hover .publication-img {
+  transform: scale(1.05);
 }
 
-/* Image */
+/* Images */
+.project-img,
 .publication-img {
   width: 100%;
   height: 100%;
@@ -420,15 +454,19 @@
   transition: transform 0.4s ease;
 }
 
-.publication-card:hover .publication-img {
-  transform: scale(1.05);
-}
-
 /* Overlay */
+.project-overlay,
 .publication-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
+}
+
+.project-overlay {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.publication-overlay {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
   transition: background 0.3s ease;
 }
@@ -437,7 +475,8 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
 
-/* Text info */
+/* Card text info */
+.project-info,
 .publication-info {
   position: absolute;
   inset: 0;
@@ -449,14 +488,33 @@
   padding: 0 20px;
 }
 
+.project-info h3,
 .publication-info h3 {
   color: var(--white-color);
-  /* white text over overlay */
-  font-size: 1.3rem;
-  font-weight: var(--fw-600);
-  margin: 0;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  margin: 0;
+  font-weight: var(--fw-600);
 }
+
+.project-info h3 {
+  font-size: var(--fs-18);
+}
+
+.publication-info h3 {
+  font-size: var(--fs-18);
+}
+
+/* Optional hover effects */
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.publication-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--box-shadow-hover);
+}
+
 
 /* ===================== LIGHTBOX ===================== */
 #lightbox-modal {
@@ -640,8 +698,6 @@
 #gallery-slider .shadow-effect {
   width: 100%;
   max-width: 360px;
-  /* height: 250px; */
-  /* remove fixed height */
   background: var(--white-color);
   border-radius: 12px;
   overflow: hidden;
@@ -709,4 +765,51 @@
 #gallery-slider .owl-dot.active span {
   opacity: 1;
   transform: scale(1.2);
+}
+
+/* ==============================
+   CAREER COUNCIL PAGE
+================================ */
+
+/* HERO SECTION */
+.career-council-hero {
+  background: var(--grey-color);
+  color: var(--white-color);
+  text-align: center;
+  margin-top: var(--navbar-height);
+  padding: 20px 50px;
+}
+
+.career-title {
+  font-size: var(--fs-32);
+  font-weight: var(--fw-600);
+  margin-bottom: 20px;
+}
+
+.career-description {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-400);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* MEMBERS SECTION */
+.career-members {
+  padding: 80px 20px;
+  background-color: var(--accent-bg);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 50px;
+  color: var(--grey-color);
+}
+
+/* GRID */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }

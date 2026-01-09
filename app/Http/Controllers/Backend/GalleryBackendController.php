@@ -20,15 +20,17 @@ class GalleryBackendController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'nullable|array',
+            'title.*' => 'nullable|string|max:255',
+            'description' => 'nullable|array',
+            'description.*' => 'nullable|string',
             'images' => 'required',
             'images.*' => 'required|file|mimes:jpeg,jpg,png,gif,webp,heic,bmp,tiff',
         ]);
 
         try {
-            $title = $request->title ? ['en' => $request->title] : ['en' => ''];
-            $description = $request->description ? ['en' => $request->description] : ['en' => ''];
+            $titles = $request->title ?? ['en' => ''];
+            $descriptions = $request->description ?? ['en' => ''];
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $file) {
@@ -36,8 +38,8 @@ class GalleryBackendController extends Controller
 
                     GalleryImage::create([
                         'image_path' => $path,
-                        'title' => $title,
-                        'description' => $description,
+                        'title' => $titles,
+                        'description' => $descriptions,
                     ]);
                 }
             }
@@ -47,7 +49,7 @@ class GalleryBackendController extends Controller
             return redirect()->route('backend.gallery.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
 
             return back();
         }
@@ -56,23 +58,21 @@ class GalleryBackendController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'nullable|array',
+            'title.*' => 'nullable|string|max:255',
+            'description' => 'nullable|array',
+            'description.*' => 'nullable|string',
         ]);
 
         try {
             $image = GalleryImage::findOrFail($id);
 
             if ($request->has('title')) {
-                $current = $image->title ?? [];
-                $current['en'] = $request->title;
-                $image->title = $current;
+                $image->title = $request->title; // now stores all languages
             }
 
             if ($request->has('description')) {
-                $current = $image->description ?? [];
-                $current['en'] = $request->description;
-                $image->description = $current;
+                $image->description = $request->description; // now stores all languages
             }
 
             $image->save();
@@ -82,7 +82,7 @@ class GalleryBackendController extends Controller
             return back();
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
 
             return back();
         }
@@ -103,7 +103,7 @@ class GalleryBackendController extends Controller
             return redirect()->route('backend.gallery.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+            Toastr::error('Something went wrong: ' . $e->getMessage(), ['title' => 'Error']);
 
             return back();
         }

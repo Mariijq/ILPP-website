@@ -16,6 +16,9 @@ use App\Http\Controllers\Backend\SlideController;
 use App\Http\Controllers\Backend\TeamMemberController;
 use App\Http\Controllers\Backend\TestimonialsController;
 use App\Http\Controllers\Backend\WhatWeDoController;
+use App\Http\Controllers\Backend\CollaboratorsController;
+use App\Http\Controllers\Backend\CareerCouncilController;
+use App\Http\Controllers\Backend\CouncilMemberController;
 use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +72,15 @@ Route::prefix('backend')
         Route::resource('partners', PartnersController::class)
             ->names('backend.partners');
 
+        Route::resource('collaborators', CollaboratorsController::class)
+            ->names('backend.collaborators');
+            
+        Route::resource('career-councils', CareerCouncilController::class)
+            ->names('backend.career-councils');
+
+        Route::resource('council-members', CouncilMemberController::class)
+            ->names('backend.council-members');
+
         Route::resource('documents', DocumentController::class)
             ->names('backend.documents');
 
@@ -103,4 +115,5 @@ Route::prefix('backend')
 
         Route::resource('contact-messages', ContactMessageController::class)
             ->names('backend.contact-messages');
+
     });

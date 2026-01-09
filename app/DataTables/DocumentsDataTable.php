@@ -22,9 +22,9 @@ class DocumentsDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($document) {
-                $viewUrl = route('documents.show', $document->id);
-                $editUrl = route('documents.edit', $document->id);
-                $deleteUrl = route('documents.destroy', $document->id);
+                $viewUrl = route('backend.documents.show', $document->id);
+                $editUrl = route('backend.documents.edit', $document->id);
+                $deleteUrl = route('backend.documents.destroy', $document->id);
 
                 return '
         <a href="'.$viewUrl.'" class="btn btn-info btn-sm me-1" title="View">

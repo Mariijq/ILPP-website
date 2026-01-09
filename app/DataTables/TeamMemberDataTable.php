@@ -32,8 +32,8 @@ class TeamMemberDataTable extends DataTable
                     : '';
             })
             ->addColumn('action', function ($member) {
-                $editUrl = route('team-members.edit', $member->id);
-                $deleteUrl = route('team-members.destroy', $member->id);
+                $editUrl = route('backend.team-members.edit', $member->id);
+                $deleteUrl = route('backend.team-members.destroy', $member->id);
 
                 return '
                     <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">

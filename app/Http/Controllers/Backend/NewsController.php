@@ -90,7 +90,7 @@ class NewsController extends Controller
 
             Toastr::success('News added successfully!', ['title' => 'Success']);
 
-            return redirect()->route('backend.pages.news.index');
+            return redirect()->route('backend.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
@@ -185,7 +185,7 @@ class NewsController extends Controller
 
             Toastr::success('News updated successfully!', ['title' => 'Success']);
 
-            return redirect()->route('backend.pages.news.index');
+            return redirect()->route('backend.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
@@ -214,7 +214,7 @@ class NewsController extends Controller
             $news->delete();
             Toastr::success('News deleted successfully!', ['title' => 'Success']);
 
-            return redirect()->route('backend.pages.news.index');
+            return redirect()->route('backend.news.index');
 
         } catch (\Exception $e) {
             Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);

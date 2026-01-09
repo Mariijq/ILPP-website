@@ -70,20 +70,6 @@
                         value="{{ old('date', isset($project) && $project->date ? \Carbon\Carbon::parse($project->date)->format('Y-m-d') : '') }}">
                 </div>
 
-                {{-- Status --}}
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="Current" {{ old('status', $project->status ?? '') == 'Current' ? 'selected' : '' }}>
-                            Current
-                        </option>
-                        <option value="Completed"
-                            {{ old('status', $project->status ?? '') == 'Completed' ? 'selected' : '' }}>
-                            Completed
-                        </option>
-                    </select>
-                </div>
-
                 {{-- Image --}}
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>

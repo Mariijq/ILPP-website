@@ -24,55 +24,55 @@ class PartnersController extends Controller
      */
     public function create()
     {
-        return view('backend.pages.partners.create');
+        return view('backend.pages.partners.create'); // Single form for create/edit
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_mk' => 'nullable|string|max:255',
-            'name_al' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'order' => 'nullable|integer',
-            'logo' => 'nullable|image|max:2048',
-            'type' => 'required|in:Funding & Support,Strategic Partners',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name_en' => 'required|string|max:255',
+        'name_mk' => 'nullable|string|max:255',
+        'name_al' => 'nullable|string|max:255',
+        'website' => 'nullable|url|max:255',
+        'order' => 'nullable|integer',
+        'logo' => 'nullable|image|max:2048',
+        'type' => 'required|in:Funding & Support,Strategic Partners',
+    ]);
 
-        $data = [
-            'name' => json_encode([
-                'en' => $validated['name_en'],
-                'mk' => $validated['name_mk'] ?? '',
-                'al' => $validated['name_al'] ?? '',
-            ], JSON_UNESCAPED_UNICODE),
-            'type' => $validated['type'],
-            'website' => $validated['website'] ?? null,
-            'order' => $validated['order'] ?? 0,
-        ];
+    // Save as array, NOT JSON string
+    $data = [
+        'name' => [
+            'en' => $validated['name_en'],
+            'mk' => $validated['name_mk'] ?? '',
+            'al' => $validated['name_al'] ?? '',
+        ],
+        'type' => $validated['type'],
+        'website' => $validated['website'] ?? null,
+        'order' => $validated['order'] ?? 0,
+    ];
 
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('partners', 'public');
-        }
-
-        Partner::create($data);
-
-        Toastr::success('Partner added successfully');
-
-        return redirect()->route('partners.index');
+    if ($request->hasFile('logo')) {
+        $data['logo'] = $request->file('logo')->store('partners', 'public');
     }
+
+    Partner::create($data);
+
+    Toastr::success('Partner added successfully');
+
+    return redirect()->route('backend.partners.index');
+}
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $partners = Partner::findOrFail($id);
+        $partner = Partner::findOrFail($id);
 
-        return view('backend.pages.partners.show', compact('partners'));
-
+        return view('backend.pages.partners.show', compact('partner'));
     }
 
     /**
@@ -80,71 +80,71 @@ class PartnersController extends Controller
      */
     public function edit(string $id)
     {
-        $partners = Partner::findOrFail($id);
+        $partner = Partner::findOrFail($id);
 
-        return view('backend.pages.partners.create', compact('partners'));
+        return view('backend.pages.partners.create', compact('partner')); // Same Blade as create
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        $partner = Partner::findOrFail($id);
+public function update(Request $request, $id)
+{
+    $partner = Partner::findOrFail($id);
 
-        $validated = $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_mk' => 'nullable|string|max:255',
-            'name_al' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'order' => 'nullable|integer',
-            'logo' => 'nullable|image|max:2048',
-            'type' => 'required|in:Funding & Support,Strategic Partners',
-        ]);
+    $validated = $request->validate([
+        'name_en' => 'required|string|max:255',
+        'name_mk' => 'nullable|string|max:255',
+        'name_al' => 'nullable|string|max:255',
+        'website' => 'nullable|url|max:255',
+        'order' => 'nullable|integer',
+        'logo' => 'nullable|image|max:2048',
+        'type' => 'required|in:Funding & Support,Strategic Partners',
+    ]);
 
-        $data = [
-            'name' => json_encode([
-                'en' => $validated['name_en'],
-                'mk' => $validated['name_mk'] ?? '',
-                'al' => $validated['name_al'] ?? '',
-            ], JSON_UNESCAPED_UNICODE),
-            'type' => $validated['type'],
-            'website' => $validated['website'] ?? null,
-            'order' => $validated['order'] ?? 0,
-        ];
+    $data = [
+        'name' => [
+            'en' => $validated['name_en'],
+            'mk' => $validated['name_mk'] ?? '',
+            'al' => $validated['name_al'] ?? '',
+        ],
+        'type' => $validated['type'],
+        'website' => $validated['website'] ?? null,
+        'order' => $validated['order'] ?? 0,
+    ];
 
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('partners', 'public');
-        }
-
-        $partner->update($data);
-
-        Toastr::success('Partner updated successfully');
-
-        return redirect()->route('backend.partners.index');
+    if ($request->hasFile('logo')) {
+        $data['logo'] = $request->file('logo')->store('partners', 'public');
     }
 
+    $partner->update($data);
+
+    Toastr::success('Partner updated successfully');
+
+    return redirect()->route('backend.partners.index');
+}
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         try {
+            $partner = Partner::findOrFail($id);
 
-            if ($partners->logo && Storage::disk('public')->exists($partner->logo)) {
-                Storage::disk('public')->delete($partners->logo);
+            if ($partner->logo && Storage::disk('public')->exists($partner->logo)) {
+                Storage::disk('public')->delete($partner->logo);
             }
 
-            $partners->delete();
-            Toastr::success('Partner deleted successfully!', ['title' => 'Success']);
+            $partner->delete();
+
+            Toastr::success('Partner deleted successfully!');
 
             return redirect()->route('backend.partners.index');
 
         } catch (\Exception $e) {
-            Toastr::error('Something went wrong: '.$e->getMessage(), ['title' => 'Error']);
+            Toastr::error('Something went wrong: '.$e->getMessage());
 
             return back()->withInput();
         }
-
     }
 }

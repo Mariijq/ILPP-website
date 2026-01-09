@@ -13,15 +13,10 @@ class Partner extends Model
         'logo',
         'website',
         'order',
+        'type',
     ];  
 
     protected $casts = [
         'name' => 'array',
     ];
-    public function getLocalizedNameAttribute()
-{
-    $locale = app()->getLocale();
-    return $this->name[$locale] ?? $this->name['en'] ?? '';
-}
-
 }

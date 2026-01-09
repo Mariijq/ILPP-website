@@ -25,11 +25,6 @@
         </div>
 
         <div class="mb-3">
-            <label class="fw-bold">Status:</label>
-            <p>{{ $projects->status ?? '-' }}</p>
-        </div>
-
-        <div class="mb-3">
             <label class="fw-bold">Short Description:</label>
             <p>{{ $projects->short_description ?? '-' }}</p>
         </div>

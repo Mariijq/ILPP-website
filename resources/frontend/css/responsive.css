@@ -1,3 +1,4 @@
+
 /* =========================
    RESPONSIVE STYLES
 ========================= */
@@ -260,7 +261,7 @@
 
   #gallery-slider .shadow-effect img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
     border-radius: 12px;
   }
@@ -321,6 +322,18 @@
     width: 20px;
     height: 20px;
   }
+
+    .career-title {
+        font-size: 2.2rem;
+    }
+
+    .career-description {
+        font-size: 1.05rem;
+    }
+
+        .partners-grid {
+        grid-template-columns: 1fr;
+    }
 
 
 }
@@ -507,13 +520,16 @@
 
   #gallery-slider .shadow-effect img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
   }
 
   .voices-grid {
     grid-template-columns: 1fr;
   }
+    .partners-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
 }
 
@@ -564,12 +580,12 @@
 
   #gallery-slider .shadow-effect {
     max-width: 360px;
-    height: 250px;
+    height: 150px;
   }
 
   #gallery-slider .shadow-effect img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
   }
 
@@ -621,6 +637,10 @@
     width: 220px;
     height: 220px;
   }
+      .partners-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
 }
 
 @media (min-width: 1200px) {
@@ -637,4 +657,8 @@
     width: 250px;
     height: 250px;
   }
+      .partners-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
 }

@@ -1,26 +1,35 @@
 @extends('frontend.layouts.layout')
 @section('content')
-<section class="grid-wrapper">
+@php $locale = app()->getLocale(); @endphp
+
+<section class="partners-section">
     <div class="section-header">
-        <h2>{{ __('frontend.Strategic_Partners') }}</h2>
+        <h2>{{ __('frontend.Funding_&_Support') }}</h2>
     </div>
-    <div class="grid-band">
-        @foreach($supporters as $supporter)
-            <a href="{{ $supporter->website ?? '#' }}" target="_blank" class="card">
-                @if($supporter->logo)
-                    <div class="thumb" style="background-image: url('{{ asset('storage/' . $supporter->logo) }}');"></div>
+
+    <div class="partners-grid">
+        @foreach ($supporters as $supporter)
+            <div class="partner-item">
+                {{-- Partner Logo --}}
+                @if ($supporter->logo)
+                    <div class="partner-logo">
+                        <img src="{{ asset('storage/' . $supporter->logo) }}"
+                             alt="{{ $supporter->name[$locale] ?? ($supporter->name['en'] ?? '') }}">
+                    </div>
                 @else
-                    <div class="thumb" style="background-color: var(--light-primary-color); display: flex; align-items: center; justify-content: center;">
+                    <div class="partner-logo no-logo">
                         No Logo
                     </div>
                 @endif
-                <article>
-                    <h1>{{ $supporter->localized_name }}</h1>
-                    @if($supporter->type)
-                        <span>{{ ucfirst($supporter->type) }}</span>
-                    @endif
-                </article>
-            </a>
+
+                <div class="partner-name">
+                    <h3>{{ $supporter->name[$locale] ?? ($supporter->name['en'] ?? '') }}</h3>
+                </div>
+
+                @if($supporter->website)
+                    <a href="{{ $supporter->website }}" target="_blank" class="partner-link">Visit Website</a>
+                @endif
+            </div>
         @endforeach
     </div>
 </section>

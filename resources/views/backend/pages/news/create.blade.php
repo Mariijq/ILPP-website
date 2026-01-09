@@ -1,4 +1,4 @@
-@extends('backend.layouts.layouts.layout')
+@extends('backend.layouts.layout')
 @section('title', 'News')
 @section('content')
 
@@ -15,7 +15,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <form action="{{ isset($news) ? route('backend.news.update', $news->id) : route('news.store') }}" 
+        <form action="{{ isset($news) ? route('backend.news.update', $news->id) : route('backend.news.store') }}" 
               method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @if (isset($news))

@@ -114,5 +114,14 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+/*
+|--------------------------------------------------------------------------
+| Admin Email
+|--------------------------------------------------------------------------
+|
+| The email address where contact form messages should be sent.
+|
+*/
+'admin_email' => env('MAIL_ADMIN_EMAIL', 'ilpp.infodesk@gmail.com'),
 
 ];
