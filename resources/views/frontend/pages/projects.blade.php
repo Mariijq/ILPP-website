@@ -5,7 +5,7 @@
 
     {{-- Completed Projects --}}
     <header class="section-header">
-        <h2>{{ __('frontend.completed_projects') }}</h2>
+        <h2>{{ __('frontend.projects') }}</h2>
     </header>
 
     <div class="grid-band">

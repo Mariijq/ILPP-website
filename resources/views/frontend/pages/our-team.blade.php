@@ -9,8 +9,9 @@
             @foreach ($members as $member)
                 <div class="team-card">
                     <!-- Team Image -->
-                    <div class="team-image-wrapper"
-                        style="background-image: url('{{ asset('storage/' . $member->image) }}');">
+                    <div class="team-image-wrapper">
+                        <img src="{{ asset('storage/' . $member->image) }}"
+                            alt="{{ $member->name[$locale] ?? $member->name['en'] }}" loading="lazy">
                     </div>
 
                     <!-- Basic Info -->

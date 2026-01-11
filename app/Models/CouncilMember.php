@@ -8,9 +8,10 @@ use Laravel\Scout\Searchable;
 class CouncilMember extends Model
 {
     use Searchable;
-    protected $fillable = ['career_council_id', 'name', 'bio', 'image'];
+    protected $fillable = ['career_council_id', 'name', 'position', 'bio', 'image'];
 
     protected $casts = [
+        'position'=> 'array',
         'name' => 'array',
         'bio' => 'array',
     ];

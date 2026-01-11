@@ -8,11 +8,12 @@ use Laravel\Scout\Searchable;
 class CareerCouncil extends Model
 {
     use Searchable;
-        protected $fillable = ['title','short_description', 'file'];
+        protected $fillable = ['title','short_description', 'files'];
 
         protected $casts = [
             'title' => 'array',
             'short_description' => 'array',
+            'files' => 'array',
         ];
     public function members()
     {

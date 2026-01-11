@@ -33,8 +33,7 @@ return [
     'who_we_are_footer' => 'Who We Are',
     'home' => 'Home',
 
-    'current_projects' => 'Current Projects',
-    'completed_projects' => 'Completed Projects',
+    'projects' => 'Projects',
     'Funding_&_Support' => 'Funding & Support',
     'Strategic_Partners' => 'Strategic Partners',
 
@@ -74,6 +73,7 @@ return [
     'career_members' => 'Council Members',
     'no_image' => 'No Image Available',
     'career_council' => 'Career Council',
-    'career_CPG' => 'Council for Career and Professional Guidance'
+    'career_CPG' => 'Council for Career and Professional Guidance',
+    'download_files' => 'Download files',
 
 ];

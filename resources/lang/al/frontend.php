@@ -71,6 +71,7 @@ return [
     'career_members' => 'Anëtarët e Këshillit',
     'no_image' => 'Pa imazh',
     'career_CPG' => 'Këshilli për Udhëzim në Karrierë dhe Zhvillim Profesional',
+    'download_files' => 'Shkarko dokumentet',
 
 
 

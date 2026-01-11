@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\DataTables\CouncilMemberDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\CouncilMember;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Toastr;
-use App\DataTables\CouncilMemberDataTable;
 
 class CouncilMemberController extends Controller
 {
@@ -38,6 +38,8 @@ class CouncilMemberController extends Controller
         foreach ($this->locales as $locale) {
             $rules["name.$locale"] = 'required|string|max:255';
             $rules["bio.$locale"] = 'nullable|string';
+            $rules["position.$locale"] = 'nullable|string';
+
         }
         $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240';
 
@@ -45,7 +47,9 @@ class CouncilMemberController extends Controller
 
         $data = [
             'name' => $validated['name'],
-            'bio'  => $validated['bio'],
+            'bio' => $validated['bio'],
+                        'position' => $validated['position'],
+s
         ];
 
         if ($request->hasFile('image')) {
@@ -55,15 +59,18 @@ class CouncilMemberController extends Controller
         CouncilMember::create($data);
 
         Toastr::success('Council Member added successfully!');
+
         return redirect()->route('backend.council-members.index');
     }
 
     /**
      * Show the form for editing a council member.
      */
-    public function edit(CouncilMember $councilMember)
+    public function edit($id)
     {
-        return view('backend.pages.council-members.create', compact('councilMember'));
+        $member = CouncilMember::findOrFail($id);
+
+        return view('backend.pages.council-members.create', compact('member'));
     }
 
     /**
@@ -75,6 +82,8 @@ class CouncilMemberController extends Controller
         foreach ($this->locales as $locale) {
             $rules["name.$locale"] = 'required|string|max:255';
             $rules["bio.$locale"] = 'nullable|string';
+                        $rules["position.$locale"] = 'nullable|string';
+
         }
         $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240';
 
@@ -82,7 +91,9 @@ class CouncilMemberController extends Controller
 
         $data = [
             'name' => $validated['name'],
-            'bio'  => $validated['bio'],
+            'bio' => $validated['bio'],
+            'position' => $validated['position'],
+            
         ];
 
         if ($request->hasFile('image')) {
@@ -95,6 +106,7 @@ class CouncilMemberController extends Controller
         $councilMember->update($data);
 
         Toastr::success('Council Member updated successfully!');
+
         return redirect()->route('backend.council-members.index');
     }
 
@@ -110,6 +122,7 @@ class CouncilMemberController extends Controller
         $councilMember->delete();
 
         Toastr::success('Council Member deleted successfully!');
+
         return redirect()->route('backend.council-members.index');
     }
 }

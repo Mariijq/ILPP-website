@@ -8,7 +8,6 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
-use App\Http\Controllers\Backend\CouncilMemberController;
 
 class CouncilMemberDataTable extends DataTable
 {
@@ -18,27 +17,36 @@ class CouncilMemberDataTable extends DataTable
 
         return datatables()
             ->eloquent($query)
-            ->addColumn('name', fn($member) => $member->name[$locale] ?? '')
-            ->addColumn('bio', fn($member) => $member->bio[$locale] ?? '')
+            ->addColumn('name', fn ($member) => $member->name[$locale] ?? '')
+            ->addColumn('bio', fn ($member) => $member->bio[$locale] ?? '')
             ->addColumn('image', function ($member) {
                 if ($member->image && file_exists(storage_path('app/public/'.$member->image))) {
                     return '<img src="'.asset('storage/'.$member->image).'" class="member-img" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
+
                 return '<span class="text-muted">No Image</span>';
             })
             ->addColumn('action', function ($member) {
-                $editUrl = route('backend.council-members.edit', [$member->career_council_id, $member->id]);
-                $deleteUrl = route('backend.council-members.destroy', [$member->career_council_id, $member->id]);
-                $detailsUrl = route('backend.council-members.show', [$member->career_council_id, $member->id]);
+                $editUrl = route('backend.council-members.edit', $member->id);
+                $deleteUrl = route('backend.council-members.destroy', $member->id);
+                $detailsUrl = route('backend.council-members.show', $member->id);
 
                 return '
-                <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View"><i class="bi bi-eye"></i></a>
-                <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit"><i class="bi bi-pencil"></i></a>
-                <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-                    '.csrf_field().method_field('DELETE').'
-                    <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
-                </form>';
+        <a href="'.$detailsUrl.'" class="btn btn-info btn-sm me-1" title="View">
+            <i class="bi bi-eye"></i>
+        </a>
+        <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </a>
+        <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
+            '.csrf_field().method_field('DELETE').'
+            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    ';
             })
+
             ->rawColumns(['action', 'image'])
             ->setRowId('id');
     }

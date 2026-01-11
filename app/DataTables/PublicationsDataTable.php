@@ -57,7 +57,7 @@ class PublicationsDataTable extends DataTable
                 <a href="'.route('backend.publications.edit', $p->id).'" class="btn btn-primary btn-sm me-1">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form method="POST" action="'.route('backend.publications.destroy', $p->id).'" class="d-inline">
+                <form method="POST" action="'.route('backend.publications.destroy', $p->id).'" class="d-inline delete-form">
                     '.csrf_field().method_field('DELETE').'
                     <button class="btn btn-danger btn-sm">
                         <i class="bi bi-trash"></i>

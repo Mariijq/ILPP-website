@@ -11,24 +11,32 @@ use Yajra\DataTables\Services\DataTable;
 
 class TeamMemberDataTable extends DataTable
 {
+    /**
+     * Build DataTable class.
+     */
     public function dataTable($query): EloquentDataTable
     {
+        $locale = app()->getLocale(); // Get current locale (en, mk, al)
+
         return datatables()
             ->eloquent($query)
+            ->editColumn('name', fn($member) => $member->name[$locale] ?? '')
+            ->editColumn('position', fn($member) => $member->position[$locale] ?? '')
+            ->editColumn('bio', fn($member) => \Illuminate\Support\Str::limit($member->bio[$locale] ?? '', 50))
             ->addColumn('image', function ($member) {
-                if ($member->image && file_exists(storage_path('app/public/'.$member->image))) {
-                    return '<img src="'.asset('storage/'.$member->image).'" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
+                if ($member->image && file_exists(storage_path('app/public/' . $member->image))) {
+                    return '<img src="' . asset('storage/' . $member->image) . '" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">';
                 }
                 return '<span class="text-muted">No Image</span>';
             })
             ->addColumn('facebook', function ($member) {
-                return $member->facebook 
-                    ? '<a href="'.$member->facebook.'" target="_blank"><i class="bi bi-facebook"></i></a>' 
+                return $member->facebook
+                    ? '<a href="' . $member->facebook . '" target="_blank"><i class="bi bi-facebook"></i></a>'
                     : '';
             })
             ->addColumn('linkedin', function ($member) {
-                return $member->linkedin 
-                    ? '<a href="'.$member->linkedin.'" target="_blank"><i class="bi bi-linkedin"></i></a>' 
+                return $member->linkedin
+                    ? '<a href="' . $member->linkedin . '" target="_blank"><i class="bi bi-linkedin"></i></a>'
                     : '';
             })
             ->addColumn('action', function ($member) {
@@ -36,11 +44,11 @@ class TeamMemberDataTable extends DataTable
                 $deleteUrl = route('backend.team-members.destroy', $member->id);
 
                 return '
-                    <a href="'.$editUrl.'" class="btn btn-primary btn-sm me-1" title="Edit">
+                    <a href="' . $editUrl . '" class="btn btn-primary btn-sm me-1" title="Edit">
                         <i class="bi bi-pencil"></i>
                     </a>
-                    <form method="POST" action="'.$deleteUrl.'" class="d-inline-block delete-form">
-                        '.csrf_field().method_field('DELETE').'
+                    <form method="POST" action="' . $deleteUrl . '" class="d-inline-block delete-form">
+                        ' . csrf_field() . method_field('DELETE') . '
                         <button type="submit" class="btn btn-danger btn-sm" title="Delete">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -50,9 +58,12 @@ class TeamMemberDataTable extends DataTable
             ->setRowId('id');
     }
 
+    /**
+     * Get query source of DataTable.
+     */
     public function query(TeamMember $model)
     {
-        // Extract JSON fields for English (adjust ->'en' to your locale if needed)
+        // Select all columns; JSON fields remain JSON for locale extraction in PHP
         return $model->newQuery()->select([
             'id',
             'image',
@@ -60,18 +71,23 @@ class TeamMemberDataTable extends DataTable
             'facebook',
             'linkedin',
             'created_at',
-            \DB::raw("name->>'en' as name"),
-            \DB::raw("position->>'en' as position"),
-            \DB::raw("bio->>'en' as bio"),
+            'name',
+            'position',
+            'bio',
         ]);
     }
 
+    /**
+     * Optional HTML builder.
+     */
     public function html(): HtmlBuilder
     {
         return $this->builder()
             ->setTableId('team-members-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->responsive(true)
+            ->autoWidth(false)
             ->orderBy(0)
             ->selectStyleSingle()
             ->buttons([
@@ -82,6 +98,9 @@ class TeamMemberDataTable extends DataTable
             ]);
     }
 
+    /**
+     * Get columns definition.
+     */
     protected function getColumns(): array
     {
         return [
@@ -89,11 +108,11 @@ class TeamMemberDataTable extends DataTable
             Column::make('name')->title('Name'),
             Column::make('position')->title('Position'),
             Column::make('bio')->title('Bio'),
-            Column::make('image'),
-            Column::make('order'),
-            Column::make('facebook'),
-            Column::make('linkedin'),
-            Column::make('created_at'),
+            Column::make('image')->title('Image')->exportable(false)->printable(false),
+            Column::make('order')->title('Order'),
+            Column::make('facebook')->title('Facebook')->exportable(false)->printable(false),
+            Column::make('linkedin')->title('LinkedIn')->exportable(false)->printable(false),
+            Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->title('Actions')
                 ->exportable(false)
@@ -103,8 +122,11 @@ class TeamMemberDataTable extends DataTable
         ];
     }
 
+    /**
+     * Get filename for export.
+     */
     protected function filename(): string
     {
-        return 'TeamMembers_'.date('YmdHis');
+        return 'TeamMembers_' . date('YmdHis');
     }
 }

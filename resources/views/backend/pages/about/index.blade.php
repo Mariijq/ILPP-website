@@ -7,7 +7,7 @@
 @endphp
 
 <div class="container py-4">
-    <form action="{{ route('about.update') }}" method="POST">
+    <form action="{{ route('backend.about.update') }}" method="POST">
         @csrf
 
         <ul class="nav nav-tabs mb-3">

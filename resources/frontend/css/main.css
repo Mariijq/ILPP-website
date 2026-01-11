@@ -2,24 +2,24 @@
    GLOBAL STYLES & VARIABLES
 ========================= */
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../assets/fonts/Montserrat-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../assets/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../assets/fonts/Montserrat-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../assets/fonts/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../assets/fonts/Montserrat-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../assets/fonts/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
 }
 
 :root {
@@ -123,7 +123,9 @@ main {
   transition: var(--transition-duration) var(--transition-easing);
   margin-top: var(--navbar-height);
 }
-h1,h2{
+
+h1,
+h2 {
   text-transform: uppercase;
 }
 
@@ -297,137 +299,150 @@ header {
 ========================= */
 /* TEAM GRID */
 .grid-wrapper {
-    width: 90%;
-    max-width: 1240px;
-    margin: 50px auto;
-    text-align: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 50px auto;
+  text-align: center;
 }
 
 .grid-band {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
 }
 
 /* CARD */
 .team-section {
-    text-align: center;
-    margin: 50px auto;
+  text-align: center;
+  margin: 50px auto;
 }
 
 .section-header h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    color: var(--grey-color);
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  color: var(--grey-color);
 }
 
 .team-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* keeps cards centered if only one */
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  justify-items: center;
 }
 
 .team-card {
-    position: relative;
-    width: 250px; /* fixed smaller size */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-    background: #fff;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+  position: relative;
+  flex: 1 1 250px;
+  max-width: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  background: var(--white-color);
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .team-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Team Image */
 .team-image-wrapper {
     width: 100%;
-    height: 250px;
-    background-size: cover;
-    background-position: center;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.team-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   
+    object-position: center;
+    display: block;
 }
 
 /* Info visible initially */
 .team-info {
-    padding: 15px;
-    background: #fff;
+  padding: 15px;
+  background: var(--white-color);
 }
 
 .team-info h3 {
-    font-size: 18px;
-    margin-bottom: 5px;
-    font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 5px;
+  font-weight: 600;
 }
 
 .team-info .position {
-    font-size: 14px;
-    color: #26a6a0;
-    text-transform: uppercase;
+  font-size: 14px;
+  color: var(--cyan-color);
+  text-transform: uppercase;
 }
 
 /* Hover Overlay */
 .hover-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    transform: translateY(100%);
-    opacity: 0;
-    z-index: 2;
-}
-
-.team-card:hover .hover-overlay {
-    transform: translateY(0);
-    opacity: 1;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--white-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  overflow-y: auto;
+  /* allow vertical scrolling */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index: 2;
 }
 
 .hover-overlay .bio {
-    font-size: 14px;
-    margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+
+.team-card:hover .hover-overlay {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .hover-overlay .social-icons img {
-    width: 24px;
-    height: 24px;
-    margin: 0 5px;
-    filter: brightness(1.5);
-    transition: transform 0.3s ease;
+  width: 24px;
+  height: 24px;
+  margin: 0 5px;
+  filter: brightness(1.5);
+  transition: transform 0.3s ease;
 }
 
 .hover-overlay .social-icons img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
+
 .hover-overlay .social-icons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 10px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .hover-overlay .social-icons a {
-    color: #fff; /* icon color */
-    font-size: 24px; /* icon size */
-    transition: transform 0.3s ease, color 0.3s ease;
+  color: #fff;
+  /* icon color */
+  font-size: 24px;
+  /* icon size */
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .hover-overlay .social-icons a:hover {
-    transform: scale(1.2);
-    color: var(--cyan-color); /* changes color on hover */
+  transform: scale(1.2);
+  color: var(--cyan-color);
+  /* changes color on hover */
 }
 
 
@@ -532,9 +547,10 @@ header {
   text-align: center;
   /* box-shadow: var(--box-shadow); */
 }
+
 .contact_us_2 .form-box {
-  flex: 1 1 48%; 
-  min-width: 400px; 
+  flex: 1 1 48%;
+  min-width: 400px;
   background-color: var(--white-color);
   padding: 50px 40px;
   border-radius: 10px;
@@ -666,17 +682,21 @@ header {
 
 /* Default state */
 .contact-details-wrapper .contact-info .social-links a {
-  color: var(--text-color); /* uses your variable */
+  color: var(--text-color);
+  /* uses your variable */
   transition: var(--transition-duration) var(--transition-easing);
   text-decoration: none;
-  font-size: 18px; /* adjust size if needed */
+  font-size: 18px;
+  /* adjust size if needed */
 }
 
 /* Hover state */
 .contact-details-wrapper .contact-info .social-links a:hover,
 .contact-details-wrapper .contact-info .social-links a:hover i {
-  color: var(--text-color); /* uses your variable on both link and icon */
+  color: var(--text-color);
+  /* uses your variable on both link and icon */
 }
+
 /* =========================
    LIGHTBOX MODAL
 ========================= */
@@ -769,7 +789,8 @@ header {
 /* Grid */
 .voices-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* fixed 2 columns */
+  grid-template-columns: repeat(2, 1fr);
+  /* fixed 2 columns */
   gap: 30px;
   margin-bottom: 20px;
 }
@@ -843,7 +864,6 @@ header {
    IMAGES RESPONSIVE
 ========================= */
 img,
-.team-member-image,
 .thumb {
   max-width: 100%;
   height: auto;
@@ -855,88 +875,89 @@ img,
    PARTNERS
 ========================= */
 .partners-section {
-    padding: 40px 20px;
-    text-align: center;
+  padding: 40px 20px;
+  text-align: center;
 }
 
 .partners-section .section-header h2 {
-    font-size: var(--fs-32);
-    font-weight: var(--fw-600); 
-    margin-bottom: 30px;
-    color: var(--grey-color);
+  font-size: var(--fs-32);
+  font-weight: var(--fw-600);
+  margin-bottom: 30px;
+  color: var(--grey-color);
 }
 
 /* Grid */
 .partners-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 250px); 
-    justify-content: center; 
-    gap: 30px; 
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
+  justify-content: center;
+  gap: 30px;
 }
+
 /* Partner Item */
 .partner-item {
-    background-color: var(--white-color);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: var(--transition-duration) var(--transition-easing);
-    width: 250px; 
-    text-align: center;
+  background-color: var(--white-color);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: var(--transition-duration) var(--transition-easing);
+  width: 250px;
+  text-align: center;
 }
 
 .partner-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Logo */
 .partner-logo {
-    width: 100%;
-    height: 150px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-    overflow: hidden;
-    background-color: var(--accent-bg);
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  overflow: hidden;
+  background-color: var(--accent-bg);
 
-    
+
 }
 
 .partner-logo img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-        filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 
 }
 
 .partner-logo.no-logo {
-    background-color: var(--light-primary-color, #ddd);
-    color: var(--muted-text);
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--light-primary-color, #ddd);
+  color: var(--muted-text);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Partner Name */
 .partner-name h3 {
-    font-size: var(--fs-18);
-    font-weight: var(--fw-500);
-    margin-bottom: 10px;
-    color: var(--grey-color);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-500);
+  margin-bottom: 10px;
+  color: var(--grey-color);
 }
 
 /* Link */
 .partner-link {
-    display: inline-block;
-    text-decoration: none;
-    color: #007bff;
-    font-weight: 500;
-    transition: color 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
 .partner-link:hover {
-    color: #0056b3;
+  color: #0056b3;
 }

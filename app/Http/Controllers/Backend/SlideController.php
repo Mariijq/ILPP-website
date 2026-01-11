@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\DataTables\SlideDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\Slide;
-use App\DataTables\SlideDataTable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Toastr;
 
 class SlideController extends Controller
@@ -23,6 +22,7 @@ class SlideController extends Controller
     {
         $news = News::latest()->get(); // get all news
         $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
+
         return view('backend.pages.slides.create', compact('news', 'languages'));
     }
 
@@ -47,15 +47,16 @@ class SlideController extends Controller
         }
 
         Slide::create([
-            'news_id'  => $news->id,
-            'title'    => $title,
+            'news_id' => $news->id,
+            'title' => $title,
             'subtitle' => $subtitle,
-            'date'     => $news->date ?? $news->created_at->format('Y-m-d'),
-            'image'    => $news->image,
-            'order'    => $request->order ?? 0,
+            'date' => $news->date ?? $news->created_at->format('Y-m-d'),
+            'image' => $news->image,
+            'order' => $request->order ?? 0,
         ]);
 
         Toastr::success('Slide created successfully!');
+
         return redirect()->route('backend.slides.index');
     }
 
@@ -64,7 +65,10 @@ class SlideController extends Controller
     {
         $news = News::latest()->get();
         $languages = ['en' => 'English', 'mk' => 'Macedonian', 'al' => 'Albanian'];
-        return view('backend.slides.create', compact('slide', 'news', 'languages'));
+
+        return view('backend.pages.slides.create', compact('slide', 'news', 'languages'));
+
+        return view('backend.pages.slides.create', compact('slide', 'news', 'languages'));
     }
 
     // Update slide
@@ -88,28 +92,26 @@ class SlideController extends Controller
         }
 
         $slide->update([
-            'news_id'  => $news->id,
-            'title'    => $title,
+            'news_id' => $news->id,
+            'title' => $title,
             'subtitle' => $subtitle,
-            'date'     => $news->date ?? $news->created_at->format('Y-m-d'),
-            'image'    => $news->image,
-            'order'    => $request->order ?? 0,
+            'date' => $news->date ?? $news->created_at->format('Y-m-d'),
+            'image' => $news->image,
+            'order' => $request->order ?? 0,
         ]);
 
         Toastr::success('Slide updated successfully!');
+
         return redirect()->route('backend.slides.index');
     }
 
     // Delete slide
     public function destroy(Slide $slide)
     {
-        if ($slide->image && Storage::disk('public')->exists($slide->image)) {
-            Storage::disk('public')->delete($slide->image);
-        }
-
         $slide->delete();
 
         Toastr::success('Slide deleted successfully!');
+
         return redirect()->route('backend.slides.index');
     }
 }

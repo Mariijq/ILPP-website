@@ -3,8 +3,11 @@
 use App\Http\Controllers\Backend\AboutUsController;
 use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\CareerCouncilController;
+use App\Http\Controllers\Backend\CollaboratorsController;
 use App\Http\Controllers\Backend\ContactInfoController;
 use App\Http\Controllers\Backend\ContactMessageController;
+use App\Http\Controllers\Backend\CouncilMemberController;
 use App\Http\Controllers\Backend\DocumentController;
 use App\Http\Controllers\Backend\GalleryBackendController;
 use App\Http\Controllers\Backend\HistoryController;
@@ -16,9 +19,6 @@ use App\Http\Controllers\Backend\SlideController;
 use App\Http\Controllers\Backend\TeamMemberController;
 use App\Http\Controllers\Backend\TestimonialsController;
 use App\Http\Controllers\Backend\WhatWeDoController;
-use App\Http\Controllers\Backend\CollaboratorsController;
-use App\Http\Controllers\Backend\CareerCouncilController;
-use App\Http\Controllers\Backend\CouncilMemberController;
 use App\Http\Middleware\AdminAuth;
 use Illuminate\Support\Facades\Route;
 
@@ -74,7 +74,7 @@ Route::prefix('backend')
 
         Route::resource('collaborators', CollaboratorsController::class)
             ->names('backend.collaborators');
-            
+
         Route::resource('career-councils', CareerCouncilController::class)
             ->names('backend.career-councils');
 
@@ -103,10 +103,8 @@ Route::prefix('backend')
         Route::post('what-we-do', [WhatWeDoController::class, 'updateOrCreate'])
             ->name('backend.what-we-do.update');
 
-        Route::get('contact-info', [ContactInfoController::class, 'index'])
-            ->name('backend.contact-info.index');
-        Route::post('contact-info', [ContactInfoController::class, 'update'])
-            ->name('backend.contact-info.update');
+        Route::get('contact-info', [ContactInfoController::class, 'index'])->name('backend.contact-info.index');
+        Route::put('contact-info/{id}', [ContactInfoController::class, 'update'])->name('backend.contact-info.update');
 
         Route::get('about/edit', [AboutUsController::class, 'edit'])
             ->name('backend.about.edit');
